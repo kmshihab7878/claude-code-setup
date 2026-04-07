@@ -1,0 +1,81 @@
+version: "1.0"
+title: "Security Audit Pipeline"
+description: "Full security audit: dependency scan, SAST, secrets detection, container scan"
+author: "redacted-username"
+tags: ["security", "audit", "ci"]
+
+parameters:
+  - key: target_path
+    input_type: string
+    description: "Path to scan (relative or absolute)"
+    requirement: required
+    default: "."
+  - key: scan_depth
+    input_type: select
+    description: "How thorough the scan should be"
+    requirement: optional
+    default: "standard"
+    options: ["quick", "standard", "deep"]
+  - key: fix_issues
+    input_type: boolean
+    description: "Auto-fix safe issues"
+    requirement: optional
+    default: false
+
+requires:
+  mcp_servers: ["filesystem"]
+  skills: ["security-review"]
+  cli_tools: ["trivy", "gitleaks", "semgrep", "ruff"]
+
+sub_recipes:
+  - name: "dependency_audit"
+    path: "../sub/dep-audit.yaml"
+    params:
+      target: "{{ target_path }}"
+
+routing:
+  agent: "security-engineer"
+  authority: "L2"
+  risk_tier: "T1"
+  fallback: "security-auditor"
+
+prompt: |
+  Run a {{ scan_depth }} security audit on {{ target_path }}.
+
+  ## Step 1: Dependency Vulnerability Scan
+  ```bash
+  trivy fs {{ target_path }} --severity HIGH,CRITICAL
+  ```
+
+  ## Step 2: Secret Detection
+  ```bash
+  gitleaks detect --source={{ target_path }} --verbose
+  ```
+
+  ## Step 3: SAST Analysis
+  ```bash
+  semgrep --config=auto {{ target_path }} --severity ERROR
+  ```
+  {% if scan_depth == "deep" %}
+  Also run:
+  ```bash
+  semgrep --config=p/owasp-top-ten {{ target_path }}
+  semgrep --config=p/python {{ target_path }}
+  ```
+  {% endif %}
+
+  ## Step 4: Python Lint (if applicable)
+  ```bash
+  ruff check {{ target_path }}
+  ```
+  {% if fix_issues %}
+
+  ## Step 5: Auto-Fix
+  Apply safe fixes for any issues found:
+  - `ruff check --fix {{ target_path }}`
+  - Address trivial semgrep findings
+  {% endif %}
+
+  ## Report
+  Report findings by severity (Critical > High > Medium > Low).
+  For each finding: file, line, description, remediation.

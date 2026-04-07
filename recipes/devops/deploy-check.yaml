@@ -1,0 +1,79 @@
+version: "1.0"
+title: "Pre-Deployment Check"
+description: "Verify deployment readiness: tests, deps, security, config"
+author: "redacted-username"
+tags: ["devops", "deployment", "verification"]
+
+parameters:
+  - key: environment
+    input_type: select
+    description: "Target deployment environment"
+    requirement: required
+    options: ["staging", "production"]
+  - key: run_tests
+    input_type: boolean
+    description: "Run full test suite"
+    requirement: optional
+    default: true
+  - key: check_deps
+    input_type: boolean
+    description: "Audit dependencies for vulnerabilities"
+    requirement: optional
+    default: true
+
+requires:
+  mcp_servers: ["filesystem", "github"]
+  skills: ["security-review"]
+  cli_tools: ["trivy", "ruff"]
+
+sub_recipes:
+  - name: "dep_audit"
+    path: "../sub/dep-audit.yaml"
+  - name: "lint_check"
+    path: "../sub/lint-check.yaml"
+
+routing:
+  agent: "devops-architect"
+  authority: "L2"
+  risk_tier: "T1"
+  fallback: "ci-cd-engineer"
+
+prompt: |
+  Pre-deployment verification for {{ environment }}.
+
+  ## Gate 1: Code Quality
+  - Run linters (ruff for Python, tsc for TypeScript)
+  - Check for TODO/FIXME/HACK comments in changed files
+  - Verify no debug code (print statements, console.log, debugger)
+
+  {% if run_tests %}
+  ## Gate 2: Tests
+  - Run full test suite
+  - Verify no test failures
+  - Check coverage hasn't dropped
+  {% endif %}
+
+  {% if check_deps %}
+  ## Gate 3: Dependencies
+  - `trivy fs . --severity HIGH,CRITICAL`
+  - Check for outdated critical dependencies
+  - Verify lock files are up to date
+  {% endif %}
+
+  ## Gate 4: Security
+  - No secrets in code (gitleaks check)
+  - No new security vulnerabilities introduced
+  {% if environment == "production" %}
+  - Extra scrutiny: check for any T2+ risk changes
+  {% endif %}
+
+  ## Gate 5: Configuration
+  - Environment variables documented
+  - Config files present for {{ environment }}
+  - Database migrations ready (if applicable)
+
+  ## Verdict
+  PASS / FAIL with details on each gate.
+  {% if environment == "production" %}
+  PRODUCTION DEPLOYMENT requires all gates PASS.
+  {% endif %}
