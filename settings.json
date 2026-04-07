@@ -1,0 +1,216 @@
+{
+  "env": {
+    "ENABLE_TOOL_SEARCH": "false"
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/keyword-detector.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/loop-detector.sh",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$TOOL_INPUT\" | grep -qiE '\\.(env|pem|key)$|credentials|secret' && echo 'BLOCKED: Cannot write to sensitive files (.env, .pem, .key, credentials, secrets)' && exit 2 || exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$TOOL_INPUT\" | grep -qE '(\\s)(-f|--force)(\\s|$)' && ! echo \"$TOOL_INPUT\" | grep -q 'force-with-lease' && echo 'BLOCKED: Force push detected. Use --force-with-lease or get explicit approval.' && exit 2 || exit 0",
+            "if": "Bash(git push *)"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"$TOOL_INPUT\" | grep -qE 'rm\\s+(-rf|--recursive).*(/|~|\\$HOME|/usr|/etc|/var)' && echo 'BLOCKED: Dangerous recursive delete on system path. Review manually.' && exit 2 || exit 0",
+            "if": "Bash(rm *)"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(echo \"$TOOL_INPUT\" | python3 -c \"import sys,json; print(json.load(sys.stdin).get('file_path',''))\" 2>/dev/null); if echo \"$FILE\" | grep -qiE '(ruff\\.toml|\\.ruff\\.toml|pyproject\\.toml|setup\\.cfg|\\.flake8|\\.eslintrc|\\.prettierrc|biome\\.json|tsconfig\\.json)$'; then echo 'REVIEW: Modifying linter/formatter config. Prefer fixing code over weakening rules.' && exit 1; fi; exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/preflight-context-guard.sh",
+            "timeout": 5000
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/mcp-security-gate.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session-metrics.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "FILE=$(echo \"$TOOL_INPUT\" | python3 -c \"import sys,json; print(json.load(sys.stdin).get('file_path',''))\" 2>/dev/null); if [ -n \"$FILE\" ]; then ruff check --fix --quiet \"$FILE\" 2>/dev/null; ruff format --quiet \"$FILE\" 2>/dev/null; fi; exit 0",
+            "if": "Write(*.py)|Edit(*.py)"
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date '+%Y-%m-%d %H:%M:%S')] Bash: $(echo \"$TOOL_INPUT\" | head -c 200)\" >> ~/.claude/audit.log"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/tool-failure-tracker.sh",
+            "timeout": 5000
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Task completed\" with title \"Claude Code\"' 2>/dev/null; exit 0"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/session-init.sh",
+            "timeout": 15000,
+            "statusMessage": "Loading session context..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/context-guard.sh",
+            "timeout": 10000,
+            "statusMessage": "Checking context usage..."
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/persistent-mode.sh",
+            "timeout": 10000,
+            "statusMessage": "Checking persistent mode..."
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/stop-verification.sh",
+            "timeout": 30000,
+            "statusMessage": "Verifying work quality..."
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/stop-verification.sh",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true,
+    "claude-mem@thedotmack": true,
+    "vercel@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "thedotmack": {
+      "source": {
+        "source": "github",
+        "repo": "thedotmack/claude-mem"
+      }
+    }
+  },
+  "effortLevel": "high",
+  "pluginMarketplaces": [
+    "wshobson/agents",
+    "rohitg00/awesome-claude-code-toolkit",
+    "thedotmack/claude-mem"
+  ],
+  "feedbackSurveyState": {
+    "lastShownTime": 1754271607746
+  }
+}

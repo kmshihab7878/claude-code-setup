@@ -1,0 +1,75 @@
+version: "1.0"
+title: "Debug Investigation"
+description: "Systematic root cause analysis: reproduce, hypothesize, verify, fix"
+author: "redacted-username"
+tags: ["engineering", "debug", "investigation"]
+
+parameters:
+  - key: symptom
+    input_type: string
+    description: "What is happening (the observable problem)"
+    requirement: required
+  - key: error_message
+    input_type: string
+    description: "Error message or stack trace (if any)"
+    requirement: optional
+    default: ""
+  - key: affected_files
+    input_type: string
+    description: "Files suspected to be involved (comma-separated)"
+    requirement: optional
+    default: ""
+
+requires:
+  mcp_servers: ["filesystem"]
+  skills: ["coding-workflow"]
+
+routing:
+  agent: "debugger"
+  authority: "L6"
+  risk_tier: "T0"
+  fallback: "root-cause-analyst"
+
+prompt: |
+  Investigate: {{ symptom }}
+  {% if error_message %}
+  Error: {{ error_message }}
+  {% endif %}
+  {% if affected_files %}
+  Suspected files: {{ affected_files }}
+  {% endif %}
+
+  ## Step 1: Reproduce
+  - Understand the expected vs actual behavior
+  - Find a minimal reproduction path
+  - Identify when it started (git bisect if needed)
+
+  ## Step 2: Hypothesize
+  Generate 2-3 hypotheses for root cause, ranked by likelihood:
+  1. Most likely: ...
+  2. Alternative: ...
+  3. Long shot: ...
+
+  ## Step 3: Investigate
+  For each hypothesis:
+  - Read the relevant code
+  - Check recent changes (git log, git blame)
+  - Add diagnostic logging if needed
+  - Test the hypothesis
+
+  ## Step 4: Root Cause
+  State the confirmed root cause with evidence:
+  - What: the specific code/config/state causing the issue
+  - Why: what condition triggers it
+  - When: what changed to introduce it
+
+  ## Step 5: Fix
+  - Implement the minimal fix
+  - Write a regression test
+  - Run full test suite
+  - Show before/after evidence
+
+  ## Rules
+  - NO guessing. Every claim needs evidence (file:line, test output, log)
+  - Fix root cause, not symptoms
+  - Don't change unrelated code

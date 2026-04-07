@@ -1,0 +1,60 @@
+version: "1.0"
+title: "Test Suite Generator"
+description: "Generate comprehensive test suite with unit, integration, and edge case coverage"
+author: "redacted-username"
+tags: ["engineering", "testing", "quality"]
+
+parameters:
+  - key: target_path
+    input_type: string
+    description: "File or module to generate tests for"
+    requirement: required
+  - key: framework
+    input_type: select
+    description: "Test framework to use"
+    requirement: optional
+    default: "pytest"
+    options: ["pytest", "unittest", "jest", "vitest"]
+  - key: coverage_target
+    input_type: number
+    description: "Target coverage percentage"
+    requirement: optional
+    default: 80
+
+requires:
+  mcp_servers: ["filesystem"]
+  skills: ["test-driven-development", "testing-methodology"]
+  cli_tools: ["ruff"]
+
+routing:
+  agent: "tester"
+  authority: "L6"
+  risk_tier: "T0"
+  fallback: "quality-engineer"
+
+prompt: |
+  Generate a comprehensive {{ framework }} test suite for {{ target_path }}.
+  Target coverage: {{ coverage_target }}%.
+
+  ## Analysis Phase
+  1. Read the target file(s) and understand the public API
+  2. Identify all branches, edge cases, and error paths
+  3. Map dependencies that need mocking
+
+  ## Test Categories
+  1. **Happy path** — normal expected behavior
+  2. **Edge cases** — boundary values, empty inputs, max values
+  3. **Error handling** — invalid inputs, exceptions, timeouts
+  4. **Integration** — component interactions (use real dependencies where feasible)
+
+  ## Rules
+  - Follow existing test patterns in the project
+  - Use real dependencies over mocks when possible
+  - Each test function tests ONE behavior
+  - Test names describe the scenario: `test_<what>_<condition>_<expected>`
+  - No sleep() in tests — use proper async patterns
+  - Assert specific values, not just truthiness
+
+  ## Output
+  Write the test file adjacent to the source (e.g., `test_<module>.py`).
+  Run the tests and show output. Report coverage if possible.

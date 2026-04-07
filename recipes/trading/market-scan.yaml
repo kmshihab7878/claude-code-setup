@@ -1,0 +1,60 @@
+version: "1.0"
+title: "Market Scan"
+description: "Scan market data across symbols with technical indicators"
+author: "redacted-username"
+tags: ["trading", "market-data", "analysis"]
+
+parameters:
+  - key: symbols
+    input_type: string
+    description: "Comma-separated trading pairs (e.g., BTCUSDT,ETHUSDT)"
+    requirement: required
+    default: "BTCUSDT,ETHUSDT"
+  - key: interval
+    input_type: select
+    description: "Kline interval"
+    requirement: optional
+    default: "1h"
+    options: ["5m", "15m", "1h", "4h", "1d"]
+  - key: indicators
+    input_type: select
+    description: "Technical indicators to calculate"
+    requirement: optional
+    default: "basic"
+    options: ["basic", "full"]
+
+requires:
+  mcp_servers: ["aster"]
+  skills: ["aster-trading"]
+
+routing:
+  agent: "data-analyst"
+  authority: "L2"
+  risk_tier: "T0"
+  fallback: "finance-tracker"
+
+prompt: |
+  Scan the following markets: {{ symbols }}
+  Interval: {{ interval }}
+
+  For each symbol:
+  1. **Current Price** — get_ticker or get_spot_price
+  2. **24h Change** — price change, volume, high/low
+  3. **Klines** — last 100 candles at {{ interval }}
+  4. **Order Book** — top 5 bids/asks, spread
+  {% if indicators == "full" %}
+  5. **Funding Rate** — current and predicted
+  6. **Open Interest** — if available
+  {% endif %}
+
+  ## Analysis
+  For each symbol, provide:
+  - Trend direction (bullish/bearish/neutral) based on recent candles
+  - Support/resistance levels from order book depth
+  - Volume profile (increasing/decreasing)
+  {% if indicators == "full" %}
+  - Funding rate sentiment (positive = longs paying, negative = shorts paying)
+  {% endif %}
+
+  ## Output
+  Summary table with all symbols side by side.

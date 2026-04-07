@@ -1,0 +1,45 @@
+# Runtime / ephemeral state
+state/
+sessions/
+session-env/
+shell-snapshots/
+cache/
+contexts/
+paste-cache/
+stats-cache.json
+statsig/
+telemetry/
+vercel-plugin-*
+mcp-needs-auth-cache.json
+ide/
+debug/
+downloads/
+worktrees/
+backups/
+file-history/
+tasks/
+todos/
+plans/
+tools/
+
+# Private per-project memory (contains conversation context)
+projects/
+
+# Audit and history logs (private command history)
+audit.log
+audit-mcp.log
+history.jsonl
+
+# Secrets and credentials
+settings.local.json
+*.backup.*
+.env
+*.pem
+*.key
+
+# Claude Code runtime
+metrics/
+skills-audit/
+
+# OS
+.DS_Store

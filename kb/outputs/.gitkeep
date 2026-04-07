@@ -1,0 +1,6 @@
+# outputs/ — Saved Query Results
+
+Every time you ask a question against wiki/, the answer is saved here.
+Decision memos, executive briefings, synthesis reports, council outputs — all go here.
+
+Format: `<topic>_<date>.md` — e.g., `strategy_2026-04-08.md`

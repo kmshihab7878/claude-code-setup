@@ -1,0 +1,11 @@
+# raw/ — Drop Zone
+
+Drop any unstructured material here: articles, notes, screenshots (as text), PDFs (as text exports),
+meeting notes, bookmarks, research, competitor data, voice note transcripts.
+
+Rules:
+- CoreMind NEVER edits files in raw/ — these are your single source of truth
+- CoreMind NEVER deletes from raw/ without asking you
+- Filename format: anything goes — don't organize manually, CoreMind owns that
+
+To ingest: "Ingest new raw files, update wiki/ articles, suggest new topics"

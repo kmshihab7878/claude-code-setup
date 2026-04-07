@@ -1,0 +1,85 @@
+version: "1.0"
+title: "Systematic Refactor"
+description: "Structured refactoring with safety nets: tests before, refactor, tests after"
+author: "redacted-username"
+tags: ["engineering", "refactor", "quality"]
+
+parameters:
+  - key: target_path
+    input_type: string
+    description: "File or directory to refactor"
+    requirement: required
+  - key: strategy
+    input_type: select
+    description: "Refactoring approach"
+    requirement: required
+    options: ["extract-methods", "simplify-conditionals", "reduce-duplication", "improve-naming", "decompose-module", "full"]
+  - key: preserve_tests
+    input_type: boolean
+    description: "Ensure all existing tests still pass"
+    requirement: optional
+    default: true
+
+requires:
+  mcp_servers: ["filesystem"]
+  skills: ["coding-workflow", "python-quality-gate"]
+  cli_tools: ["ruff"]
+
+sub_recipes:
+  - name: "test_run"
+    path: "../sub/test-run.yaml"
+    params:
+      target: "{{ target_path }}"
+
+routing:
+  agent: "refactorer"
+  authority: "L6"
+  risk_tier: "T1"
+  fallback: "refactoring-expert"
+
+prompt: |
+  Refactor {{ target_path }} using strategy: {{ strategy }}.
+
+  ## Phase 1: Safety Net
+  {% if preserve_tests %}
+  Run existing tests FIRST and record baseline:
+  ```bash
+  pytest --tb=short -q 2>&1 | tail -20
+  ```
+  {% endif %}
+
+  ## Phase 2: Analysis
+  Read the target code and identify refactoring opportunities for {{ strategy }}:
+  {% if strategy == "extract-methods" %}
+  - Functions longer than 30 lines
+  - Repeated code blocks
+  - Deeply nested logic
+  {% elif strategy == "simplify-conditionals" %}
+  - Complex if/elif chains
+  - Nested ternaries
+  - Guard clauses that could be early returns
+  {% elif strategy == "reduce-duplication" %}
+  - Copy-pasted code blocks
+  - Similar functions that could share logic
+  - Constants that should be centralized
+  {% elif strategy == "improve-naming" %}
+  - Single-letter variables
+  - Abbreviations that hurt readability
+  - Misleading names
+  {% elif strategy == "decompose-module" %}
+  - Files > 500 lines
+  - Classes with too many responsibilities
+  - Mixed concerns in single module
+  {% endif %}
+
+  ## Phase 3: Execute
+  Apply changes incrementally. After each change, verify linting:
+  ```bash
+  ruff check --fix {{ target_path }}
+  ```
+
+  ## Phase 4: Verify
+  {% if preserve_tests %}
+  Run tests again and compare to baseline. Zero regressions allowed.
+  {% endif %}
+  Show diff summary of what changed and why.
