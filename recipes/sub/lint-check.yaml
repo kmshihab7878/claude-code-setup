@@ -1,0 +1,20 @@
+version: "1.0"
+title: "Lint Check"
+description: "Run linters on target path (reusable sub-recipe)"
+author: "khaledshihab"
+tags: ["sub-recipe", "quality"]
+
+parameters:
+  - key: target
+    input_type: string
+    requirement: required
+    default: "."
+
+requires:
+  cli_tools: ["ruff"]
+
+prompt: |
+  Run linters on {{ target }}:
+  - Python: `ruff check {{ target }}`
+  - TypeScript (if applicable): `npx tsc --noEmit`
+  Report any issues found.

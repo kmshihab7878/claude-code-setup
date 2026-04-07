@@ -1,0 +1,21 @@
+version: "1.0"
+title: "Dependency Audit"
+description: "Audit dependencies for vulnerabilities (reusable sub-recipe)"
+author: "khaledshihab"
+tags: ["sub-recipe", "security"]
+
+parameters:
+  - key: target
+    input_type: string
+    requirement: optional
+    default: "."
+
+requires:
+  cli_tools: ["trivy"]
+
+prompt: |
+  Audit dependencies in {{ target }}:
+  ```bash
+  trivy fs {{ target }} --severity HIGH,CRITICAL --scanners vuln
+  ```
+  Report: total vulnerabilities by severity, affected packages, available fixes.

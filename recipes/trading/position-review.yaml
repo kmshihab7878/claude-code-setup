@@ -1,0 +1,55 @@
+version: "1.0"
+title: "Position Review"
+description: "Review open positions, P&L, and risk exposure"
+author: "khaledshihab"
+tags: ["trading", "risk", "portfolio"]
+
+parameters:
+  - key: account_id
+    input_type: string
+    description: "Aster account ID"
+    requirement: required
+    default: "main"
+  - key: risk_threshold
+    input_type: number
+    description: "Flag positions with unrealized loss above this % of account"
+    requirement: optional
+    default: 5
+
+requires:
+  mcp_servers: ["aster"]
+  skills: ["aster-trading"]
+
+routing:
+  agent: "finance-tracker"
+  authority: "L3"
+  risk_tier: "T0"
+  fallback: "data-analyst"
+
+prompt: |
+  Review all open positions for account {{ account_id }}.
+
+  ## Step 1: Account Overview
+  - Get account balance and margin usage
+  - Get all open positions
+
+  ## Step 2: Position Analysis
+  For each position:
+  - Symbol, side (LONG/SHORT), size, entry price
+  - Current mark price, unrealized P&L, ROE%
+  - Leverage, liquidation price, margin type
+  - Distance to liquidation (%)
+
+  ## Step 3: Risk Assessment
+  - Total unrealized P&L across all positions
+  - Margin utilization percentage
+  - Largest single position as % of account
+  - Positions with unrealized loss > {{ risk_threshold }}% of account (FLAG THESE)
+
+  ## Step 4: Open Orders
+  - List all open orders (limit, stop-loss, take-profit)
+  - Check if positions have protective stop-losses
+
+  ## Output
+  Summary table of all positions with risk flags.
+  Recommendations for any positions that need attention.
