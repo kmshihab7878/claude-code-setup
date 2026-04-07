@@ -51,7 +51,15 @@ This KB is the **fourth memory layer** in a 4-layer stack:
 
 ## Wiki Articles
 
-*(This section grows as CoreMind adds articles during Stage 8.5 knowledge capture)*
+### Product & Business
+- [b2c-app-playbook.md](b2c-app-playbook.md) — Ernesto Lopez B2C iOS subscription app framework ($73k MRR, 12 apps)
+- [external-brain-kb-methodology.md](external-brain-kb-methodology.md) — External brain methodology (Karpathy + hooeem): raw/wiki/outputs compounding system
+
+### Design & UI
+- [impeccable-design-system.md](impeccable-design-system.md) — pbakaus/impeccable: anti-AI-slop frontend design system (22 skills, audit scoring, polish checklist)
+
+### Tools & Ecosystem
+- [claude-usage-dashboard.md](claude-usage-dashboard.md) — phuryn/claude-usage: local dashboard for Claude Code token/cost tracking from JSONL files
 
 ### Ecosystem & Infrastructure
 - [ecosystem-overview.md](ecosystem-overview.md) — Full Claude Code ecosystem state *(pending)*
