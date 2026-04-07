@@ -1,0 +1,73 @@
+version: "1.0"
+title: "Structured Code Review"
+description: "Multi-dimensional code review: correctness, performance, security, maintainability"
+author: "khaledshihab"
+tags: ["engineering", "review", "quality"]
+
+parameters:
+  - key: target
+    input_type: string
+    description: "File path, directory, or git diff ref (e.g., HEAD~3)"
+    requirement: required
+  - key: focus_areas
+    input_type: select
+    description: "Primary focus of the review"
+    requirement: optional
+    default: "all"
+    options: ["all", "correctness", "performance", "security", "maintainability"]
+  - key: severity_threshold
+    input_type: select
+    description: "Minimum severity to report"
+    requirement: optional
+    default: "medium"
+    options: ["low", "medium", "high", "critical"]
+
+requires:
+  mcp_servers: ["filesystem", "github"]
+  skills: ["security-review", "python-quality-gate"]
+  cli_tools: ["ruff", "semgrep"]
+
+routing:
+  agent: "code-reviewer"
+  authority: "L6"
+  risk_tier: "T0"
+  fallback: "python-expert"
+
+prompt: |
+  Perform a structured code review of {{ target }}.
+
+  Focus: {{ focus_areas }} | Severity threshold: {{ severity_threshold }}
+
+  ## Dimension 1: Correctness
+  - Logic errors, off-by-one, null handling
+  - Edge cases not covered
+  - Type safety violations
+  - Error handling gaps
+
+  ## Dimension 2: Performance
+  - O(n^2) or worse algorithms
+  - Unnecessary allocations
+  - Missing caching opportunities
+  - Database N+1 queries
+
+  ## Dimension 3: Security
+  - Input validation gaps
+  - Injection vulnerabilities (SQL, command, XSS)
+  - Authentication/authorization holes
+  - Sensitive data exposure
+
+  ## Dimension 4: Maintainability
+  - Naming clarity
+  - Function length (>30 lines = flag)
+  - Cyclomatic complexity
+  - Missing or misleading comments
+  - DRY violations
+
+  ## Output Format
+  For each finding (above {{ severity_threshold }} severity):
+  ```
+  [SEVERITY] file:line — description
+  Suggestion: how to fix
+  ```
+
+  End with a summary: total findings by severity, overall quality score (1-10).

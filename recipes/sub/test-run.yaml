@@ -1,0 +1,20 @@
+version: "1.0"
+title: "Test Run"
+description: "Execute test suite and report results (reusable sub-recipe)"
+author: "khaledshihab"
+tags: ["sub-recipe", "testing"]
+
+parameters:
+  - key: target
+    input_type: string
+    requirement: optional
+    default: "."
+
+requires:
+  cli_tools: []
+
+prompt: |
+  Run the project test suite for {{ target }}:
+  - Detect test framework (pytest, unittest, jest, vitest)
+  - Execute tests with verbose output
+  - Report: passed, failed, skipped, coverage if available
