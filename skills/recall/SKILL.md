@@ -26,7 +26,7 @@ get_observations([id1, id2, ...])
 This searches the vector-indexed semantic memory (ChromaDB) for conceptually similar content.
 
 ### Layer 2: Memory File Search (Structured Facts)
-Search the memory index at `~/.claude/projects/-Users-khaledshihab/memory/MEMORY.md`:
+Search the memory index at `~/.claude/projects/-Users-<YOUR_USER>/memory/MEMORY.md`:
 - Grep MEMORY.md for keyword matches
 - Read matching memory files for full context
 - Check confidence-scored facts table for relevant entries
