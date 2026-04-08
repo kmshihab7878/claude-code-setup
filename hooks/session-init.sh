@@ -81,7 +81,8 @@ if [ -f "$PROJECT_DIR/pyproject.toml" ] && [ ! -d "$PROJECT_DIR/.venv" ] && [ -z
 fi
 
 # ── Persistent Tasks ──
-TASKS_FILE="${HOME}/.claude/projects/-Users-khaledshihab/memory/persistent-tasks.md"
+# Adjust this path: replace <YOUR_USER> with your macOS username
+TASKS_FILE="${HOME}/.claude/projects/-Users-${USER}/memory/persistent-tasks.md"
 if [ -f "$TASKS_FILE" ]; then
   OPEN_TASKS=$(grep -c '^\- \[' "$TASKS_FILE" 2>/dev/null || true)
   OPEN_TASKS=${OPEN_TASKS:-0}

@@ -142,9 +142,9 @@ cd serena && npm install
     "serena": {
       "type": "stdio",
       "command": "node",
-      "args": ["/Users/khaledshihab/Projects/serena/dist/index.js"],
+      "args": ["~/Projects/serena/dist/index.js"],
       "env": {
-        "PROJECT_ROOT": "/Users/khaledshihab/JARVIS-FRESH"
+        "PROJECT_ROOT": "~/your-project"
       }
     }
   }

@@ -871,10 +871,10 @@ mcp__memory__open_nodes: {names: ["TradeMind"]}
 
 **MCP Server**: `filesystem` — Direct file access:
 ```
-mcp__filesystem__read_file: {path: "/Users/khaledshihab/trademind/config.yml"}
+mcp__filesystem__read_file: {path: "~/your-project/config.yml"}
 mcp__filesystem__write_file: {path: "...", content: "..."}
 mcp__filesystem__search_files: {path: "...", pattern: "*.py"}
-mcp__filesystem__directory_tree: {path: "/Users/khaledshihab/trademind"}
+mcp__filesystem__directory_tree: {path: "~/your-project"}
 mcp__filesystem__list_directory_with_sizes: {path: "..."}
 mcp__filesystem__read_media_file: {path: "chart.png"}
 ```
@@ -887,7 +887,7 @@ mcp__github__create_pull_request: {title: "feat: ML signal engine", body: "..."}
 mcp__github__create_issue: {title: "Bug: Funding rate calculation", body: "..."}
 mcp__github__list_commits: {repo: "trademind"}
 mcp__github__get_pull_request_status: {pullNumber: 42}
-mcp__github__search_code: {query: "risk_management repo:kmshihab7878/trademind"}
+mcp__github__search_code: {query: "risk_management repo:<owner>/<repo>"}
 ```
 
 **Command**: `/pr-prep` — Prepare pull request with context.
