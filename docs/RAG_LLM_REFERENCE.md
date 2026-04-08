@@ -154,9 +154,9 @@ User Input → Memory Router → [Store / Retrieve / Forget]
 - Automatic summarization of old memories
 - Integration with vector search for retrieval
 
-### Operator's Memory Stack
+### Memory Stack
 ```
-~/.claude/projects/-Users-redacted-username/memory/
+~/.claude/projects/-Users-<YOUR_USER>/memory/
 ├── MEMORY.md          ← Index (auto-loaded)
 ├── architecture.md    ← System overviews
 ├── decisions.md       ← ADR log
