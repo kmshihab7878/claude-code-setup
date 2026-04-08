@@ -3,7 +3,7 @@
 ## Identity
 - **User**: Repository owner (kmshihab7878)
 - **Platform**: macOS ARM64 (Apple Silicon)
-- **Email**: redacted-username73@example.invalid
+- **Email**: <your-email@example.com>
 
 ## Non-Negotiables
 1. **No fabrication** — Never invent file contents, API responses, or test results. If unsure, say so.
@@ -174,8 +174,8 @@ L6  Workers     (13)   tester, debugger, refactorer, documenter, code-reviewer, 
 Full rosters loaded on demand — use `~/.claude/agents/REGISTRY.md` for agents, skill descriptions trigger from their SKILL.md files.
 
 - **282 agents** — 66 core (L0-L6) + 171 Wave 1 (9 depts x intel/gen/loop) + 45 Wave 2 (5 surfaces x 9) across 13 domains
-- **182 skills** across 27 domains (process, testing, git, API, infra, AI, security, frontend, docs, trading, codebase, C-suite, marketing, product, business, k8s, offensive, meta, UI cloning, project scaffolding, video, interface-design, marketing-automation, n8n-automation, DDD-architecture, recipes, recall/memory) — frontend domain includes: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**; meta domain includes: **ultrathink**; product domain includes: **b2c-app-strategist**
-- **24 custom + 31 SC + 15 BMAD** commands (70 total) — custom includes: **/ultraplan** (15-stage sovereign pipeline), **/wiki-ingest, /wiki-query, /wiki-lint** (KB operations)
+- **192 skills** across 27 domains (process, testing, git, API, infra, AI, security, frontend, docs, trading, codebase, C-suite, marketing, product, business, k8s, offensive, meta, UI cloning, project scaffolding, video, interface-design, marketing-automation, n8n-automation, DDD-architecture, recipes, recall/memory) — frontend domain includes: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**; meta domain includes: **ultrathink**; product domain includes: **b2c-app-strategist**
+- **31 custom + 31 SC + 15 BMAD** commands (77 total) — custom includes: **/ultraplan** (15-stage sovereign pipeline), **/wiki-ingest, /wiki-query, /wiki-lint** (KB operations)
 - **23 MCP servers** | **16 CLI tools** | **18 hooks (3 with `if` conditionals)** | **5 path rules** | **2 plugins** (pyright-lsp, claude-mem)
 - **13 recipes** — 10 parameterized YAML workflows + 3 reusable sub-recipes across 4 domains (security, engineering, trading, devops)
 

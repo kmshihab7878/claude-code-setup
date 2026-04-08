@@ -130,7 +130,7 @@
 │   └── CHECKPOINTS.md
 │
 ├── projects/                    # Per-project configs and memory
-│   └── -Users-redacted-username/
+│   └── -Users-<YOUR_USER>/
 │       └── memory/
 │           ├── MEMORY.md        # Index (auto-loaded)
 │           ├── architecture.md
@@ -381,7 +381,7 @@ osascript -e 'display notification "Task completed" with title "Claude Code"' 2>
 ### Location
 
 ```
-~/.claude/projects/-Users-redacted-username/memory/
+~/.claude/projects/-Users-<YOUR_USER>/memory/
 ```
 
 ---
@@ -476,7 +476,7 @@ osascript -e 'display notification "Task completed" with title "Claude Code"' 2>
 | Hooks & settings | `~/.claude/settings.json` |
 | MCP config | `~/.claude.json` |
 | Audit log | `~/.claude/audit.log` |
-| Memory index | `~/.claude/projects/-Users-redacted-username/memory/MEMORY.md` |
+| Memory index | `~/.claude/projects/-Users-<YOUR_USER>/memory/MEMORY.md` |
 | Aster keys | `~/.config/aster-mcp/` (encrypted) |
 | Penpot MCP | `~/Projects/penpot-mcp/` |
 | Aster MCP | `~/Projects/aster-mcp/` |
