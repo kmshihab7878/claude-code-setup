@@ -2,7 +2,7 @@
 
 ## Integration Map for `kmshihab7878/claude-code-setup`
 
-This methodology transforms the Claude Code Operations System doctrine into an execution layer that integrates with your existing `~/.claude/` ecosystem — 196 skills, 78 commands, 239 agents, 13 recipes, and the governed pipeline.
+This methodology transforms the Claude Code Operations System doctrine into an execution layer that integrates with your existing `~/.claude/` setup — 197 skills (includes `elite-ops`), 83 commands (includes 5 mode commands), 239 agent definitions, 13 recipes, and the governed pipeline.
 
 It does **not** replace your setup. It adds a behavioral operating layer on top of it.
 
@@ -15,7 +15,7 @@ It does **not** replace your setup. It adds a behavioral operating layer on top 
 | **Identity** | CLAUDE.md identity section | Owner-engineer execution posture |
 | **Planning** | `/plan`, `/ultraplan` (10/15-stage pipeline) | Pre-build decision framework (3 decisions + locked assumptions) |
 | **Repo awareness** | `repo-index` agent (L0) | Structured assimilation protocol with native-path detection |
-| **Mode routing** | 78 slash commands | 5 mode packs (`/ship`, `/audit-deep`, `/fix-root`, `/polish-ux`, `/council-review`) |
+| **Mode routing** | 83 slash commands | 5 mode packs (`/ship`, `/audit-deep`, `/fix-root`, `/polish-ux`, `/council-review`) |
 | **Quality gates** | Hooks (ruff, tsc, context guard) | Multi-layer completion criteria checklist |
 | **UI standards** | `impeccable-design`, `impeccable-audit`, `impeccable-polish` | Integrated product-quality rules for non-greenfield work |
 | **Ambiguity handling** | Governed pipeline policy gates | Explicit decision tree: when to infer vs. when to ask |
