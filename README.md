@@ -9,7 +9,7 @@ The full `~/.claude/` directory that turns Claude Code into a governed AI operat
 - **197 skills** across 27 domains (engineering, security, trading, frontend, marketing, DevOps, AI/ML, product, design systems, knowledge-management, offensive security, and more)
 - **83 slash commands** — 37 custom + 31 SuperClaude + 15 BMAD
 - **239 agent definitions** organized in a 7-level authority hierarchy (L0 System Core → L6 Workers), plus Wave 1 department agents and Wave 2 surface agents
-- **10 hook scripts** + 8 inline hooks (auto-formatting, MCP security gate, context guards, audit logging, sensitive-file blocking)
+- **10 hook scripts** + 7 inline hooks (auto-formatting, MCP security gate, context guards, audit logging, sensitive-file blocking, linter-config protection, completion notifications)
 - **13 parameterized YAML recipes** (security, engineering, trading, devops) — 10 primary + 3 composable sub-recipes
 - **6 path-specific rules** (python, typescript, security, testing, infrastructure, implementation)
 - **19 reference documents** in `docs/` covering architecture, security, DevOps, frontend patterns, AI agents, RAG, operating framework, and Elite Operations methodology
@@ -241,15 +241,17 @@ Active hooks (fire automatically — `settings.json` + `hooks/*.sh`):
 | *inline* | PreToolUse (Write\|Edit) | Blocks writes to `.env`, `.pem`, `.key`, credentials |
 | *inline* | PreToolUse (Bash `git push`) | Blocks `--force` without `--force-with-lease` |
 | *inline* | PreToolUse (Bash `rm`) | Blocks recursive delete on system paths |
+| *inline* | PreToolUse (Write\|Edit) | Blocks edits to linter/formatter configs (ruff, eslint, prettier, tsconfig) |
 | *inline* | PostToolUse (Python write) | Auto-runs `ruff check --fix` + `ruff format` |
 | *inline* | PostToolUse (Bash) | Appends all Bash commands to `~/.claude/audit.log` |
+| *inline* | Notification | Displays macOS notification when task completes |
 
 ## Credits & Sources
 
 Patterns and skills integrated from:
 
 - [Anthropic Skills Spec](https://github.com/anthropics/skills)
-- [SuperClaude](https://github.com/NicolasFlaworworworworworworworworworworworworworworworworworworwor) — 31 commands, 20+ agents
+- [SuperClaude Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework) — 31 commands, specialized agents, cognitive personas
 - [BMAD Method](https://github.com/bmadcode/BMAD-METHOD) — 15 agile/product commands
 - [oh-my-claudecode](https://github.com/nicobailon/oh-my-claudecode) — Hook patterns, persistent mode
 - [everything-claude-code](https://github.com/affaan-m/everything-claude-code) — Context optimization
