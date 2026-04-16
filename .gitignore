@@ -43,3 +43,11 @@ skills-audit/
 
 # OS
 .DS_Store
+
+# Python bytecode / caches (must not leak local paths via .pyc)
+__pycache__/
+*.pyc
+*.pyo
+
+# Nested git repos (skills pulled from upstream should not carry their own .git)
+skills/*/.git/
