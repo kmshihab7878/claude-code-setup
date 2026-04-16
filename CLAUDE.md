@@ -75,32 +75,44 @@ Cancel with: "cancel", "stop mode", or "abort mode".
 - **Orchestration**: Kubernetes, kubectl, Helm
 - **Version control**: Git, GitHub (gh CLI)
 
-## MCP Servers Available (23)
-| Server | Purpose |
-|--------|---------|
-| penpot | Design tool integration |
-| aidesigner | AI UI generation from natural language (api.aidesigner.ai, OAuth) |
-| memory | Persistent knowledge graph |
-| filesystem | Direct file system access |
-| sequential | Step-by-step reasoning |
-| github | GitHub API integration |
-| context7 | Library documentation lookup |
-| docker | Docker management |
-| aster | Aster DEX trading (futures, spot, market data) |
-| notion | Notion workspace integration |
-| playwright | Browser automation and E2E testing |
-| puppeteer | Browser automation with screenshots |
-| postgres | Database querying and schema exploration |
-| brave-search | Privacy-focused web search (needs BRAVE_API_KEY) |
-| tavily | AI-optimized search (needs TAVILY_API_KEY) |
-| slack | Team communication (needs SLACK_BOT_TOKEN) |
-| stripe | Payments and subscriptions (needs STRIPE_SECRET_KEY) |
-| kubernetes | Cluster management via natural language |
-| terraform | Infrastructure as Code planning and apply |
-| google-maps | Geocoding, directions, places (needs GOOGLE_MAPS_API_KEY) |
-| sim-studio | Visual AI workflow builder (local, port 3100) |
-| obsidian | Obsidian vault access (~/Downloads/Shihab AI) |
-| hermes | Self-improving agent, multi-platform delivery (Telegram/Discord/Slack) |
+## MCP Servers (8 connected, 2 auth-pending, 19 aspirational)
+
+Run `claude mcp list` for live status. Last verified 2026-04-16. Legend: ✓ connected, ⚠️ needs auth, ○ not installed.
+
+**Install missing MCPs via `mcp-mastery` skill — it has exact `claude mcp add` commands for each.**
+
+| Status | Server | Purpose |
+|--------|--------|---------|
+| ✓ | filesystem | Direct file system access (foundation) |
+| ✓ | memory | Persistent knowledge graph (foundation) |
+| ✓ | sequential-thinking | Step-by-step reasoning (foundation) |
+| ✓ | git | Git operations via MCP (foundation) |
+| ✓ | chrome-devtools | Brand design-token extraction (pairs with Hue) |
+| ✓ | gmail | Email search/read/draft via claude.ai OAuth |
+| ✓ | supabase | Supabase project (~/.mcp.json; HTTP transport) |
+| ✓ | code-review-graph | Graph-based code review (~/.mcp.json) |
+| ⚠️ | google-calendar | Needs auth refresh |
+| ⚠️ | google-drive | Needs auth refresh |
+| ○ | context7 | Library documentation lookup |
+| ○ | github | GitHub API integration (PRs, issues, workflows) |
+| ○ | playwright | Browser automation and E2E testing |
+| ○ | puppeteer | Browser automation with screenshots |
+| ○ | postgres | Database querying and schema exploration |
+| ○ | notion | Notion workspace integration |
+| ○ | slack | Team communication (needs SLACK_BOT_TOKEN) |
+| ○ | stripe | Payments and subscriptions (needs STRIPE_SECRET_KEY) |
+| ○ | brave-search | Privacy-focused web search (needs BRAVE_API_KEY) |
+| ○ | tavily | AI-optimized search (needs TAVILY_API_KEY) |
+| ○ | google-maps | Geocoding, directions, places (needs GOOGLE_MAPS_API_KEY) |
+| ○ | docker | Docker management |
+| ○ | kubernetes | Cluster management via natural language |
+| ○ | terraform | Infrastructure as Code planning and apply |
+| ○ | aster | Aster DEX trading (futures, spot, market data) |
+| ○ | obsidian | Obsidian vault access (~/Downloads/Shihab AI) |
+| ○ | sim-studio | Visual AI workflow builder (local, port 3100) |
+| ○ | hermes | Self-improving agent (Telegram/Discord/Slack delivery) |
+| ○ | penpot | Design tool integration |
+| ○ | aidesigner | AI UI generation from natural language (api.aidesigner.ai, OAuth) |
 
 ## CLI Tools Available (16)
 | Tool | Purpose |
@@ -174,9 +186,9 @@ L6  Workers     (13)   tester, debugger, refactorer, documenter, code-reviewer, 
 Full rosters loaded on demand — use `~/.claude/agents/REGISTRY.md` for agents, skill descriptions trigger from their SKILL.md files.
 
 - **282 agents** — 66 core (L0-L6) + 171 Wave 1 (9 depts x intel/gen/loop) + 45 Wave 2 (5 surfaces x 9) across 13 domains
-- **192 skills** across 27 domains (process, testing, git, API, infra, AI, security, frontend, docs, trading, codebase, C-suite, marketing, product, business, k8s, offensive, meta, UI cloning, project scaffolding, video, interface-design, marketing-automation, n8n-automation, DDD-architecture, recipes, recall/memory) — frontend domain includes: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**; meta domain includes: **ultrathink**; product domain includes: **b2c-app-strategist**
-- **31 custom + 31 SC + 15 BMAD** commands (77 total) — custom includes: **/ultraplan** (15-stage sovereign pipeline), **/wiki-ingest, /wiki-query, /wiki-lint** (KB operations)
-- **23 MCP servers** | **16 CLI tools** | **18 hooks (3 with `if` conditionals)** | **5 path rules** | **2 plugins** (pyright-lsp, claude-mem)
+- **195 skills** across 27 domains (process, testing, git, API, infra, AI, security, frontend, docs, trading, codebase, C-suite, marketing, product, business, k8s, offensive, meta, UI cloning, project scaffolding, video, interface-design, marketing-automation, n8n-automation, DDD-architecture, recipes, recall/memory) — frontend domain includes: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**, **hue** (meta-skill: brand URL/name/screenshot → generates brand-specific child design-language skill in `~/.claude/skills/<brand>/`), **react-bits** (130-component catalog: animated text, interactive, shader backgrounds, polished UI — shadcn-CLI install); AI domain includes: **mcp-mastery** (30-server catalog, task-to-MCP routing, gap analysis — pairs with `mcp-builder`); meta domain includes: **ultrathink**; product domain includes: **b2c-app-strategist**
+- **32 custom + 31 SC + 15 BMAD** commands (78 total) — custom includes: **/ultraplan** (15-stage sovereign pipeline), **/planUI** (UI-focused pipeline: orchestrates 26 UI skills + 3 agents + 3 MCPs + 5 interface-design sub-commands through Brief→Route→Direction→System→Build→Audit→Polish→Ship), **/wiki-ingest, /wiki-query, /wiki-lint** (KB operations)
+- **8 connected MCP servers** (filesystem, memory, sequential-thinking, git, chrome-devtools, gmail, supabase, code-review-graph) + 2 auth-pending + 19 aspirational — see MCP Servers table for status | **16 CLI tools** | **18 hooks (3 with `if` conditionals)** | **5 path rules** | **2 plugins** (pyright-lsp, claude-mem)
 - **13 recipes** — 10 parameterized YAML workflows + 3 reusable sub-recipes across 4 domains (security, engineering, trading, devops)
 
 ### Top 20 Most-Used (always in context)
@@ -222,7 +234,7 @@ DAG cost model, Stage 8.5 knowledge capture, Stage 10 world-state delta, and 4 n
    T0-T1: execute immediately. T2+: pause for explicit user approval.
    Route MCP tools by domain: engineering→github/filesystem/docker;
    research→brave-search/tavily/context7; data→postgres; trading→aster;
-   notes→obsidian; design→penpot; comms→slack. Don't spray all 21 servers at every problem.
+   notes→obsidian; design→penpot; comms→slack. Don't spray MCPs — use only what the task actually needs, and check the MCP table for what's currently connected.
    MCP security gate (mcp-security-gate.sh) auto-validates every MCP tool call.
 
 8. **Know your hooks** — 18 hooks fire automatically. Key ones:
