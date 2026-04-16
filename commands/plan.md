@@ -124,9 +124,9 @@ L6  Workers     (13)   tester, debugger, refactorer, documenter, code-reviewer, 
                        market-competitive, market-technical, market-strategy
 ```
 
-**+ 171 Wave 1 stage agents** (9 departments x intel/gen/loop stages)
+**+ 126 Wave 1 stage agents** (across 10 department subdirs: engineering, product, growth, security, quality, operations, infrastructure, documentation, research, strategy)
 **+ 45 Wave 2 surface agents** (5 surfaces x 9 agents each)
-**= 282 total agents**
+**= 237 total agents**
 
 **Domain Routing** — match task domain to authority chain:
 

@@ -188,7 +188,7 @@ Run `claude mcp list` for live status. Last verified 2026-04-16. Legend: ✓ con
 
 Claude Code operates as **CoreMind** — singleton orchestrator with 10-stage governed pipeline.
 All agents are weaponized with declared MCP tool bindings, skills, and authority levels.
-282 total: 66 core (L0-L6) + 171 Wave 1 stage agents (9 departments x 3 stages) + 45 Wave 2 surface agents (5 surfaces x 9 agents).
+237 total: 66 core (L0-L6) + 126 Wave 1 stage agents (across 10 department subdirs) + 45 Wave 2 surface agents (5 surfaces x 9 agents).
 
 ### Architecture References
 | Document | Location | Purpose |
@@ -238,10 +238,10 @@ L6  Workers     (13)   tester, debugger, refactorer, documenter, code-reviewer, 
 
 Full rosters loaded on demand — use `~/.claude/agents/REGISTRY.md` for agents, skill descriptions trigger from their SKILL.md files.
 
-- **282 agents** — 66 core (L0-L6) + 171 Wave 1 (9 depts x intel/gen/loop) + 45 Wave 2 (5 surfaces x 9) across 13 domains
-- **195 skills** across 27 domains (process, testing, git, API, infra, AI, security, frontend, docs, trading, codebase, C-suite, marketing, product, business, k8s, offensive, meta, UI cloning, project scaffolding, video, interface-design, marketing-automation, n8n-automation, DDD-architecture, recipes, recall/memory) — frontend domain includes: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**, **hue** (meta-skill: brand URL/name/screenshot → generates brand-specific child design-language skill in `~/.claude/skills/<brand>/`), **react-bits** (130-component catalog: animated text, interactive, shader backgrounds, polished UI — shadcn-CLI install); AI domain includes: **mcp-mastery** (30-server catalog, task-to-MCP routing, gap analysis — pairs with `mcp-builder`); meta domain includes: **ultrathink**; product domain includes: **b2c-app-strategist**
-- **32 custom + 31 SC + 15 BMAD** commands (78 total) — custom includes: **/ultraplan** (15-stage sovereign pipeline), **/planUI** (UI-focused pipeline: orchestrates 26 UI skills + 3 agents + 3 MCPs + 5 interface-design sub-commands through Brief→Route→Direction→System→Build→Audit→Polish→Ship), **/wiki-ingest, /wiki-query, /wiki-lint** (KB operations)
-- **8 connected MCP servers** (filesystem, memory, sequential-thinking, git, chrome-devtools, gmail, supabase, code-review-graph) + 2 auth-pending + 19 aspirational — see MCP Servers table for status | **16 CLI tools** | **18 hooks (3 with `if` conditionals)** | **5 path rules** | **2 plugins** (pyright-lsp, claude-mem)
+- **237 agents** — 66 core (L0-L6) + 126 Wave 1 (10 department subdirs) + 45 Wave 2 (5 surfaces x 9) across 13 domains
+- **197 skills** across 27 domains (process, testing, git, API, infra, AI, security, frontend, docs, trading, codebase, C-suite, marketing, product, business, k8s, offensive, meta, UI cloning, project scaffolding, video, interface-design, marketing-automation, n8n-automation, DDD-architecture, recipes, recall/memory) — frontend domain includes: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**, **hue** (meta-skill: brand URL/name/screenshot → generates brand-specific child design-language skill in `~/.claude/skills/<brand>/`), **react-bits** (130-component catalog: animated text, interactive, shader backgrounds, polished UI — shadcn-CLI install); AI domain includes: **mcp-mastery** (30-server catalog, task-to-MCP routing, gap analysis — pairs with `mcp-builder`); meta domain includes: **ultrathink**, **elite-ops** (owner-engineer execution protocol); product domain includes: **b2c-app-strategist**
+- **37 custom + 31 SC + 15 BMAD** commands (83 total) — custom includes: **/ultraplan** (15-stage sovereign pipeline), **/planUI** (UI-focused pipeline), **/ship, /audit-deep, /fix-root, /polish-ux, /council-review** (Elite Ops mode commands), **/wiki-ingest, /wiki-query, /wiki-lint** (KB operations)
+- **8 connected MCP servers** (filesystem, memory, sequential-thinking, git, chrome-devtools, gmail, supabase, code-review-graph) + 2 auth-pending + 19 aspirational — see MCP Servers table for status | **16 CLI tools** | **18 hooks (3 with `if` conditionals)** | **6 path rules** | **2 plugins** (pyright-lsp, claude-mem)
 - **13 recipes** — 10 parameterized YAML workflows + 3 reusable sub-recipes across 4 domains (security, engineering, trading, devops)
 
 ### Top 20 Most-Used (always in context)
