@@ -1,17 +1,19 @@
 # Claude Code Setup
 
-A production-grade `~/.claude/` configuration — **196 skills, 78 slash commands, 239 agent definitions, 13 recipes, 10 hook scripts**, and a governed multi-agent pipeline. Built for engineers who want Claude Code to operate as an autonomous system, not a chatbot.
+A production-grade `~/.claude/` configuration — **197 skills, 83 slash commands, 239 agent definitions, 13 recipes, 10 hook scripts**, an Elite Operations execution layer, and a governed multi-agent pipeline. Built for engineers who want Claude Code to operate as an autonomous system, not a chatbot.
 
 ## What This Is
 
 The full `~/.claude/` directory that turns Claude Code into a governed AI operating system. Components:
 
-- **196 skills** across 27 domains (engineering, security, trading, frontend, marketing, DevOps, AI/ML, product, design systems, knowledge-management, offensive security, and more)
-- **78 slash commands** — 32 custom + 31 SuperClaude + 15 BMAD
+- **197 skills** across 27 domains (engineering, security, trading, frontend, marketing, DevOps, AI/ML, product, design systems, knowledge-management, offensive security, and more)
+- **83 slash commands** — 37 custom + 31 SuperClaude + 15 BMAD
 - **239 agent definitions** organized in a 7-level authority hierarchy (L0 System Core → L6 Workers), plus Wave 1 department agents and Wave 2 surface agents
 - **10 hook scripts** + 8 inline hooks (auto-formatting, MCP security gate, context guards, audit logging, sensitive-file blocking)
 - **13 parameterized YAML recipes** (security, engineering, trading, devops) — 10 primary + 3 composable sub-recipes
-- **17 reference documents** in `docs/` covering architecture, security, DevOps, frontend patterns, AI agents, RAG, and operating framework
+- **6 path-specific rules** (python, typescript, security, testing, infrastructure, implementation)
+- **19 reference documents** in `docs/` covering architecture, security, DevOps, frontend patterns, AI agents, RAG, operating framework, and Elite Operations methodology
+- **Elite Operations Layer** — owner-engineer execution posture with 5 mode commands (`/ship`, `/audit-deep`, `/fix-root`, `/polish-ux`, `/council-review`) and a cross-mode implementation standard
 - **A knowledge base** with `raw → wiki → outputs` structure, YAML frontmatter articles, source citations, decay detection
 
 ## Architecture
@@ -24,15 +26,15 @@ The full `~/.claude/` directory that turns Claude Code into a governed AI operat
 │   ├── REGISTRY.md        # Dispatch table — authority, MCP bindings, skills
 │   ├── *.md               # 68 core agents (L0-L6)
 │   └── {dept}/            # Department sub-folders with stage agents
-├── commands/              # 78 slash commands
-│   ├── *.md               # 32 custom (plan, ultraplan, planUI, review, debug, etc.)
+├── commands/              # 83 slash commands
+│   ├── *.md               # 37 custom (plan, ultraplan, planUI, ship, audit-deep, fix-root, polish-ux, council-review, review, debug, etc.)
 │   ├── sc/                # 31 SuperClaude commands
 │   └── bmad/              # 15 BMAD commands
-├── skills/                # 196 skills with SKILL.md + references
+├── skills/                # 197 skills with SKILL.md + references (includes elite-ops)
 ├── hooks/                 # 10 shell scripts (security gate, context guard, etc.)
-├── rules/                 # 5 path-specific rules (python, typescript, security, testing, infrastructure)
+├── rules/                 # 6 path-specific rules (python, typescript, security, testing, infrastructure, implementation)
 ├── recipes/               # 13 YAML workflows (security, engineering, trading, devops)
-├── docs/                  # 17 reference documents
+├── docs/                  # 19 reference documents (includes Elite Ops methodology + README)
 └── kb/                    # Knowledge base (raw → wiki → outputs)
     ├── CLAUDE.md          # KB operating rules
     ├── raw/               # Drop zone (never AI-edited)
@@ -58,6 +60,22 @@ Risk tiers control what runs automatically vs. what pauses for approval:
 | T1   | Local    | Log and proceed |
 | T2   | Shared   | Wait for user approval |
 | T3   | Critical | Block unless pre-authorized |
+
+### Elite Operations Layer
+
+A behavioral execution layer on top of the pipeline — the owner-engineer posture that sets how work is performed inside each stage. Lives in `CLAUDE.md` (execution posture, ambiguity protocol, completion standard, communication standard), `skills/elite-ops/SKILL.md` (full protocol), `rules/implementation.md` (file-change contract, prohibited patterns), and `docs/ELITE-OPS-METHODOLOGY.md` (integration map).
+
+Five mode commands activate the protocol for specific intents:
+
+| Command | Purpose |
+|---------|---------|
+| `/ship [task]` | Full implementation: inspect → plan → build → validate → deliver. No placeholders, launch-day standard. |
+| `/audit-deep [area]` | Full-stack audit across architecture, code quality, performance, UX debt, security, and test gaps. Prioritized fix list. |
+| `/fix-root [bug]` | Root cause diagnosis. Narrow patch, regression protection, no symptom-chasing. |
+| `/polish-ux [area]` | UX-only pass: microstates, copy, accessibility, visual coherence. No logic changes. |
+| `/council-review [decision]` | Multi-perspective review board (architect, product/UX, implementation risk, quality) → converge → execute. |
+
+The layer is additive: it reuses existing agents and skills, adds sharper execution contracts, and ties completion criteria to proportional validation based on risk tier.
 
 ### Agent Authority Hierarchy (66 core + departments + surfaces)
 
@@ -165,6 +183,12 @@ MCP connections live in `~/.mcp.json` (per-user) or `~/.claude.json` (scoped). N
 
 | Skill | Domain | What It Does |
 |-------|--------|--------------|
+| `elite-ops` | Meta | Owner-engineer execution protocol — repo assimilation, 3 key decisions, locked assumptions, proportional validation, ship summary |
+| `/ship` | Meta | Full implementation mode — inspect → plan → build → validate → deliver with no placeholders |
+| `/audit-deep` | Meta | Full-stack audit across architecture, code quality, UX debt, security, test gaps — prioritized fix list |
+| `/fix-root` | Meta | Root cause diagnosis with narrow patch and regression protection |
+| `/polish-ux` | Meta | UX-only pass — microstates, copy, accessibility, visual coherence |
+| `/council-review` | Meta | Multi-perspective review board → converge → execute |
 | `/ultraplan` | Meta | 15-stage sovereign execution pipeline with DAG cost model + knowledge capture |
 | `/planUI` | Meta | UI-focused pipeline: brief → route → direction → system → build → audit → polish → ship |
 | `impeccable-design` | Frontend | Anti-AI-slop design — OKLCH colors, fluid type, motion, audit scoring |
