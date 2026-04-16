@@ -1,0 +1,239 @@
+---
+# Single source of truth for the Shihab Task & Service Hub design language.
+# Extracted live from http://127.0.0.1:8081 on 2026-04-16 via Chrome DevTools MCP
+# + cross-referenced against src/index.css and tailwind.config.ts.
+
+meta:
+  name: shihab-task-mgmt
+  type: ui-rich
+  stack: [vite, react, tailwind, shadcn, radix, recharts, tiptap]
+  personality: industrial-navy, enterprise-restrained, status-semantic
+  themes: [light, dark]
+  rtl: true
+  font_loaded_from: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800"
+
+primitives:
+  colors:
+    # HSL components (H S% L%) — matches index.css convention
+    neutral_light:
+      background: "220 20% 97%"      # #f6f7f9
+      foreground: "220 30% 10%"      # #121721
+      card: "0 0% 100%"              # #ffffff
+      muted: "220 15% 93%"           # #eaecf0
+      muted_fg: "220 10% 46%"        # #6a7181
+      border: "220 15% 88%"          # #dcdfe5
+    neutral_dark:
+      background: "220 25% 8%"       # #0f131a
+      foreground: "220 15% 90%"      # #e2e4e9
+      card: "220 25% 12%"            # #171c26
+      muted: "220 20% 16%"           # #212631
+      muted_fg: "220 10% 55%"        # #818898
+      border: "220 20% 18%"          # #252b37
+    navy:
+      primary_light: "215 50% 23%"   # #1d3658
+      primary_dark: "215 60% 60%"    # #5c8fd6  (lifted for dark theme contrast)
+      secondary_light: "215 25% 90%" # #dfe4ec
+      secondary_dark: "215 25% 18%"  # #222c39
+    rag:
+      green: "142 71% 45%"           # #21c45d
+      green_bg: "142 71% 95%"        # tint for badges
+      amber: "38 92% 50%"            # #f59f0a
+      amber_bg: "38 92% 95%"
+      red: "0 72% 51%"               # #dc2828
+      red_bg: "0 72% 95%"
+    oracle:
+      accent_light: "262 52% 47%"    # #673ab6 (AI purple)
+      accent_dark: "262 52% 65%"     # #9977d4
+      accent_bg_light: "262 52% 95%"
+      accent_bg_dark: "262 40% 18%"
+    sidebar:
+      # The sidebar uses its own ramp that stays dark in BOTH themes
+      bg_light: "215 50% 16%"        # #14253d
+      bg_dark: "220 30% 6%"          # #0b0e14
+      fg_light: "215 20% 85%"        # #d1d7e0
+      fg_dark: "220 15% 75%"
+      accent_light: "215 45% 22%"    # hover #1f3451
+      accent_dark: "220 25% 14%"
+      border_light: "215 40% 25%"
+      border_dark: "220 20% 15%"
+
+  typography:
+    family_sans: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    scale:
+      h1: { size: 24px, weight: 700, line: 32px, case: normal }     # .page-header
+      h2_cap: { size: 14px, weight: 600, line: 20px, case: uppercase, tracking: 0.7px, color: muted_fg }
+      h3: { size: 18px, weight: 600, line: 28px }                   # .section-title
+      body: { size: 16px, weight: 400, line: 24px }
+      small: { size: 14px, weight: 400, line: 20px }
+      xs: { size: 12px, weight: 400, line: 16px }
+
+  radii:
+    base: 0.5rem   # --radius
+    lg: var(--radius)              # 8px — cards
+    md: calc(var(--radius) - 2px)  # 6px — buttons, inputs
+    sm: calc(var(--radius) - 4px)  # 4px — small pills
+    pill: 9999px                    # RAG status badges, avatars
+
+  spacing:
+    base: 4px    # Tailwind default
+    common:
+      gap_tight: 12px   # gap-3
+      gap_default: 16px # gap-4
+      gap_section: 24px # gap-6
+      page_padding: 24px  # p-6 desktop
+      page_padding_mobile: 16px  # p-4
+
+  elevation:
+    flat: "none"
+    card_rest: "0 1px 2px 0 rgb(0 0 0 / 0.05)"
+    card_hover: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)"
+    # Flat-leaning — identity is not in shadows, it's in tone + status color
+
+  motion:
+    transition_snap: 150ms
+    transition_smooth: 200ms
+    easing: ease-out
+    respects_prefers_reduced_motion: true   # clamped to 0.01ms in index.css
+
+semantic:
+  # Role-based tokens — components should reference THESE via Tailwind classes,
+  # not the primitives directly.
+  surface:
+    page_bg: { light: neutral_light.background, dark: neutral_dark.background }
+    elevated: { light: neutral_light.card, dark: neutral_dark.card }
+    muted_fill: { light: neutral_light.muted, dark: neutral_dark.muted }
+  text:
+    default: { light: neutral_light.foreground, dark: neutral_dark.foreground }
+    secondary: { light: neutral_light.muted_fg, dark: neutral_dark.muted_fg }
+    on_primary: "0 0% 98%"
+  actions:
+    primary: { light: navy.primary_light, dark: navy.primary_dark }
+    secondary: { light: navy.secondary_light, dark: navy.secondary_dark }
+    destructive: rag.red
+    focus_ring: primary
+  status:
+    on_track: rag.green
+    at_risk: rag.amber
+    off_track: rag.red
+  ai_surface:
+    accent: oracle.accent_light
+    bg: oracle.accent_bg_light
+  navigation:
+    sidebar_bg: sidebar.bg_light
+    sidebar_fg: sidebar.fg_light
+    # Sidebar stays dark-navy even when theme is light — this is a signature choice
+  charts:
+    order: [primary, rag.green, rag.amber, rag.red, oracle.accent_light]
+
+component_inventory:
+  # What the app actually has — tear-downs for each
+  button:
+    source: "shadcn/ui Button via src/components/ui/button.tsx"
+    radius: md     # 6px
+    padding: "8px 12px"   # default; sm=6/10, lg=10/16
+    font_size: 14px
+    variants: [default, secondary, outline, ghost, destructive, link]
+    derived: false
+
+  card:
+    source: ".kpi-card utility in src/index.css + shadcn Card"
+    radius: lg     # 8px
+    border: "1px solid hsl(var(--border))"
+    padding: 16px
+    shadow: elevation.card_rest
+    hover: elevation.card_hover
+    derived: false
+
+  input:
+    source: "shadcn Input"
+    radius: md
+    border: "1px solid hsl(var(--input))"
+    focus: "ring-2 ring-ring ring-offset-2"
+    derived: false
+
+  tag_badge:
+    source: ".rag-green / .rag-amber / .rag-red + .oracle-badge"
+    radius: pill
+    padding: "2px 8px"
+    font: { size: 10-12px, weight: 500-600 }
+    variants:
+      - { name: rag_green, use: "on-track status" }
+      - { name: rag_amber, use: "at-risk status" }
+      - { name: rag_red, use: "off-track status" }
+      - { name: oracle, use: "AI-generated content marker ONLY" }
+    derived: false
+
+  status_dot:
+    source: ".rag-dot-green / -amber / -red"
+    shape: "10px circle"
+    use: "compact status signal next to labels"
+    derived: false
+
+  section_title:
+    pattern: |
+      <h2 className="uppercase tracking-wider text-xs font-semibold text-muted-foreground">
+        TASK MANAGEMENT
+      </h2>
+    use: "dashboard section captions"
+    derived: false
+
+  data_table:
+    pattern: "shadcn Table, dense rows, divide-y border-border, muted-fg uppercase headers"
+    source: "/employees, /customer-service"
+    derived: false
+
+  sidebar:
+    source: "src/components/AppSidebar.tsx — shadcn sidebar primitives"
+    bg: navigation.sidebar_bg
+    fg: navigation.sidebar_fg
+    section_captions: "uppercase 11-12px text-sidebar-foreground/70"
+    derived: false
+
+  tabs:
+    source: "Radix Tabs via shadcn"
+    pattern: "horizontal pill group, selected=bg-background + shadow"
+    derived: false
+
+hero_stage:
+  # This is an admin console, not a marketing site — no hero.
+  observed_style: "Admin app shell with dark navy sidebar, white main surface, no hero composition."
+  preset: flat-blank
+  background:
+    medium: absent
+    color_mode: light
+  hero:
+    subject: none
+  relation:
+    type: flat
+    bleed: 0
+  motion: static
+  disclaimer: "Admin product, no landing hero."
+
+icon_kit:
+  observed_style: "Lucide icons — the kit shipped with shadcn/ui and referenced throughout. 2px stroke, rounded terminals, geometric forms, balanced density."
+  fallback_kit: "lucide-react"     # already a dependency
+  match_reasoning: "App uses lucide-react directly in package.json (^0.462). Keep using it — no substitution needed."
+
+hard_constraints:
+  - "Only use CSS custom properties from index.css — no new hex values without adding a variable"
+  - "Sidebar stays dark navy in BOTH themes (never re-theme to match background)"
+  - "RAG colors = status only (green/amber/red for on-track/at-risk/off-track or CSAT)"
+  - "Oracle purple = AI-assistant surfaces only"
+  - "Page titles use <h1 className='page-header'> — never <h2> or wrapped <div>"
+  - "Section captions use uppercase + tracking-wider + text-muted-foreground"
+  - "Respect prefers-reduced-motion (index.css already clamps; don't override)"
+  - "Use logical props (ps-/me-/start/end) — app ships RTL Arabic"
+
+principles:
+  - name: "Cool restraint"
+    desc: "Neutral blue-grays do 90% of the work. Color is reserved for meaning."
+  - name: "Status as grammar"
+    desc: "RAG traffic lights are the app's primary communicative device. Every screen that shows progress shows it with green/amber/red."
+  - name: "Sidebar as anchor"
+    desc: "The always-dark navy sidebar is the app's visual signature. It never adapts to theme."
+  - name: "AI is marked"
+    desc: "Oracle purple is never decoration. When users see it, AI is involved."
+  - name: "Flat over deep"
+    desc: "1px borders, tiny shadows. No glassmorphism, no heavy elevation."
+  - name: "Inter does it all"
+    desc: "One family, weight variation for hierarchy. No display serif, no mono body."
