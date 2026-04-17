@@ -3,7 +3,7 @@ name: backend-architect
 description: Design reliable backend systems with focus on data integrity, security, and fault tolerance
 category: engineering
 authority-level: L2
-mcp-servers: [github, postgres, context7, sequential]
+mcp-servers: [github, postgres, context7, sequential-thinking]
 skills: [clean-architecture-python, api-design-patterns, database-patterns, structured-logging]
 risk-tier: T1
 interop: [python-expert, db-admin, api-designer]

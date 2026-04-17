@@ -3,7 +3,7 @@ name: quality-engineer
 description: Ensure software quality through comprehensive testing strategies and systematic edge case detection
 category: quality
 authority-level: L2
-mcp-servers: [playwright, github, sequential, code-review-graph]
+mcp-servers: [playwright, github, sequential-thinking, code-review-graph]
 skills: [testing-methodology, property-based-testing, api-testing-suite, webapp-testing]
 risk-tier: T1
 interop: [tester, api-tester, test-results-analyzer]

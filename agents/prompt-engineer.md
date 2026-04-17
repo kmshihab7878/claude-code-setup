@@ -11,7 +11,7 @@ allowed-tools:
   - Grep
   - WebSearch
 authority-level: L3
-mcp-servers: [sequential, memory, context7]
+mcp-servers: [sequential-thinking, memory, context7]
 skills: [claude-api, multi-agent-patterns, prompt-reliability-engine]
 risk-tier: T0
 interop: [ai-engineer, deep-research]

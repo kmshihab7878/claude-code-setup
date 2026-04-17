@@ -3,7 +3,7 @@ name: performance-optimizer
 description: Performance engineering — profiling, bottleneck identification, database/application/frontend/infrastructure optimization
 category: operations
 authority-level: L5
-mcp-servers: [github, sequential]
+mcp-servers: [github, sequential-thinking]
 skills: [production-monitoring, structured-logging]
 risk-tier: T1
 interop: [performance-engineer, observability-engineer]

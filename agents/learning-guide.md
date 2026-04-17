@@ -3,7 +3,7 @@ name: learning-guide
 description: Teach programming concepts and explain code with focus on understanding through progressive learning and practical examples
 category: communication
 authority-level: L5
-mcp-servers: [sequential, memory, context7]
+mcp-servers: [sequential-thinking, memory, context7]
 skills: [research-methodology]
 risk-tier: T0
 interop: [socratic-mentor, prompt-engineer]

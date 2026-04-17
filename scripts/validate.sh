@@ -46,15 +46,23 @@ section "Stale count patterns (anti-regression)"
 stale_patterns=(
   '\b195\s+skills?\b'
   '\b196\s+skills?\b'
+  '\b197\s+skills?\b'
   '\b177\s+skills?\b'
   '\b78\s+(slash\s+)?commands?\b'
   '\b77\s+commands?\b'
+  '\b83\s+(slash\s+)?commands?\b'
   '\b171\s+Wave'
   '\b254\s+agents?\b'
   '\b282\s+(agents?|total)'
+  '\b237\s+(total|agents?)\b'
+  '\b239\s+agents?\b'
+  '\b197-skill\b'
+  '\b239-agent\b'
+  '197 skills,?\s*\S+\s*agents?'
 )
 # Allowed to mention stale numbers ONLY in changelogs/remediation docs (historical record).
-exclude_pattern='^\./(kb/wiki/changelog|docs/COUNCIL-REMEDIATION|docs/INVENTORY|CLAUDE\.md\.backup)'
+# Allowed to mention stale numbers ONLY in changelogs/remediation docs (historical record).
+exclude_pattern='^\./(kb/wiki/changelog|docs/COUNCIL-REMEDIATION|docs/INVENTORY|docs/AUDIT|docs/_audit-workspace|CLAUDE\.md\.backup)'
 for pat in "${stale_patterns[@]}"; do
   hits=$(grep -rlE "$pat" --include="*.md" . 2>/dev/null | grep -vE "$exclude_pattern" | head -5 || true)
   if [ -z "$hits" ]; then ok "no stale '$pat' in tracked files"

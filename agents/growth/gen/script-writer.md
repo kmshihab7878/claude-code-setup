@@ -3,7 +3,7 @@ name: growth-gen-script-writer
 authority: L6
 domain: growth
 stage: generation
-mcp_servers: [memory, sequential]
+mcp_servers: [memory, sequential-thinking-thinking]
 skills: [ad-script-generator, anti-ai-writing]
 risk: T0
 context: contexts/growth/

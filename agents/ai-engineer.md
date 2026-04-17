@@ -3,7 +3,7 @@ name: ai-engineer
 description: Design and build AI/ML systems, agent architectures, LLM integrations, and intelligent automation pipelines
 category: engineering
 authority-level: L2
-mcp-servers: [github, context7, sequential, memory]
+mcp-servers: [github, context7, sequential-thinking, memory]
 skills: [multi-agent-patterns, rag-patterns, claude-api, autoresearch]
 risk-tier: T1
 interop: [prompt-engineer, system-architect]

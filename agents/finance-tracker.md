@@ -3,7 +3,7 @@ name: finance-tracker
 description: Track financial metrics, model unit economics, analyze P&L, and build financial projections for products and ventures
 category: operations
 authority-level: L3
-mcp-servers: [aster, sequential, memory]
+mcp-servers: [aster, sequential-thinking, memory]
 skills: [aster-trading, finance-ml, financial-modeling, wshobson-SKILL]
 risk-tier: T2
 interop: [business-panel-experts, cost-optimizer]

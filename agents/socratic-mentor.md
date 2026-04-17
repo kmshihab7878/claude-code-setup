@@ -3,7 +3,7 @@ name: socratic-mentor
 description: Educational guide specializing in Socratic method for programming knowledge with focus on discovery learning through strategic questioning
 category: communication
 authority-level: L5
-mcp-servers: [sequential, memory]
+mcp-servers: [sequential-thinking, memory]
 skills: [research-methodology]
 risk-tier: T0
 interop: [learning-guide, pm-agent]

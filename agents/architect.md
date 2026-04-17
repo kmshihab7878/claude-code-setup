@@ -3,7 +3,7 @@ name: architect
 description: General software architecture and design review — system decomposition, trade-off analysis, component design
 category: engineering
 authority-level: L1
-mcp-servers: [github, sequential, memory]
+mcp-servers: [github, sequential-thinking, memory]
 skills: [multi-agent-patterns, clean-architecture-python, api-design-patterns]
 risk-tier: T0
 interop: [system-architect, backend-architect, frontend-architect]

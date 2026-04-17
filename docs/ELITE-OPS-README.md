@@ -1,7 +1,7 @@
 # Elite Operations Methodology
 ## For `kmshihab7878/claude-code-setup`
 
-A behavioral execution layer that integrates with your existing `~/.claude/` setup. Turns the Claude Code Operations System doctrine into files that slot directly into your 197-skill, 239-agent-definition, governed-pipeline setup.
+A behavioral execution layer that integrates with your existing `~/.claude/` setup. Turns the Claude Code Operations System doctrine into files that slot directly into your 202-skill, 242-agent-definition, governed-pipeline setup.
 
 ---
 
@@ -61,8 +61,8 @@ claude
 | **CLAUDE.md** | Execution posture + ambiguity protocol + completion criteria |
 | **10-stage pipeline** | Behavioral rules at GOAL, PLAN, EXECUTE, VALIDATE, DELIVER stages |
 | **L0-L6 agents** | Sharper execution contracts (agents are reused, not replaced) |
-| **197 skills** (includes `elite-ops`) | New skill that wraps existing skills with execution standards |
-| **83 commands** (includes 5 mode packs) | `/ship`, `/audit-deep`, `/fix-root`, `/polish-ux`, `/council-review` activate the execution protocol |
+| **202 skills** (includes `elite-ops`) | New skill that wraps existing skills with execution standards |
+| **84 commands** (includes 5 mode packs) | `/ship`, `/audit-deep`, `/fix-root`, `/polish-ux`, `/council-review` activate the execution protocol |
 | **10 shell hooks + 8 inline hooks** | No new hooks — relies on existing `stop-verification.sh`, ruff, tsc |
 | **Risk tiers T0-T3** | Maps to proportional validation scaling |
 | **KB system** | Architecture decisions flow back to `kb/wiki/` |

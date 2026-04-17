@@ -3,7 +3,7 @@ name: workflow-optimizer
 description: Analyze and optimize development workflows, CI/CD pipelines, team processes, and tool chains for maximum velocity
 category: operations
 authority-level: L5
-mcp-servers: [github, sequential]
+mcp-servers: [github, sequential-thinking]
 skills: [github-actions-patterns, local-dev-orchestration]
 risk-tier: T1
 interop: [ci-cd-engineer, pm-agent]
