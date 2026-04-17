@@ -72,9 +72,10 @@ PY
 
 # MCP tiers (parsed from CLAUDE.md MCP section).
 # Authoritative table row format:  "| ✓ | name | ..." / "| ⚠️ | ..." / "| ○ | ..."
-mcp_connected=$(grep -cE '^\| ✓ \|' CLAUDE.md 2>/dev/null || echo 0)
-mcp_auth_pending=$(grep -cE '^\| ⚠️ \|' CLAUDE.md 2>/dev/null || echo 0)
-mcp_aspirational=$(grep -cE '^\| ○ \|' CLAUDE.md 2>/dev/null || echo 0)
+# grep -c exits 1 when count is 0 (under `set -e`); guard with `|| true` and default empties.
+mcp_connected=$(grep -cE '^\| ✓ \|' CLAUDE.md 2>/dev/null || true); mcp_connected=${mcp_connected:-0}
+mcp_auth_pending=$(grep -cE '^\| ⚠️ \|' CLAUDE.md 2>/dev/null || true); mcp_auth_pending=${mcp_auth_pending:-0}
+mcp_aspirational=$(grep -cE '^\| ○ \|' CLAUDE.md 2>/dev/null || true); mcp_aspirational=${mcp_aspirational:-0}
 
 generated_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 commit=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
