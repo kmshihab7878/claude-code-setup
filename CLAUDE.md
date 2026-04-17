@@ -128,11 +128,13 @@ Cancel with: "cancel", "stop mode", or "abort mode".
 - **Orchestration**: Kubernetes, kubectl, Helm
 - **Version control**: Git, GitHub (gh CLI)
 
-## MCP Servers (8 connected, 2 auth-pending, 19 aspirational)
+## MCP Servers — three tiers
 
-Run `claude mcp list` for live status. Last verified 2026-04-16. Legend: ✓ connected, ⚠️ needs auth, ○ not installed.
+Live status: `claude mcp list`. This table is hand-maintained; regenerate counts via `scripts/inventory.sh`. Last verified 2026-04-17.
 
-**Install missing MCPs via `mcp-mastery` skill — it has exact `claude mcp add` commands for each.**
+**Do not assume access to auth-pending or aspirational servers — they are not connected unless `claude mcp list` says so.**
+
+### Tier 1 — Connected (use directly)
 
 | Status | Server | Purpose |
 |--------|--------|---------|
@@ -144,8 +146,20 @@ Run `claude mcp list` for live status. Last verified 2026-04-16. Legend: ✓ con
 | ✓ | gmail | Email search/read/draft via claude.ai OAuth |
 | ✓ | supabase | Supabase project (~/.mcp.json; HTTP transport) |
 | ✓ | code-review-graph | Graph-based code review (~/.mcp.json) |
-| ⚠️ | google-calendar | Needs auth refresh |
-| ⚠️ | google-drive | Needs auth refresh |
+
+### Tier 2 — Auth pending (configured but token refresh needed)
+
+| Status | Server | Action required |
+|--------|--------|-----------------|
+| ⚠️ | google-calendar | Re-authenticate |
+| ⚠️ | google-drive | Re-authenticate |
+
+### Tier 3 — Aspirational (not installed — install steps in `mcp-mastery` skill)
+
+These are **not** live. Do not route work to them unless you first run `claude mcp add ...`.
+
+| Status | Server | Purpose |
+|--------|--------|---------|
 | ○ | context7 | Library documentation lookup |
 | ○ | github | GitHub API integration (PRs, issues, workflows) |
 | ○ | playwright | Browser automation and E2E testing |
@@ -241,7 +255,7 @@ Full rosters loaded on demand — use `~/.claude/agents/REGISTRY.md` for agents,
 - **237 agents** — 66 core (L0-L6) + 126 Wave 1 (10 department subdirs) + 45 Wave 2 (5 surfaces x 9) across 13 domains
 - **197 skills** across 27 domains (process, testing, git, API, infra, AI, security, frontend, docs, trading, codebase, C-suite, marketing, product, business, k8s, offensive, meta, UI cloning, project scaffolding, video, interface-design, marketing-automation, n8n-automation, DDD-architecture, recipes, recall/memory) — frontend domain includes: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**, **hue** (meta-skill: brand URL/name/screenshot → generates brand-specific child design-language skill in `~/.claude/skills/<brand>/`), **react-bits** (130-component catalog: animated text, interactive, shader backgrounds, polished UI — shadcn-CLI install); AI domain includes: **mcp-mastery** (30-server catalog, task-to-MCP routing, gap analysis — pairs with `mcp-builder`); meta domain includes: **ultrathink**, **elite-ops** (owner-engineer execution protocol); product domain includes: **b2c-app-strategist**
 - **37 custom + 31 SC + 15 BMAD** commands (83 total) — custom includes: **/ultraplan** (15-stage sovereign pipeline), **/planUI** (UI-focused pipeline), **/ship, /audit-deep, /fix-root, /polish-ux, /council-review** (Elite Ops mode commands), **/wiki-ingest, /wiki-query, /wiki-lint** (KB operations)
-- **8 connected MCP servers** (filesystem, memory, sequential-thinking, git, chrome-devtools, gmail, supabase, code-review-graph) + 2 auth-pending + 19 aspirational — see MCP Servers table for status | **16 CLI tools** | **18 hooks (3 with `if` conditionals)** | **6 path rules** | **2 plugins** (pyright-lsp, claude-mem)
+- **8 connected MCP servers** (filesystem, memory, sequential-thinking, git, chrome-devtools, gmail, supabase, code-review-graph) + 2 auth-pending + 20 aspirational (not installed) — see the three-tier MCP Servers table above | **16 CLI tools** | **18 hook entries** (10 scripts + 7 inline, 3 with `if` conditionals) | **6 path rules** | **2 plugins** (pyright-lsp, claude-mem)
 - **13 recipes** — 10 parameterized YAML workflows + 3 reusable sub-recipes across 4 domains (security, engineering, trading, devops)
 
 ### Top 20 Most-Used (always in context)

@@ -1,6 +1,8 @@
-# KB Operating System — CoreMind External Brain
+# KB Operating System — Personal Knowledge Base
 
-You are the AI research librarian for Khaled Shihab's personal knowledge base.
+> **Status: scaffold / pilot.** Schema and workflow are built; content is sparse (see [../docs/KB-STATUS.md](../docs/KB-STATUS.md)). Do not cite the KB as an authoritative knowledge store until it graduates. Article count is computed by `scripts/inventory.sh`.
+
+You are the AI research librarian for this knowledge base.
 
 ## Vault Structure
 

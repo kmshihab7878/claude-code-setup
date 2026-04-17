@@ -1,277 +1,130 @@
 # Claude Code Setup
 
-A production-grade `~/.claude/` configuration — **197 skills, 83 slash commands, 239 agent definitions, 13 recipes, 10 hook scripts**, an Elite Operations execution layer, and a governed multi-agent pipeline. Built for engineers who want Claude Code to operate as an autonomous system, not a chatbot.
+A `~/.claude/` configuration that makes Claude Code behave like an owner-level engineer with explicit guardrails, governed agents, and an Elite Operations execution layer — not a chatbot.
 
-## What This Is
+## For whom
 
-The full `~/.claude/` directory that turns Claude Code into a governed AI operating system. Components:
+Engineers who want Claude Code to:
+- Ship production-grade code end-to-end (`/ship`), not scaffolds.
+- Inspect first, fix root-cause, and leave a regression test (`/audit-deep`, `/fix-root`).
+- Refuse to commit secrets, force-push, or delete system paths without confirmation.
+- Route by risk tier and authority level, not by vibe.
 
-- **197 skills** across 27 domains (engineering, security, trading, frontend, marketing, DevOps, AI/ML, product, design systems, knowledge-management, offensive security, and more)
-- **83 slash commands** — 37 custom + 31 SuperClaude + 15 BMAD
-- **239 agent definitions** organized in a 7-level authority hierarchy (L0 System Core → L6 Workers), plus Wave 1 department agents and Wave 2 surface agents
-- **10 hook scripts** + 7 inline hooks (auto-formatting, MCP security gate, context guards, audit logging, sensitive-file blocking, linter-config protection, completion notifications)
-- **13 parameterized YAML recipes** (security, engineering, trading, devops) — 10 primary + 3 composable sub-recipes
-- **6 path-specific rules** (python, typescript, security, testing, infrastructure, implementation)
-- **19 reference documents** in `docs/` covering architecture, security, DevOps, frontend patterns, AI agents, RAG, operating framework, and Elite Operations methodology
-- **Elite Operations Layer** — owner-engineer execution posture with 5 mode commands (`/ship`, `/audit-deep`, `/fix-root`, `/polish-ux`, `/council-review`) and a cross-mode implementation standard
-- **A knowledge base** with `raw → wiki → outputs` structure, YAML frontmatter articles, source citations, decay detection
+If you want a one-file prompt tweak, this is not it. This is a full operating environment, mounted at `~/.claude/`.
 
-## Architecture
+## Start here
 
-```
-.
-├── CLAUDE.md              # Master configuration — identity, rules, capabilities
-├── settings.json          # Hook bindings, inline rules, MCP server refs
-├── agents/                # 239 agent definitions (7 authority levels + departments)
-│   ├── REGISTRY.md        # Dispatch table — authority, MCP bindings, skills
-│   ├── *.md               # 68 core agents (L0-L6)
-│   └── {dept}/            # Department sub-folders with stage agents
-├── commands/              # 83 slash commands
-│   ├── *.md               # 37 custom (plan, ultraplan, planUI, ship, audit-deep, fix-root, polish-ux, council-review, review, debug, etc.)
-│   ├── sc/                # 31 SuperClaude commands
-│   └── bmad/              # 15 BMAD commands
-├── skills/                # 197 skills with SKILL.md + references (includes elite-ops)
-├── hooks/                 # 10 shell scripts (security gate, context guard, etc.)
-├── rules/                 # 6 path-specific rules (python, typescript, security, testing, infrastructure, implementation)
-├── recipes/               # 13 YAML workflows (security, engineering, trading, devops)
-├── docs/                  # 19 reference documents (includes Elite Ops methodology + README)
-└── kb/                    # Knowledge base (raw → wiki → outputs)
-    ├── CLAUDE.md          # KB operating rules
-    ├── raw/               # Drop zone (never AI-edited)
-    ├── wiki/              # AI-maintained articles with frontmatter + citations
-    └── outputs/           # Saved query results
+Three entrypoints cover the common cases. Full map in [`docs/SURFACE-MAP.md`](docs/SURFACE-MAP.md).
+
+| Intent | Command | What happens |
+|--------|---------|--------------|
+| Build something end-to-end | `/ship <task>` | Inspect → plan → build → validate → deliver. No placeholders. |
+| Inspect before acting | `/audit-deep <area>` | 6-dimension review (arch / quality / perf / UX / security / tests) with P0–P3 severity. |
+| Fix a bug the right way | `/fix-root <bug>` | Root-cause diagnosis + narrow patch + regression test. |
+
+For planning heavy/cross-system work, `/plan` is canonical (`/ultraplan` for enterprise-risk only). Pick one.
+
+## Install
+
+```bash
+git clone https://github.com/kmshihab7878/claude-code-setup.git
+cp -r ~/.claude ~/.claude.backup.$(date +%Y%m%d) 2>/dev/null
+rsync -av --exclude='.git' claude-code-setup/ ~/.claude/
 ```
 
-## Key Features
+Then:
+- Edit `~/.claude/CLAUDE.md` — replace identity/email.
+- Review `~/.claude/rules/` — adapt path rules to your conventions.
+- Run `claude` and type `/plan test` to confirm the pipeline wires up.
 
-### Governed Execution Pipeline
+## What's real today
 
-Every non-trivial task flows through a 10-stage pipeline (or 15-stage `/ultraplan` for cross-system work):
+| Tier | What it means | How many |
+|------|---------------|---------:|
+| **Live capabilities** | Installed and usable after `rsync`: hooks, path rules, skills, commands, agents | all of `skills/`, `commands/`, `rules/`, `hooks/`, `agents/`, `recipes/` |
+| **Connected MCP servers** | Live via `claude mcp list` | 8 (see `CLAUDE.md` Tier 1) |
+| **Auth-pending MCP** | Configured, needs re-auth | 2 |
+| **Aspirational MCP** | Listed in docs as options; **not installed** until `claude mcp add ...` is run | 20 (see `CLAUDE.md` Tier 3 — do not assume access) |
+| **Knowledge base** | Infrastructure + workflow built; content is sparse (see [`docs/KB-STATUS.md`](docs/KB-STATUS.md)) | scaffold / pilot |
+
+## Proof
+
+- **What a session actually looks like:** [`docs/DEMO.md`](docs/DEMO.md) — reproducible `/audit-deep → /fix-root → /ship` sequence on a target repo. Video not recorded yet; the script is.
+- **What's in the repo, deterministically:** [`docs/INVENTORY.md`](docs/INVENTORY.md) — machine-generated from disk. Regenerate with `make inventory`.
+- **How accumulation is measured, not asserted:** [`docs/TELEMETRY.md`](docs/TELEMETRY.md) — PreToolUse hook logs every tool call to `~/.claude/usage.jsonl`; analyze with `make usage`.
+- **How drift is caught:** [`docs/COUNCIL-REMEDIATION.md`](docs/COUNCIL-REMEDIATION.md) and `make validate` — fails if documented counts diverge from disk.
+- **Pruning protocol:** `docs/TELEMETRY.md` → archive zero-invocation surfaces after 14 days of real usage.
+
+## Guardrails (active)
+
+These hooks fire automatically (configured in `settings.json`, implemented in `hooks/*.sh` or inline):
+
+| Trigger | What it does |
+|---------|--------------|
+| Every tool call | Usage telemetry (`~/.claude/usage.jsonl`), MCP whitelist gate, infinite-loop detector |
+| `Write`/`Edit` to `.env` / `.pem` / `.key` / credentials | Blocks the write |
+| `Write`/`Edit` to linter/formatter configs | Warns (prefer fixing code over weakening rules) |
+| `git push --force` without `--force-with-lease` | Blocks |
+| `rm -rf` on system paths (`/`, `~`, `/usr`, `/etc`, `/var`) | Blocks |
+| Python file write | Auto-runs `ruff check --fix` + `ruff format` |
+| Bash call | Appends to `~/.claude/audit.log` |
+| Stop / SubagentStop | Checks uncommitted files, context usage, persistent mode |
+
+## Architecture, briefly
 
 ```
-SANITIZE → PARSE → POLICY GATE → GOAL → PLAN → POLICY GATE → DELEGATE → EXECUTE → REFLECT → TRACK → WORLD STATE → VALIDATE → DELIVER
+~/.claude/
+├── CLAUDE.md            # Identity, non-negotiables, Elite Operations Layer
+├── settings.json        # Hook bindings, enabled plugins
+├── skills/              # Prompt-library skills (SKILL.md + references)
+├── commands/            # Slash commands: custom + SuperClaude + BMAD
+├── agents/              # Agent definitions + REGISTRY.md dispatch table
+├── rules/               # Path-scoped rules (python, typescript, security, testing, infrastructure, implementation)
+├── hooks/               # Shell scripts invoked from settings.json
+├── recipes/             # Parameterized YAML workflows
+├── docs/                # Reference: inventory, telemetry, demo, surface map, overhead, remediation
+└── kb/                  # Knowledge base — scaffold stage (see docs/KB-STATUS.md)
 ```
 
-Risk tiers control what runs automatically vs. what pauses for approval:
+Risk tiers control execution: T0 auto, T1 log+proceed, T2 wait for approval, T3 block unless pre-authorized. Agents operate only within their declared MCP server bindings.
 
-| Tier | Risk     | Behavior |
-|------|----------|----------|
-| T0   | Safe     | Execute immediately |
-| T1   | Local    | Log and proceed |
-| T2   | Shared   | Wait for user approval |
-| T3   | Critical | Block unless pre-authorized |
+## Inventory
 
-### Elite Operations Layer
+Exact counts live in the machine-generated [`docs/INVENTORY.md`](docs/INVENTORY.md). Regenerate anytime with `make inventory`. If you see a count elsewhere in the repo that doesn't match, `make validate` will flag it.
 
-A behavioral execution layer on top of the pipeline — the owner-engineer posture that sets how work is performed inside each stage. Lives in `CLAUDE.md` (execution posture, ambiguity protocol, completion standard, communication standard), `skills/elite-ops/SKILL.md` (full protocol), `rules/implementation.md` (file-change contract, prohibited patterns), and `docs/ELITE-OPS-METHODOLOGY.md` (integration map).
+## Validation and maintenance
 
-Five mode commands activate the protocol for specific intents:
-
-| Command | Purpose |
-|---------|---------|
-| `/ship [task]` | Full implementation: inspect → plan → build → validate → deliver. No placeholders, launch-day standard. |
-| `/audit-deep [area]` | Full-stack audit across architecture, code quality, performance, UX debt, security, and test gaps. Prioritized fix list. |
-| `/fix-root [bug]` | Root cause diagnosis. Narrow patch, regression protection, no symptom-chasing. |
-| `/polish-ux [area]` | UX-only pass: microstates, copy, accessibility, visual coherence. No logic changes. |
-| `/council-review [decision]` | Multi-perspective review board (architect, product/UX, implementation risk, quality) → converge → execute. |
-
-The layer is additive: it reuses existing agents and skills, adds sharper execution contracts, and ties completion criteria to proportional validation based on risk tier.
-
-### Agent Authority Hierarchy (66 core + departments + surfaces)
-
-```
-L0  System Core    repo-index, knowledge-graph-guide, self-review, pm-agent, agent-installer
-L1  Executive      system-architect, architect, business-panel-experts
-L2  Dept Heads     backend-architect, frontend-architect, security-engineer, ai-engineer,
-                   devops-architect, quality-engineer, deep-research, growth-marketer,
-                   performance-engineer, data-analyst
-L3  Specialists    python-expert, docker-specialist, db-admin, api-designer, ux-designer...
-L4  Managers       scrum-facilitator, project-shipper, release-engineer, incident-responder...
-L5  Leaders        performance-optimizer, rapid-prototyper, root-cause-analyst...
-L6  Workers        tester, debugger, code-reviewer, documenter, market-*...
+```bash
+make validate     # frontmatter + count drift + fake URLs + hook-script integrity
+make inventory    # regenerate docs/INVENTORY.md from disk
+make usage        # analyze ~/.claude/usage.jsonl (last 30 days)
 ```
 
-See `agents/REGISTRY.md` for the full dispatch table with MCP bindings, skills, and risk tiers per agent.
+`make validate` is the one command to run before committing structural changes.
 
-### Security Guarantees
-
-- **MCP security gate** validates every MCP tool call against `recipes/lib/mcp-whitelist.json`
-- **Sensitive file writes** (`.env`, `.pem`, `.key`, credentials) are blocked by inline hooks
-- **Force-push protection** — requires `--force-with-lease`, blocks destructive operations
-- **Recursive delete guard** on system paths (`/`, `$HOME`, etc.)
-- **Audit logging** — all Bash commands appended to `~/.claude/audit.log`
-- **Context guards** — block subagent spawning above 72% context, warn at 75%
-- **Pre-commit orchestration** via `pre-commit` CLI
-
-### Knowledge Base (Karpathy-inspired)
-
-4-layer memory stack:
-
-1. **Vector semantic memory** — `claude-mem` plugin (SQLite + ChromaDB)
-2. **Confidence-scored facts** — `MEMORY.md` with 0.0–1.0 scores
-3. **Personal notes** — Obsidian vault integration via MCP (aspirational)
-4. **Synthesized KB** — `kb/wiki/` articles with YAML frontmatter, source citations, decay detection
-
-Commands: `/wiki-ingest` (ingest raw files), `/wiki-query` (research with auto-save), `/wiki-lint` (health check).
-
-### MCP Servers
-
-The live setup tracks **30+ MCP servers** grouped by connection status (see `CLAUDE.md` table).
-
-- **Foundation (connected)**: filesystem, memory, sequential-thinking, git
-- **Connected extras**: chrome-devtools, gmail, supabase, code-review-graph
-- **Auth-pending**: google-calendar, google-drive
-- **Aspirational** (not installed by default): github, context7, playwright, puppeteer, postgres, docker, kubernetes, terraform, brave-search, tavily, slack, stripe, aster, obsidian, penpot, aidesigner, notion, hermes, sim-studio
-
-Install missing MCPs via the `mcp-mastery` skill — it contains exact `claude mcp add` commands and a gap-analysis table.
-
-## Installation
-
-1. **Clone into your workspace:**
-   ```bash
-   git clone https://github.com/kmshihab7878/claude-code-setup.git
-   ```
-
-2. **Back up your existing config and copy:**
-   ```bash
-   cp -r ~/.claude ~/.claude.backup.$(date +%Y%m%d) 2>/dev/null
-   rsync -av --exclude='.git' claude-code-setup/ ~/.claude/
-   ```
-
-3. **Customize before first run:**
-   - Edit `~/.claude/CLAUDE.md` — replace identity, email, and preferences
-   - Edit `~/.claude/settings.json` — configure hooks and any local paths
-   - Set environment variables for API keys (never commit these)
-   - Review `~/.claude/rules/` — adapt path-specific rules to your codebase conventions
-
-4. **Verify:**
-   ```bash
-   claude           # Start Claude Code — CLAUDE.md loads automatically
-   /plan            # Test the governed pipeline
-   claude mcp list  # See which MCP servers are live
-   ```
-
-## Customization
-
-### Add a skill
-Create `skills/<your-skill>/SKILL.md`:
-```yaml
----
-name: your-skill
-description: "What it does and when Claude should use it"
-user-invocable: true
-argument-hint: "[target]"
----
-
-Your skill instructions...
-```
-
-### Add a command
-Create `commands/<your-command>.md`:
-```yaml
----
-description: "What it does"
----
-
-Instructions. Use $ARGUMENTS for user input.
-```
-
-### MCP server configuration
-MCP connections live in `~/.mcp.json` (per-user) or `~/.claude.json` (scoped). Neither is committed here. See the `mcp-mastery` skill for install commands and security considerations.
-
-## Skill Highlights
-
-| Skill | Domain | What It Does |
-|-------|--------|--------------|
-| `elite-ops` | Meta | Owner-engineer execution protocol — repo assimilation, 3 key decisions, locked assumptions, proportional validation, ship summary |
-| `/ship` | Meta | Full implementation mode — inspect → plan → build → validate → deliver with no placeholders |
-| `/audit-deep` | Meta | Full-stack audit across architecture, code quality, UX debt, security, test gaps — prioritized fix list |
-| `/fix-root` | Meta | Root cause diagnosis with narrow patch and regression protection |
-| `/polish-ux` | Meta | UX-only pass — microstates, copy, accessibility, visual coherence |
-| `/council-review` | Meta | Multi-perspective review board → converge → execute |
-| `/ultraplan` | Meta | 15-stage sovereign execution pipeline with DAG cost model + knowledge capture |
-| `/planUI` | Meta | UI-focused pipeline: brief → route → direction → system → build → audit → polish → ship |
-| `impeccable-design` | Frontend | Anti-AI-slop design — OKLCH colors, fluid type, motion, audit scoring |
-| `impeccable-audit` | Frontend | Technical quality audit with P0-P3 severity across 5 dimensions |
-| `impeccable-polish` | Frontend | Final micro-detail pass on alignment, spacing, consistency |
-| `hue` | Frontend | Meta-skill: brand URL/name/screenshot → generates child design-language skill |
-| `react-bits` | Frontend | 130-component animated/interactive catalog with shadcn-CLI install |
-| `mcp-mastery` | AI | 30-server MCP catalog, task-to-MCP routing, gap analysis |
-| `b2c-app-strategist` | Product | B2C iOS app strategy — validation, MVP, 5-channel marketing |
-| `council` | Strategy | Multi-advisor decision panel with anonymous peer review |
-| `clone-website` | Frontend | 5-phase pixel-perfect website reconstruction |
-| `/wiki-ingest` | Knowledge | Raw files → structured KB articles with frontmatter + citations |
-| `/security-audit` | Security | OWASP + SAST + secrets + dependency scan |
-| `/test-gen` | Quality | Generate comprehensive test suites with edge cases |
-
-## Recipes
-
-Parameterized YAML workflows in `recipes/`:
-
-| Recipe | Domain |
-|--------|--------|
-| `security-audit` | Security |
-| `secrets-scan` | Security |
-| `code-review` | Engineering |
-| `test-suite` | Engineering |
-| `api-endpoint` | Engineering |
-| `refactor` | Engineering |
-| `debug-investigation` | Engineering |
-| `market-scan` | Trading |
-| `position-review` | Trading |
-| `deploy-check` | DevOps |
-| `lint-check`, `test-run`, `dep-audit` | Sub-recipes (composable) |
-
-## Hook System
-
-Active hooks (fire automatically — `settings.json` + `hooks/*.sh`):
-
-| Hook | Trigger | What It Does |
-|------|---------|--------------|
-| `mcp-security-gate.sh` | Every MCP tool call | Validates against whitelist, logs high-risk calls |
-| `loop-detector.sh` | Every tool call | Detects and breaks infinite tool loops |
-| `preflight-context-guard.sh` | Agent spawning | Blocks subagents when context > 72% |
-| `context-guard.sh` | Stop | Warns at 75% context, suggests `/compact` |
-| `stop-verification.sh` | Stop / SubagentStop | Checks ruff, tsc, uncommitted files |
-| `keyword-detector.sh` | User prompt | Auto-activates skills on keyword match |
-| `session-init.sh` | Session start | Loads git, project, environment context |
-| `persistent-mode.sh` | Stop | Blocks premature stop while autonomous mode active |
-| `tool-failure-tracker.sh` | PostToolUse | Counts failures, suggests pivot at 3, stop at 5 |
-| `session-metrics.sh` | PostToolUse (Bash) | Tracks session metrics |
-| *inline* | PreToolUse (Write\|Edit) | Blocks writes to `.env`, `.pem`, `.key`, credentials |
-| *inline* | PreToolUse (Bash `git push`) | Blocks `--force` without `--force-with-lease` |
-| *inline* | PreToolUse (Bash `rm`) | Blocks recursive delete on system paths |
-| *inline* | PreToolUse (Write\|Edit) | Blocks edits to linter/formatter configs (ruff, eslint, prettier, tsconfig) |
-| *inline* | PostToolUse (Python write) | Auto-runs `ruff check --fix` + `ruff format` |
-| *inline* | PostToolUse (Bash) | Appends all Bash commands to `~/.claude/audit.log` |
-| *inline* | Notification | Displays macOS notification when task completes |
-
-## Credits & Sources
+## Credits & sources
 
 Patterns and skills integrated from:
 
 - [Anthropic Skills Spec](https://github.com/anthropics/skills)
 - [SuperClaude Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework) — 31 commands, specialized agents, cognitive personas
 - [BMAD Method](https://github.com/bmadcode/BMAD-METHOD) — 15 agile/product commands
-- [oh-my-claudecode](https://github.com/nicobailon/oh-my-claudecode) — Hook patterns, persistent mode
-- [everything-claude-code](https://github.com/affaan-m/everything-claude-code) — Context optimization
-- [pbakaus/impeccable](https://github.com/pbakaus/impeccable) — Frontend design skills (Apache 2.0)
+- [oh-my-claudecode](https://github.com/nicobailon/oh-my-claudecode) — hook patterns, persistent mode
+- [everything-claude-code](https://github.com/affaan-m/everything-claude-code) — context optimization
+- [pbakaus/impeccable](https://github.com/pbakaus/impeccable) — frontend design skills (Apache 2.0)
 - [JCodesMore/ai-website-cloner-template](https://github.com/JCodesMore/ai-website-cloner-template)
 - [wshobson](https://github.com/wshobson) — Kubernetes and quant trading skills
 - [alirezarezvani](https://github.com/alirezarezvani) — C-suite advisor and marketing skills
 - [czlonkowski](https://github.com/czlonkowski) — n8n automation skills
-- [dominikmartn/hue](https://github.com/dominikmartn/hue) — Brand design-language meta-skill
+- [dominikmartn/hue](https://github.com/dominikmartn/hue) — brand design-language meta-skill
 - [DavidHDev/react-bits](https://github.com/DavidHDev/react-bits) — React component catalog
 
-## Security Posture
+## Security posture
 
-Before cloning this repo to your machine, note:
-
-- `settings.local.json`, `projects/`, `audit.log`, `history.jsonl`, `.env`, `*.pem`, `*.key`, and Python bytecode (`__pycache__/`, `*.pyc`) are all `.gitignore`d
-- Gitleaks-clean at commit time
-- No real emails, API keys, or personal paths in tracked files (fictional examples only in skill docs)
-- Email field in `CLAUDE.md` is a placeholder — fill in your own after cloning
+- `settings.local.json`, `projects/`, `audit.log`, `history.jsonl`, `usage.jsonl`, `.env`, `*.pem`, `*.key`, and Python bytecode (`__pycache__/`, `*.pyc`) are `.gitignore`d.
+- Gitleaks-clean at commit time.
+- No real emails, API keys, or personal paths in tracked files (placeholders only).
 
 ## License
 
-MIT
+MIT.
