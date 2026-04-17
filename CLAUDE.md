@@ -206,7 +206,7 @@ These are **not** live. Do not route work to them unless you first run `claude m
 
 Claude Code operates as **CoreMind** — singleton orchestrator with 10-stage governed pipeline.
 All agents are weaponized with declared MCP tool bindings, skills, and authority levels.
-237 total: 66 core (L0-L6) + 126 Wave 1 stage agents (across 10 department subdirs) + 45 Wave 2 surface agents (5 surfaces x 9 agents).
+240 total: 69 core (66 L0-L6 hierarchy + 3 self-evolution: evolution-orchestrator, learning-curator, evaluation-judge) + 126 Wave 1 stage agents (across 10 department subdirs) + 45 Wave 2 surface agents (5 surfaces x 9 agents). Disk-verified by `scripts/inventory.sh`.
 
 ### Architecture References
 | Document | Location | Purpose |
@@ -259,7 +259,7 @@ Full rosters loaded on demand — use `~/.claude/agents/REGISTRY.md` for agents,
 - **240 agents** — 69 core (L0-L6 + self-evolution trio) + 126 Wave 1 (10 department subdirs) + 45 Wave 2 (5 surfaces x 9) across 13 domains
 - **202 skills** across 27 domains — includes self-evolution family: **session-bootstrap, evidence-recorder, session-analyst, promotion-gate, pruning-view**. Frontend domain: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**, **hue** (brand → generated design-language child skill), **react-bits** (130-component catalog). AI domain: **mcp-mastery** (30-server catalog). Meta domain: **ultrathink**, **elite-ops**. Product domain: **b2c-app-strategist**.
 - **38 custom + 31 SC + 15 BMAD** commands (84 total) — custom includes: **/ultraplan, /planUI, /ship, /audit-deep, /fix-root, /polish-ux, /council-review, /evolution, /wiki-ingest, /wiki-query, /wiki-lint**
-- **8 connected MCP servers** (filesystem, memory, sequential-thinking, git, chrome-devtools, gmail, supabase, code-review-graph) + 2 auth-pending + 20 aspirational (not installed) — see the three-tier MCP Servers table above | **16 CLI tools** | **18 hook entries** (10 scripts + 7 inline, 3 with `if` conditionals) | **6 path rules** | **2 plugins** (pyright-lsp, claude-mem)
+- **8 connected MCP servers** (filesystem, memory, sequential-thinking, git, chrome-devtools, gmail, supabase, code-review-graph) + 2 auth-pending + 20 aspirational (not installed) — see the three-tier MCP Servers table above | **16 CLI tools** | **21 hook entries** in `settings.json` (14 script references + 7 inline; 13 unique scripts in `hooks/`) | **6 path rules** | **2 plugins** (pyright-lsp, claude-mem)
 - **13 recipes** — 10 parameterized YAML workflows + 3 reusable sub-recipes across 4 domains (security, engineering, trading, devops)
 
 ### Top 20 Most-Used (always in context)

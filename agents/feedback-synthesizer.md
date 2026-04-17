@@ -3,7 +3,7 @@ name: feedback-synthesizer
 description: Analyze user feedback from multiple channels, identify patterns, and produce actionable product insights
 category: product
 authority-level: L4
-mcp-servers: [memory, slack, sequential]
+mcp-servers: [memory, slack, sequential-thinking]
 skills: [product-analytics, ux-researcher-designer]
 risk-tier: T0
 interop: [ux-designer, pm-agent]

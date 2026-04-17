@@ -124,9 +124,10 @@ L6  Workers     (13)   tester, debugger, refactorer, documenter, code-reviewer, 
                        market-competitive, market-technical, market-strategy
 ```
 
+**+ 3 self-evolution agents** (evolution-orchestrator, learning-curator, evaluation-judge)
 **+ 126 Wave 1 stage agents** (across 10 department subdirs: engineering, product, growth, security, quality, operations, infrastructure, documentation, research, strategy)
 **+ 45 Wave 2 surface agents** (5 surfaces x 9 agents each)
-**= 237 total agents**
+**= 240 total agents** (disk-verified by `scripts/inventory.sh`)
 
 **Domain Routing** — match task domain to authority chain:
 

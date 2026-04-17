@@ -3,7 +3,7 @@ name: growth-loop-cpa-analyst
 authority: L5
 domain: growth
 stage: loop
-mcp_servers: [memory, sequential, postgres]
+mcp_servers: [memory, sequential-thinking-thinking, postgres]
 skills: [ad-performance-loop, data-analysis]
 risk: T0
 context: contexts/growth/

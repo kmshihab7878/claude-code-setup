@@ -3,7 +3,7 @@ name: security-engineer
 description: Identify security vulnerabilities and ensure compliance with security standards and best practices
 category: security
 authority-level: L2
-mcp-servers: [github, filesystem, sequential]
+mcp-servers: [github, filesystem, sequential-thinking]
 skills: [security-review, infrastructure-scanning, container-security, offensive-security]
 risk-tier: T2
 interop: [security-auditor, secrets-manager, compliance-officer]

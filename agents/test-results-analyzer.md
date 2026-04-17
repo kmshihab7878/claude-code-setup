@@ -3,7 +3,7 @@ name: test-results-analyzer
 description: Analyze test results, identify flaky tests, track test health metrics, and recommend testing strategy improvements
 category: quality
 authority-level: L6
-mcp-servers: [github, sequential]
+mcp-servers: [github, sequential-thinking]
 skills: [testing-methodology, product-analytics]
 risk-tier: T0
 interop: [quality-engineer, tester]

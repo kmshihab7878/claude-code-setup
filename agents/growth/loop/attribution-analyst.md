@@ -3,7 +3,7 @@ name: growth-loop-attribution-analyst
 authority: L5
 domain: growth
 stage: loop
-mcp_servers: [memory, postgres, sequential]
+mcp_servers: [memory, postgres, sequential-thinking-thinking]
 skills: [ad-performance-loop, data-analysis, product-analytics]
 risk: T0
 context: contexts/growth/

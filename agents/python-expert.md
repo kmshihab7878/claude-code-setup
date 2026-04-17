@@ -3,7 +3,7 @@ name: python-expert
 description: Deliver production-ready, secure, high-performance Python code following SOLID principles and modern best practices
 category: specialized
 authority-level: L3
-mcp-servers: [github, context7, sequential]
+mcp-servers: [github, context7, sequential-thinking]
 skills: [python-quality-gate, clean-architecture-python, structured-logging]
 risk-tier: T1
 interop: [backend-architect, refactoring-expert]

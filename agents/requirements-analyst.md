@@ -3,7 +3,7 @@ name: requirements-analyst
 description: Transform ambiguous project ideas into concrete specifications through systematic requirements discovery and structured analysis
 category: analysis
 authority-level: L4
-mcp-servers: [memory, sequential, github]
+mcp-servers: [memory, sequential-thinking, github]
 skills: [product-manager-toolkit, product-strategist]
 risk-tier: T0
 interop: [pm-agent, architect]

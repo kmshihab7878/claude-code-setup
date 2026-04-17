@@ -3,7 +3,7 @@ name: root-cause-analyst
 description: Systematically investigate complex problems to identify underlying causes through evidence-based analysis and hypothesis testing
 category: analysis
 authority-level: L5
-mcp-servers: [github, sequential, memory]
+mcp-servers: [github, sequential-thinking, memory]
 skills: [research-methodology]
 risk-tier: T0
 interop: [debugger, incident-responder]

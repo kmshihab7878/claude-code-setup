@@ -3,7 +3,7 @@ name: legal-compliance-checker
 description: Audit code and systems for regulatory compliance — financial regulations, data privacy, licensing, and platform policies
 category: operations
 authority-level: L5
-mcp-servers: [github, filesystem, sequential]
+mcp-servers: [github, filesystem, sequential-thinking]
 skills: [gdpr-dsgvo-expert, security-review]
 risk-tier: T0
 interop: [compliance-officer, security-engineer]

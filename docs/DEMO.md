@@ -46,6 +46,6 @@ This exercises the parts of the setup that do meaningful work:
 
 ## What this demo does NOT prove
 
-- Scale of the library (197 skills, 239 agents). It proves that three high-value surfaces work end-to-end.
-- That the other 180+ skills fire in real work. That requires usage telemetry (see [TELEMETRY.md](./TELEMETRY.md)).
+- Scale of the library (202 skills, 240 agents). It proves that three high-value surfaces work end-to-end.
+- That the other 185+ skills fire in real work. That requires usage telemetry (see [TELEMETRY.md](./TELEMETRY.md)).
 - Before/after quantitative speedup vs. vanilla Claude Code. That requires a paired benchmark still to be designed.

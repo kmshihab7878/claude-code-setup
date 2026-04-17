@@ -3,7 +3,7 @@ name: experiment-tracker
 description: Design, track, and analyze A/B tests and product experiments with statistical rigor
 category: product
 authority-level: L4
-mcp-servers: [github, memory, sequential]
+mcp-servers: [github, memory, sequential-thinking]
 skills: [ab-test-setup, experiment-designer, product-analytics]
 risk-tier: T1
 interop: [growth-marketer, analytics-reporter]

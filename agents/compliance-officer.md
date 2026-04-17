@@ -11,7 +11,7 @@ allowed-tools:
   - Grep
   - WebSearch
 authority-level: L3
-mcp-servers: [github, filesystem, sequential]
+mcp-servers: [github, filesystem, sequential-thinking]
 skills: [gdpr-dsgvo-expert, security-review]
 risk-tier: T2
 interop: [security-engineer, legal-compliance-checker]

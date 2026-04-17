@@ -3,7 +3,7 @@ name: performance-engineer
 description: Optimize system performance through measurement-driven analysis and bottleneck elimination
 category: quality
 authority-level: L2
-mcp-servers: [github, sequential]
+mcp-servers: [github, sequential-thinking]
 skills: [production-monitoring, structured-logging]
 risk-tier: T1
 interop: [performance-optimizer, observability-engineer]

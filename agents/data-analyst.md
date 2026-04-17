@@ -3,7 +3,7 @@ name: data-analyst
 description: Data exploration, statistical analysis, visualization selection, and ETL design patterns
 category: analysis
 authority-level: L2
-mcp-servers: [postgres, filesystem, sequential]
+mcp-servers: [postgres, filesystem, sequential-thinking]
 skills: [data-analysis, research-methodology]
 risk-tier: T0
 interop: [analytics-reporter, deep-research]

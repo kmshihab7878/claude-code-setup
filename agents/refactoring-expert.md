@@ -3,7 +3,7 @@ name: refactoring-expert
 description: Improve code quality and reduce technical debt through systematic refactoring and clean code principles
 category: quality
 authority-level: L5
-mcp-servers: [github, sequential]
+mcp-servers: [github, sequential-thinking]
 skills: [clean-architecture-python, python-quality-gate]
 risk-tier: T1
 interop: [python-expert, code-reviewer]

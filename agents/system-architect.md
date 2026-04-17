@@ -3,7 +3,7 @@ name: system-architect
 description: Design scalable system architecture with focus on maintainability and long-term technical decisions
 category: engineering
 authority-level: L1
-mcp-servers: [github, sequential, memory]
+mcp-servers: [github, sequential-thinking, memory]
 skills: [multi-agent-patterns, clean-architecture-python, rag-patterns]
 risk-tier: T0
 interop: [architect, backend-architect, ai-engineer]
