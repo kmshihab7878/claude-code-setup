@@ -58,6 +58,10 @@ Write like a senior engineer speaking to another busy engineer:
 - `/polish-ux` — UX-only pass: microstates, copy, a11y, visual coherence
 - `/council-review` — Multi-perspective review → converge → execute
 
+## Self-Evolution Layer
+
+A SessionStart hook injects `~/.claude/evolution/stable/global.md` (operating contract) plus any project-scoped stable learnings. Nothing mutates `stable/` without passing the promotion gate (`evolution/bin/evolve-promote.sh`). Candidates live in `evolution/candidates/` and are hypotheses, not rules. Oversight: `/evolution status`. Kill switch: `/evolution disable` or `CLAUDE_EVOLUTION_BASELINE=1` per session.
+
 ## Non-Negotiables
 1. **No fabrication** — Never invent file contents, API responses, or test results. If unsure, say so.
 2. **Security-first** — Never commit secrets, credentials, or API keys. Scan before committing.
@@ -252,9 +256,9 @@ L6  Workers     (13)   tester, debugger, refactorer, documenter, code-reviewer, 
 
 Full rosters loaded on demand — use `~/.claude/agents/REGISTRY.md` for agents, skill descriptions trigger from their SKILL.md files.
 
-- **237 agents** — 66 core (L0-L6) + 126 Wave 1 (10 department subdirs) + 45 Wave 2 (5 surfaces x 9) across 13 domains
-- **197 skills** across 27 domains (process, testing, git, API, infra, AI, security, frontend, docs, trading, codebase, C-suite, marketing, product, business, k8s, offensive, meta, UI cloning, project scaffolding, video, interface-design, marketing-automation, n8n-automation, DDD-architecture, recipes, recall/memory) — frontend domain includes: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**, **hue** (meta-skill: brand URL/name/screenshot → generates brand-specific child design-language skill in `~/.claude/skills/<brand>/`), **react-bits** (130-component catalog: animated text, interactive, shader backgrounds, polished UI — shadcn-CLI install); AI domain includes: **mcp-mastery** (30-server catalog, task-to-MCP routing, gap analysis — pairs with `mcp-builder`); meta domain includes: **ultrathink**, **elite-ops** (owner-engineer execution protocol); product domain includes: **b2c-app-strategist**
-- **37 custom + 31 SC + 15 BMAD** commands (83 total) — custom includes: **/ultraplan** (15-stage sovereign pipeline), **/planUI** (UI-focused pipeline), **/ship, /audit-deep, /fix-root, /polish-ux, /council-review** (Elite Ops mode commands), **/wiki-ingest, /wiki-query, /wiki-lint** (KB operations)
+- **240 agents** — 69 core (L0-L6 + self-evolution trio) + 126 Wave 1 (10 department subdirs) + 45 Wave 2 (5 surfaces x 9) across 13 domains
+- **202 skills** across 27 domains — includes self-evolution family: **session-bootstrap, evidence-recorder, session-analyst, promotion-gate, pruning-view**. Frontend domain: framer-motion-patterns, responsive-design, web-artifacts-builder, algorithmic-art, **impeccable-design, impeccable-audit, impeccable-polish**, **hue** (brand → generated design-language child skill), **react-bits** (130-component catalog). AI domain: **mcp-mastery** (30-server catalog). Meta domain: **ultrathink**, **elite-ops**. Product domain: **b2c-app-strategist**.
+- **38 custom + 31 SC + 15 BMAD** commands (84 total) — custom includes: **/ultraplan, /planUI, /ship, /audit-deep, /fix-root, /polish-ux, /council-review, /evolution, /wiki-ingest, /wiki-query, /wiki-lint**
 - **8 connected MCP servers** (filesystem, memory, sequential-thinking, git, chrome-devtools, gmail, supabase, code-review-graph) + 2 auth-pending + 20 aspirational (not installed) — see the three-tier MCP Servers table above | **16 CLI tools** | **18 hook entries** (10 scripts + 7 inline, 3 with `if` conditionals) | **6 path rules** | **2 plugins** (pyright-lsp, claude-mem)
 - **13 recipes** — 10 parameterized YAML workflows + 3 reusable sub-recipes across 4 domains (security, engineering, trading, devops)
 
