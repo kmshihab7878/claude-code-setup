@@ -1,6 +1,6 @@
 # Inventory — Generated Source of Truth
 
-_Generated: 2026-04-17T03:11:20Z · commit: `013239c`_
+_Generated: 2026-04-17T03:16:57Z · commit: `2963211`_
 
 Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md`.
 
@@ -9,13 +9,13 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 | Surface | Count | Notes |
 |---------|-------|-------|
 | Skills | 202 | SKILL.md files; 46,237 total lines |
-| Commands | 84 | 38 custom + 31 SuperClaude + 15 BMAD |
+| Commands | 85 | 39 custom + 31 SuperClaude + 15 BMAD |
 | Agent definitions | 242 | 240 real + 2 metadata (REGISTRY, README) |
 | — core (L0–L6) | 69 | top-level .md files |
 | — Wave 1 stage | 126 | department subdirs |
 | — Wave 2 surface | 45 | `agents/surfaces/` |
 | Path rules | 6 | `rules/*.md` |
-| Reference docs | 28 | `docs/*.md` |
+| Reference docs | 30 | `docs/*.md` |
 | Hook scripts | 13 | `hooks/*.sh` |
 | Hook entries (total) | 21 | in `settings.json`; 7 are inline commands |
 | Recipes | 13 | 10 primary + 3 sub-recipes |
@@ -30,15 +30,15 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 
 ```json
 {
-  "generated_at": "2026-04-17T03:11:20Z",
-  "commit": "013239c",
+  "generated_at": "2026-04-17T03:16:57Z",
+  "commit": "2963211",
   "skills": {
     "count": 202,
     "skill_md_total_lines": 46237
   },
   "commands": {
-    "total": 84,
-    "custom": 38,
+    "total": 85,
+    "custom": 39,
     "superclaude": 31,
     "bmad": 15
   },
@@ -50,7 +50,7 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
     "wave2_surface": 45
   },
   "rules": 6,
-  "docs": 28,
+  "docs": 30,
   "hooks": {
     "shell_scripts": 13,
     "settings_entries": 21,
