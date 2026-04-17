@@ -14,15 +14,18 @@ If you want a one-file prompt tweak, this is not it. This is a full operating en
 
 ## Start here
 
-Three entrypoints cover the common cases. Full map in [`docs/SURFACE-MAP.md`](docs/SURFACE-MAP.md).
+Three entrypoints cover the common cases. Full map in [`docs/SURFACE-MAP.md`](docs/SURFACE-MAP.md). Common workflow recipes in [`docs/RUNBOOK.md`](docs/RUNBOOK.md).
 
 | Intent | Command | What happens |
 |--------|---------|--------------|
 | Build something end-to-end | `/ship <task>` | Inspect → plan → build → validate → deliver. No placeholders. |
 | Inspect before acting | `/audit-deep <area>` | 6-dimension review (arch / quality / perf / UX / security / tests) with P0–P3 severity. |
 | Fix a bug the right way | `/fix-root <bug>` | Root-cause diagnosis + narrow patch + regression test. |
+| Refine a skill / agent / doc | `/improve <target>` | Evidence-driven minimal refinement loop (telemetry-informed after 14d of usage). |
 
 For planning heavy/cross-system work, `/plan` is canonical (`/ultraplan` for enterprise-risk only). Pick one.
+
+Tasks route via three domain indexes — [`domains/engineering/DOMAIN.md`](domains/engineering/DOMAIN.md) (6 subdomains: full-stack, devops, security, quality, ai-ml, design), [`domains/finance/DOMAIN.md`](domains/finance/DOMAIN.md) (trading, analysis, portfolio), [`domains/marketing/DOMAIN.md`](domains/marketing/DOMAIN.md) (growth, content, brand, ads). DOMAIN.md files are lazy-loaded pointers into existing `skills/`, `agents/`, `commands/`, `recipes/` — no skills or agents move.
 
 ## Install
 
@@ -50,10 +53,14 @@ Then:
 
 ## Proof
 
-- **What a session actually looks like:** [`docs/DEMO.md`](docs/DEMO.md) — reproducible `/audit-deep → /fix-root → /ship` sequence on a target repo. Video not recorded yet; the script is.
+- **Phase 0 audit:** [`docs/AUDIT.md`](docs/AUDIT.md) (441 lines) — per-file bucket classification, dependency graph, overlap map, extraction-value zones. Raw evidence in `docs/_audit-workspace/` (CLASSIFY / CROSSREF / CONFLICTS).
+- **Why the repo is shaped this way:** [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — rationale for virtual-index design (`core/`, `domains/`, `memory/`), deviations from the target layout, context-loading tiers.
+- **What could be pulled out as standalone products:** [`docs/EXTRACTABLE-PRODUCTS.md`](docs/EXTRACTABLE-PRODUCTS.md) — 10 self-contained extraction candidates (Elite Ops, self-evolution, /market, Hue, JARVIS-sec, react-bits, mcp-mastery, anti-ai-writing, n8n, JARVIS-Core governance).
+- **What a session actually looks like:** [`docs/DEMO.md`](docs/DEMO.md) — reproducible `/audit-deep → /fix-root → /ship` sequence on a target repo. Script ready; video not recorded yet.
+- **Common workflows:** [`docs/RUNBOOK.md`](docs/RUNBOOK.md) — 10 recipes from "start a coding task" to "recover from a failed task".
 - **What's in the repo, deterministically:** [`docs/INVENTORY.md`](docs/INVENTORY.md) — machine-generated from disk. Regenerate with `make inventory`.
 - **How accumulation is measured, not asserted:** [`docs/TELEMETRY.md`](docs/TELEMETRY.md) — PreToolUse hook logs every tool call to `~/.claude/usage.jsonl`; analyze with `make usage`.
-- **How drift is caught:** [`docs/COUNCIL-REMEDIATION.md`](docs/COUNCIL-REMEDIATION.md) and `make validate` — fails if documented counts diverge from disk.
+- **How drift is caught:** `make validate` — pass=25 / fail=0 at last run. Checks CLAUDE.md + REGISTRY counts against disk, anti-regression patterns for 16 stale-count fingerprints, hook-script integrity, fake URLs. See [`docs/COUNCIL-REMEDIATION.md`](docs/COUNCIL-REMEDIATION.md) for history.
 - **Pruning protocol:** `docs/TELEMETRY.md` → archive zero-invocation surfaces after 14 days of real usage.
 - **Controlled self-evolution:** [`evolution/README.md`](evolution/README.md) — observe → record → evaluate → promote pipeline with hard evidence gates. Status via `/evolution status`; smoke test via `make evolve-test`.
 
@@ -91,19 +98,33 @@ See [`evolution/README.md`](evolution/README.md) for full architecture.
 
 ```
 ~/.claude/
-├── CLAUDE.md            # Identity, non-negotiables, Elite Operations Layer
+├── CLAUDE.md            # Always-loaded operating contract (≤270 lines, ~4k tokens)
 ├── settings.json        # Hook bindings, enabled plugins
-├── skills/              # Prompt-library skills (SKILL.md + references)
+│
+├── core/                # Lazy-loaded contract expansions
+│   ├── identity.md      # Execution posture · ambiguity · completion · communication
+│   ├── governance.md    # Non-negotiables · operating philosophy · Constitution (SEC-001)
+│   ├── context-budget.md # Loading tiers · token-cost rules
+│   └── memory.md        # Memory architecture across 6 layers
+│
+├── domains/             # Virtual domain indexes — pointers into skills/agents/commands
+│   ├── engineering/DOMAIN.md  + 6 subdomains (full-stack, devops, security, quality, ai-ml, design)
+│   ├── finance/DOMAIN.md      + 3 subdomains (trading, analysis, portfolio)
+│   └── marketing/DOMAIN.md    + 4 subdomains (growth, content, brand, ads)
+│
+├── memory/              # File-based auto-memory + MEMORY.md always-loaded index
+├── skills/              # Prompt-library skills (SKILL.md + references) — unchanged paths
 ├── commands/            # Slash commands: custom + SuperClaude + BMAD
 ├── agents/              # Agent definitions + REGISTRY.md dispatch table
 ├── rules/               # Path-scoped rules (python, typescript, security, testing, infrastructure, implementation)
 ├── hooks/               # Shell scripts invoked from settings.json
 ├── recipes/             # Parameterized YAML workflows
-├── docs/                # Reference: inventory, telemetry, demo, surface map, overhead, remediation
-└── kb/                  # Knowledge base — scaffold stage (see docs/KB-STATUS.md)
+├── evolution/           # Self-evolution layer (observe → record → evaluate → promote, kill-switchable)
+├── kb/                  # Knowledge base — wiki + decisions (ADRs) + retrospectives
+└── docs/                # AUDIT · ARCHITECTURE · RUNBOOK · SURFACE-MAP · INVENTORY · OVERHEAD · TELEMETRY · KB-STATUS · EXTRACTABLE-PRODUCTS
 ```
 
-Risk tiers control execution: T0 auto, T1 log+proceed, T2 wait for approval, T3 block unless pre-authorized. Agents operate only within their declared MCP server bindings.
+Risk tiers control execution: T0 auto, T1 log+proceed, T2 wait for approval, T3 block unless pre-authorized. Agents operate only within their declared MCP server bindings (aspirational Tier-3 bindings gated at runtime by `hooks/mcp-security-gate.sh`). Full structural rationale in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 
 ## Inventory
 
