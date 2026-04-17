@@ -25,10 +25,12 @@ tools/
 # Private per-project memory (contains conversation context)
 projects/
 
-# Audit and history logs (private command history)
+# Audit, history, and telemetry logs (private)
 audit.log
 audit-mcp.log
 history.jsonl
+usage.jsonl
+mcp-snapshot-*.txt
 
 # Secrets and credentials
 settings.local.json
