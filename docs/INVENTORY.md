@@ -1,6 +1,6 @@
 # Inventory — Generated Source of Truth
 
-_Generated: 2026-04-17T02:50:52Z · commit: `8157457`_
+_Generated: 2026-04-17T03:11:20Z · commit: `013239c`_
 
 Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md`.
 
@@ -15,7 +15,7 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 | — Wave 1 stage | 126 | department subdirs |
 | — Wave 2 surface | 45 | `agents/surfaces/` |
 | Path rules | 6 | `rules/*.md` |
-| Reference docs | 27 | `docs/*.md` |
+| Reference docs | 28 | `docs/*.md` |
 | Hook scripts | 13 | `hooks/*.sh` |
 | Hook entries (total) | 21 | in `settings.json`; 7 are inline commands |
 | Recipes | 13 | 10 primary + 3 sub-recipes |
@@ -30,8 +30,8 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 
 ```json
 {
-  "generated_at": "2026-04-17T02:50:52Z",
-  "commit": "8157457",
+  "generated_at": "2026-04-17T03:11:20Z",
+  "commit": "013239c",
   "skills": {
     "count": 202,
     "skill_md_total_lines": 46237
@@ -50,7 +50,7 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
     "wave2_surface": 45
   },
   "rules": 6,
-  "docs": 27,
+  "docs": 28,
   "hooks": {
     "shell_scripts": 13,
     "settings_entries": 21,
