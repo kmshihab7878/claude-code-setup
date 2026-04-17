@@ -3,8 +3,8 @@ name: debugger
 description: Bug investigation specialist — trace analysis, hypothesis testing, root cause identification, fix verification
 category: quality
 authority-level: L6
-mcp-servers: [github, sequential, playwright]
-skills: [debug]
+mcp-servers: [github, sequential-thinking, playwright]
+skills: [coding-workflow]
 risk-tier: T1
 interop: [root-cause-analyst, tester]
 ---

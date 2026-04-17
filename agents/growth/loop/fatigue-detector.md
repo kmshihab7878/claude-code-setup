@@ -3,7 +3,7 @@ name: growth-loop-fatigue-detector
 authority: L5
 domain: growth
 stage: loop
-mcp_servers: [memory, sequential]
+mcp_servers: [memory, sequential-thinking-thinking]
 skills: [ad-performance-loop, anomaly-detector]
 risk: T0
 context: contexts/growth/
