@@ -1,6 +1,6 @@
 # Inventory — Generated Source of Truth
 
-_Generated: 2026-04-17T00:19:41Z · commit: `d753627`_
+_Generated: 2026-04-17T00:24:33Z · commit: `8849e83`_
 
 Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md`.
 
@@ -30,8 +30,8 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 
 ```json
 {
-  "generated_at": "2026-04-17T00:19:41Z",
-  "commit": "d753627",
+  "generated_at": "2026-04-17T00:24:33Z",
+  "commit": "8849e83",
   "skills": {
     "count": 197,
     "skill_md_total_lines": 46048
