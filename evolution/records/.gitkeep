@@ -1,0 +1,3 @@
+# Raw evidence in JSONL. Written by hooks/evolution-*.sh and by the evidence-recorder skill.
+# Files: sessions.jsonl, corrections.jsonl, outcomes.jsonl, adaptations.jsonl.
+# This DIRECTORY is tracked; its *.jsonl contents are gitignored (see ../../.gitignore).

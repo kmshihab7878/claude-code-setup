@@ -1,6 +1,6 @@
 # Inventory — Generated Source of Truth
 
-_Generated: 2026-04-17T00:24:33Z · commit: `8849e83`_
+_Generated: 2026-04-17T01:10:15Z · commit: `ae2eff1`_
 
 Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md`.
 
@@ -8,16 +8,16 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 
 | Surface | Count | Notes |
 |---------|-------|-------|
-| Skills | 197 | SKILL.md files; 46,048 total lines |
-| Commands | 83 | 37 custom + 31 SuperClaude + 15 BMAD |
-| Agent definitions | 239 | 237 real + 2 metadata (REGISTRY, README) |
-| — core (L0–L6) | 66 | top-level .md files |
+| Skills | 202 | SKILL.md files; 46,237 total lines |
+| Commands | 84 | 38 custom + 31 SuperClaude + 15 BMAD |
+| Agent definitions | 242 | 240 real + 2 metadata (REGISTRY, README) |
+| — core (L0–L6) | 69 | top-level .md files |
 | — Wave 1 stage | 126 | department subdirs |
 | — Wave 2 surface | 45 | `agents/surfaces/` |
 | Path rules | 6 | `rules/*.md` |
 | Reference docs | 26 | `docs/*.md` |
-| Hook scripts | 11 | `hooks/*.sh` |
-| Hook entries (total) | 19 | in `settings.json`; 7 are inline commands |
+| Hook scripts | 13 | `hooks/*.sh` |
+| Hook entries (total) | 21 | in `settings.json`; 7 are inline commands |
 | Recipes | 13 | 10 primary + 3 sub-recipes |
 | KB wiki articles | 7 | `kb/wiki/*.md` — includes INDEX, methodology |
 | KB raw files | 0 | `kb/raw/` |
@@ -30,30 +30,30 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 
 ```json
 {
-  "generated_at": "2026-04-17T00:24:33Z",
-  "commit": "8849e83",
+  "generated_at": "2026-04-17T01:10:15Z",
+  "commit": "ae2eff1",
   "skills": {
-    "count": 197,
-    "skill_md_total_lines": 46048
+    "count": 202,
+    "skill_md_total_lines": 46237
   },
   "commands": {
-    "total": 83,
-    "custom": 37,
+    "total": 84,
+    "custom": 38,
     "superclaude": 31,
     "bmad": 15
   },
   "agents": {
-    "files_total": 239,
-    "agents_real": 237,
-    "core_l0_l6": 66,
+    "files_total": 242,
+    "agents_real": 240,
+    "core_l0_l6": 69,
     "wave1_stage": 126,
     "wave2_surface": 45
   },
   "rules": 6,
   "docs": 26,
   "hooks": {
-    "shell_scripts": 11,
-    "settings_entries": 19,
+    "shell_scripts": 13,
+    "settings_entries": 21,
     "inline_commands": 7
   },
   "recipes": {

@@ -155,6 +155,27 @@
             "statusMessage": "Loading session context..."
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/evolution-startup.sh",
+            "timeout": 5000,
+            "statusMessage": "Loading evolution layer..."
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/evolution-sessionend.sh",
+            "timeout": 5000
+          }
+        ]
       }
     ],
     "Stop": [

@@ -32,6 +32,10 @@ history.jsonl
 usage.jsonl
 mcp-snapshot-*.txt
 
+# Evolution layer — raw evidence is private/ephemeral
+evolution/records/*.jsonl
+evolution/disabled
+
 # Secrets and credentials
 settings.local.json
 *.backup.*

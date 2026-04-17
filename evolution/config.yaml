@@ -1,0 +1,24 @@
+# Evolution layer config. Edit to tune.
+
+# Kill switch. If false, the SessionStart hook injects nothing and records nothing.
+enabled: true
+
+# Startup context budget in characters. Hard cap on total size of stable/global.md
+# plus the matched stable/by-project/<slug>.md. Promotion that would exceed this fails.
+startup_budget_chars: 4000
+
+# Promotion gate thresholds.
+min_evidence: 3                   # distinct supporting records required
+min_distinct_sessions: 2
+min_distinct_projects: 2          # bypass for scope: project-specific
+contradiction_check: true
+
+# Demotion thresholds.
+stale_after_days: 90              # demote stable learnings not confirmed in this window
+regression_failure_count: 3       # repeated failures → propose demotion
+
+# Evidence retention.
+records_keep_days: 180            # older JSONL rotates to evolution/records/archive/
+
+# Version — bump if schema changes.
+schema_version: 1

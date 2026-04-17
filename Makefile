@@ -1,13 +1,14 @@
 # One-command entrypoints. All targets are idempotent and POSIX-safe.
-.PHONY: help inventory validate usage install-hook lint clean-logs
+.PHONY: help inventory validate usage lint evolve-test evolve-status
 
 help:
 	@echo "Targets:"
-	@echo "  make inventory    Regenerate docs/INVENTORY.md from filesystem"
-	@echo "  make validate     Run drift + frontmatter checks (exit 1 on failure)"
-	@echo "  make usage        Analyze ~/.claude/usage.jsonl (last 30 days)"
-	@echo "  make install-hook Echo the PreToolUse hook to add to settings.json"
-	@echo "  make lint         Alias for validate"
+	@echo "  make inventory      Regenerate docs/INVENTORY.md from filesystem"
+	@echo "  make validate       Run drift + frontmatter + evolution checks"
+	@echo "  make usage          Analyze ~/.claude/usage.jsonl"
+	@echo "  make evolve-test    Smoke-test the evolution layer"
+	@echo "  make evolve-status  Evolution dashboard"
+	@echo "  make lint           Alias for validate"
 
 inventory:
 	@scripts/inventory.sh --md
@@ -20,6 +21,8 @@ lint: validate
 usage:
 	@scripts/analyze-usage.sh
 
-install-hook:
-	@echo 'Add this to settings.json under hooks.PreToolUse:'
-	@echo '  { "matcher": "", "hooks": [ { "type": "command", "command": "~/.claude/hooks/usage-logger.sh" } ] }'
+evolve-test:
+	@bash evolution/tests/smoke.sh
+
+evolve-status:
+	@bash evolution/bin/evolve-status.sh

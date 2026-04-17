@@ -46,6 +46,7 @@ Then:
 | **Auth-pending MCP** | Configured, needs re-auth | 2 |
 | **Aspirational MCP** | Listed in docs as options; **not installed** until `claude mcp add ...` is run | 20 (see `CLAUDE.md` Tier 3 — do not assume access) |
 | **Knowledge base** | Infrastructure + workflow built; content is sparse (see [`docs/KB-STATUS.md`](docs/KB-STATUS.md)) | scaffold / pilot |
+| **Self-evolution layer** | Active on every session via a SessionStart hook. Records evidence, never auto-promotes. See `evolution/` and `/evolution status`. | enabled |
 
 ## Proof
 
@@ -54,6 +55,7 @@ Then:
 - **How accumulation is measured, not asserted:** [`docs/TELEMETRY.md`](docs/TELEMETRY.md) — PreToolUse hook logs every tool call to `~/.claude/usage.jsonl`; analyze with `make usage`.
 - **How drift is caught:** [`docs/COUNCIL-REMEDIATION.md`](docs/COUNCIL-REMEDIATION.md) and `make validate` — fails if documented counts diverge from disk.
 - **Pruning protocol:** `docs/TELEMETRY.md` → archive zero-invocation surfaces after 14 days of real usage.
+- **Controlled self-evolution:** [`evolution/README.md`](evolution/README.md) — observe → record → evaluate → promote pipeline with hard evidence gates. Status via `/evolution status`; smoke test via `make evolve-test`.
 
 ## Guardrails (active)
 
@@ -61,6 +63,7 @@ These hooks fire automatically (configured in `settings.json`, implemented in `h
 
 | Trigger | What it does |
 |---------|--------------|
+| Session start | Evolution layer injects `evolution/stable/global.md` + matching project-scoped learnings (bounded by `startup_budget_chars`); records the session in `evolution/records/sessions.jsonl`. Disable: `/evolution disable` or `CLAUDE_EVOLUTION_BASELINE=1`. |
 | Every tool call | Usage telemetry (`~/.claude/usage.jsonl`), MCP whitelist gate, infinite-loop detector |
 | `Write`/`Edit` to `.env` / `.pem` / `.key` / credentials | Blocks the write |
 | `Write`/`Edit` to linter/formatter configs | Warns (prefer fixing code over weakening rules) |
@@ -69,6 +72,20 @@ These hooks fire automatically (configured in `settings.json`, implemented in `h
 | Python file write | Auto-runs `ruff check --fix` + `ruff format` |
 | Bash call | Appends to `~/.claude/audit.log` |
 | Stop / SubagentStop | Checks uncommitted files, context usage, persistent mode |
+
+## Self-evolution layer (controlled)
+
+Active in every session. Observes, records, and learns — but never mutates stable behavior without passing an evidence gate.
+
+- Pipeline: `observe → record → analyze → evaluate → propose → test → promote → monitor → prune`.
+- Startup injection (SessionStart hook) adds `evolution/stable/global.md` — the operating contract — plus any `evolution/stable/by-project/<cwd-basename>.md` if present. Hard cap via `evolution/config.yaml: startup_budget_chars`.
+- Candidates live in `evolution/candidates/*.yaml` and never enter startup context until promoted.
+- Promotion gate (`evolution/bin/evolve-promote.sh`) enforces: evidence ≥ 3, distinct sessions ≥ 2, distinct projects ≥ 2 (unless project-scoped), no contradiction, size budget respected.
+- Kill switch: `/evolution disable` (creates `evolution/disabled`). Baseline mode: `CLAUDE_EVOLUTION_BASELINE=1 claude` for one clean session.
+
+Operator commands: `/evolution status | candidates | promotions | regressions | prune | run | promote <id> | demote <id> | disable | enable | baseline`.
+
+See [`evolution/README.md`](evolution/README.md) for full architecture.
 
 ## Architecture, briefly
 

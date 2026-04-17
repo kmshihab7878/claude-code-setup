@@ -1,0 +1,21 @@
+# Candidate learning schema (YAML). One file per candidate under evolution/candidates/.
+# All fields required unless marked optional.
+id: "cand-2026-04-17-auto-<slug>"        # deterministic from creation date + slug
+summary: "One sentence stating the learning."
+rationale: "Why this might be a durable pattern."
+scope: "global"                           # global | project-specific | language:python | stack:react
+project_slugs: []                         # distinct CWDs observed (optional)
+evidence_count: 0                         # count of supporting records in records/
+session_ids: []                           # distinct session IDs (≥ 2 required for promotion)
+first_seen: "2026-04-17T00:00:00Z"
+last_seen: "2026-04-17T00:00:00Z"
+last_confirmed: "2026-04-17T00:00:00Z"
+last_failed: null                         # ISO-8601 or null
+confidence: 0.0                           # 0..1, heuristic from evidence volume + freshness
+contradictions: []                        # references to existing stable rules that conflict
+supporting_record_ids: []                 # cross-ref to records/*.jsonl entries
+proposed_location: "stable/global.md"     # target if promoted
+proposed_text: |-                         # exact text that would be inserted
+  # Replace with the concise, load-bearing rule.
+status: "candidate"                       # candidate | promoted | rejected | superseded
+notes: ""                                 # optional free-form
