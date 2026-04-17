@@ -3,7 +3,7 @@ name: growth-loop-winner-amplifier
 authority: L5
 domain: growth
 stage: loop
-mcp_servers: [memory, sequential]
+mcp_servers: [memory, sequential-thinking-thinking]
 skills: [ad-performance-loop, ad-script-generator]
 risk: T1
 context: contexts/growth/

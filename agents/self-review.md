@@ -3,7 +3,7 @@ name: self-review
 description: Post-implementation validation and reflexion partner
 category: quality
 authority-level: L0
-mcp-servers: [github, sequential, code-review-graph]
+mcp-servers: [github, sequential-thinking, code-review-graph]
 skills: [verification-before-completion, coding-workflow]
 risk-tier: T0
 interop: [code-reviewer, quality-engineer]

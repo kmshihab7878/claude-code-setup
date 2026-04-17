@@ -3,7 +3,7 @@ name: growth-loop-roas-optimizer
 authority: L5
 domain: growth
 stage: loop
-mcp_servers: [memory, sequential]
+mcp_servers: [memory, sequential-thinking-thinking]
 skills: [ad-performance-loop, financial-modeling]
 risk: T1
 context: contexts/growth/

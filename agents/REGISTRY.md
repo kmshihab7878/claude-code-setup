@@ -106,13 +106,20 @@ L6  Workers       (8)   Task executors — implementation, testing, documentatio
 | Agent | Domain | MCP Servers | Skills | Risk | Interop |
 |-------|--------|-------------|--------|------|---------|
 | tester | quality | playwright, github | test-driven-development, testing-methodology, property-based-testing, webapp-testing | T1 | quality-engineer, api-tester |
-| debugger | quality | github, sequential, playwright | debug | T1 | root-cause-analyst, tester |
+| debugger | quality | github, sequential-thinking, playwright | coding-workflow | T1 | root-cause-analyst, tester |
 | refactorer | quality | github | python-quality-gate | T1 | refactoring-expert, code-reviewer |
 | documenter | documentation | github, filesystem | doc-coauthoring | T1 | technical-writer, pm-agent |
 | code-reviewer | quality | github | receiving-code-review, python-quality-gate, security-review | T1 | security-auditor, quality-engineer |
 | technical-writer | documentation | github, filesystem, memory | doc-coauthoring | T1 | documenter, content-strategist |
 | api-tester | quality | github, context7 | api-testing-suite, api-design-patterns | T1 | quality-engineer, api-designer |
-| test-results-analyzer | quality | github, sequential | testing-methodology, product-analytics | T0 | quality-engineer, tester |
+| test-results-analyzer | quality | github, sequential-thinking | testing-methodology, product-analytics | T0 | quality-engineer, tester |
+| market-content | growth | brave-search, tavily, playwright | market-copy, market-brand | T1 | growth-marketer, content-strategist |
+| market-conversion | growth | brave-search, tavily, playwright | market-funnel, market-landing | T1 | growth-marketer, content-strategist |
+| market-competitive | growth | brave-search, tavily, playwright | market-competitors | T1 | growth-marketer, content-strategist |
+| market-technical | growth | brave-search, tavily, playwright | market-seo | T1 | growth-marketer, content-strategist |
+| market-strategy | growth | brave-search, tavily, playwright | market-audit, market-launch, market-proposal | T1 | growth-marketer, content-strategist |
+
+> **MCP tier note:** Many MCP servers listed above (`github`, `context7`, `playwright`, `brave-search`, `tavily`, `postgres`, `slack`, `docker`, `kubernetes`, `terraform`, `aster`, `penpot`, `puppeteer`) are **Tier-3 aspirational** per CLAUDE.md — they are not currently connected. Agent bindings declare the intended MCP set (extraction-ready); runtime calls to unconnected servers are blocked by `hooks/mcp-security-gate.sh`. This is the repo's honest interpretation of SEC-001 rule #2: declarations are aspirational; execution is gated.
 
 ---
 

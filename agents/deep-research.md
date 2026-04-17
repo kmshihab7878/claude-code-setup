@@ -3,7 +3,7 @@ name: deep-research
 description: Adaptive research specialist for external knowledge gathering
 category: analysis
 authority-level: L2
-mcp-servers: [brave-search, tavily, memory, sequential, context7]
+mcp-servers: [brave-search, tavily, memory, sequential-thinking, context7]
 skills: [research-methodology, data-analysis]
 risk-tier: T0
 interop: [trend-researcher, data-analyst, knowledge-graph-guide]

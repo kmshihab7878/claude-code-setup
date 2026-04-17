@@ -12,7 +12,7 @@ Regenerate the measured numbers with: `scripts/inventory.sh`
 | Total lines across SKILL.md | from `scripts/inventory.sh` (`skills.skill_md_total_lines`) | `find skills -name SKILL.md -exec wc -l {} +` |
 | Skill size distribution | see `docs/INVENTORY.md` | individual `wc -l` results |
 
-At last generation: **197 SKILL.md files, ~46,000 lines total** (exact number in `docs/INVENTORY.md`). Spread: smallest ~35 lines, largest ~807 lines.
+At last generation: **202 SKILL.md files, ~46,000 lines total** (exact number in `docs/INVENTORY.md`). Spread: smallest ~35 lines, largest ~807 lines.
 
 ## Estimated (with stated assumptions)
 
@@ -24,7 +24,7 @@ Assumption: the description string is ≤ 1 sentence in this library (enforced b
 
 Approximate size per description: **80–200 characters**, median ~140 characters.
 
-Approximate description-list cost: `197 skills × ~140 chars ≈ 28 KB ≈ ~7k tokens` using a 4-chars-per-token rule of thumb.
+Approximate description-list cost: `202 skills × ~140 chars ≈ 28 KB ≈ ~7k tokens` using a 4-chars-per-token rule of thumb.
 
 **Caveats:**
 - The 4-chars-per-token ratio is a rough English-text approximation. Actual tokenization varies.

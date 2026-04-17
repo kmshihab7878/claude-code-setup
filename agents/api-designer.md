@@ -3,7 +3,7 @@ name: api-designer
 description: API design specialist — REST, GraphQL, OpenAPI specs, versioning, error formats, pagination
 category: engineering
 authority-level: L3
-mcp-servers: [github, context7, sequential]
+mcp-servers: [github, context7, sequential-thinking]
 skills: [api-design-patterns, api-testing-suite]
 risk-tier: T1
 interop: [backend-architect, api-tester]

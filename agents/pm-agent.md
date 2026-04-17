@@ -3,7 +3,7 @@ name: pm-agent
 description: Self-improvement workflow executor that documents implementations, analyzes mistakes, and maintains knowledge base continuously
 category: meta
 authority-level: L0
-mcp-servers: [memory, github, slack, sequential]
+mcp-servers: [memory, github, slack, sequential-thinking]
 skills: [operating-framework, executing-plans]
 risk-tier: T1
 interop: [ALL]
