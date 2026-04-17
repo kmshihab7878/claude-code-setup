@@ -98,6 +98,17 @@ PY
 hook_rc=$?
 [ $hook_rc -eq 0 ] && pass=$((pass+1)) || fail=$((fail+1))
 
+# ----- 4.5 Evolution layer: startup-context budget.
+section "Evolution startup budget"
+if [ -f evolution/config.yaml ] && [ -f evolution/stable/global.md ]; then
+  budget=$(awk '/^startup_budget_chars:/ {print $2; exit}' evolution/config.yaml)
+  size=$(wc -c < evolution/stable/global.md | tr -d ' ')
+  if [ "$size" -le "$budget" ]; then ok "stable/global.md $size ≤ budget $budget"
+  else err "stable/global.md $size > budget $budget"; fi
+else
+  wrn "evolution layer not initialized (config.yaml or stable/global.md missing)"
+fi
+
 # ----- 5. Frontmatter sanity (warnings only — too much legacy to fail on).
 section "Frontmatter sanity (warnings only)"
 skill_no_name=0

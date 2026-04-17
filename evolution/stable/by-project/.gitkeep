@@ -1,0 +1,3 @@
+# Project-scoped stable learnings live here as <project-slug>.md files.
+# The SessionStart hook looks up `basename $CWD` and includes a match if present.
+# Created by bin/evolve-promote.sh when a candidate with scope: project-specific is promoted.
