@@ -7,6 +7,8 @@ maintainer: CoreMind (AI-maintained — never edit manually)
 
 # Knowledge Base — Master Index
 
+> **Maturity: scaffold / pilot.** See [`docs/KB-STATUS.md`](../../docs/KB-STATUS.md) for exit criteria. The infrastructure exists; the content is sparse. Do not cite as authoritative until graduated.
+
 > Drop raw material into `~/.claude/kb/raw/`. Ask questions against `wiki/`. Find outputs in `outputs/`.
 > CoreMind maintains this index. Every AI edit is logged in `changelog.md`.
 
