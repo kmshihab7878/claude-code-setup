@@ -95,11 +95,10 @@ A skill is 'orphan-ish' when no agent binds it, no command cites it, and no othe
 | `n8n` | 1 | n8n automation; only CLAUDE.md lists it in Top-20 |
 | `market-report-pdf` | 1 | Same as above |
 | `market-proposal` | 1 | Same as above |
-| `redacted-private-skill` | 1 | One-off design language; no reverse-link |
 | `market-social` | 1 | Same as above |
 | `context-budget-audit` | 1 | Only mentioned in docs/OVERHEAD.md |
 
-**26 skills with ≤1 inbound**. Plus ~49 skills with exactly 2 inbound (listed in Appendix A).
+**25 skills with ≤1 inbound**. Plus ~49 skills with exactly 2 inbound (listed in Appendix A).
 
 ### 3b. Orphan agents
 
