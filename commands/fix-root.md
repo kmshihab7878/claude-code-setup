@@ -17,22 +17,26 @@ Find the root cause. Do not patch symptoms.
 
 3. **Scope** — Determine the blast radius. What else does this affect? Are there related bugs hiding behind the same root cause?
 
-4. **Fix** — Patch narrowly but safely:
+4. **Karpathy review (pre-patch)** — invoke `skills/karpathy-review/SKILL.md` on the diagnosis. Check Think Before Coding: were the assumptions about the root cause stated explicitly? Is the trigger being mistaken for the cause? Is there a simpler diagnosis we missed? If the verdict is ASK, ask the operator before patching.
+
+5. **Fix** — Patch narrowly but safely:
    - Change only what needs to change
    - Preserve backward compatibility
    - Handle the edge cases the original code missed
-   - Do not refactor unrelated code
+   - Do not refactor unrelated code (Karpathy: Surgical Changes — debugging agents are the worst offenders here)
 
-5. **Protect** — Add regression protection:
+6. **Protect** — Add regression protection:
    - Add a test that would have caught this bug
    - If a test already exists but missed it, fix the test too
    - If the pattern is error-prone, add a comment explaining why
 
-6. **Verify** — Confirm the fix works:
+7. **Verify** — Confirm the fix works:
    - The original failure no longer occurs
    - Related flows still work
    - No new regressions introduced
    - Edge cases are covered
+
+8. **Karpathy review (post-patch)** — invoke `skills/karpathy-review/SKILL.md` on the diff. Check Goal-Driven Execution: did we run the reproduction and confirm it now passes, or are we claiming "should be fixed" without evidence? Check Surgical Changes: did the patch touch only what the root cause demanded?
 
 ## Output
 
