@@ -70,6 +70,95 @@ Canonical command map for all intents: [`docs/SURFACE-MAP.md`](./docs/SURFACE-MA
 
 Each DOMAIN.md is a lazy-loading index — load only when the task classifies into that domain. SUBDOMAIN.md files narrow further.
 
+## AI OS Layered Architecture
+
+The OS runs as four cooperating layers + one personal-context layer adapted from AIS-OS. Each plays a distinct role; none replaces another.
+
+| Layer | Role | Source of truth |
+|-------|------|-----------------|
+| **Warp** | Cockpit — terminal panes, blocks, workflows, diff review | [`WARP.md`](./WARP.md) (thin pointer) · [`docs/WARP_COCKPIT.md`](./docs/WARP_COCKPIT.md) · [`docs/WARP_WORKFLOWS.md`](./docs/WARP_WORKFLOWS.md) |
+| **Claude Code** | Governed execution engine — hooks, MCP gates, skills, agents | This file (CLAUDE.md) is canonical |
+| **SocratiCode** | Codebase intelligence — AST search, graph, impact, call-flow (when installed) | [`docs/SOCRATICODE.md`](./docs/SOCRATICODE.md) |
+| **claude-code-setup** | Constitution / policy / memory — this repo | [`core/`](./core/) · [`memory/`](./memory/) · [`agents/REGISTRY.md`](./agents/REGISTRY.md) |
+| **AIS-OS context layer** | Personal/business operating model — Three Ms, Four Cs, weekly loops | [`references/3ms-framework.md`](./references/3ms-framework.md) · [`references/four-cs-framework.md`](./references/four-cs-framework.md) · [`docs/AIS_OS_INTEGRATION.md`](./docs/AIS_OS_INTEGRATION.md) |
+
+**Source-of-truth rule:** `CLAUDE.md` is canonical. Every other config (`WARP.md`, `AGENTS.md`, AIS-OS framework docs, SocratiCode docs) points back to this file rather than competing with it. If a contradiction surfaces, this file wins.
+
+### Personal/business context (the Four Cs)
+
+| C | Where it lives | Health check |
+|---|----------------|---------------|
+| **Context** | [`context/*.md`](./context/) · [`decisions/log.md`](./decisions/log.md) · [`memory/`](./memory/) | All pillars non-placeholder; last `/onboard` < 90 days |
+| **Connections** | [`connections.md`](./connections.md) · [`docs/CONNECTIONS_ROADMAP.md`](./docs/CONNECTIONS_ROADMAP.md) · [`.env.example`](./.env.example) | All 7 domains documented; every active connection has a kill switch |
+| **Capabilities** | [`skills/`](./skills/) · [`commands/`](./commands/) · [`agents/`](./agents/) · [`recipes/`](./recipes/) · [`docs/CAPABILITIES.md`](./docs/CAPABILITIES.md) | Capability registry current; no skill > 500 lines; improvement loops documented |
+| **Cadence** | [`docs/CADENCE.md`](./docs/CADENCE.md) · [`skills/{daily-plan,end-of-day-review,weekly-operating-review,audit,level-up}/`](./skills/) | Daily/weekly cadence stable for 30+ days |
+
+**Dependency:** Context is non-skippable and built first. Connections + Capabilities can build in parallel. Cadence comes last — never automate a broken workflow.
+
+### Operating commands (AIS-OS layer)
+
+| Command | Purpose | Cadence |
+|---------|---------|---------|
+| `/onboard` | 7-question intake; populates `context/`; never auto-fills identity from session env | Once at setup, refresh quarterly |
+| `/audit` | Score AI OS 0-100 across Four Cs; surface top 3 gaps; recommend one action | Friday weekly |
+| `/level-up` | 5-question reflection; one recommended next artifact + plan; doesn't build | Friday weekly (after `/audit`) |
+| `/weekly-operating-review` | Combines `/audit` + `/level-up` + refreshes `kb/wiki/_hot.md` in one pass | Friday weekly |
+| `/daily-plan` | Morning pulse — read context, propose top focus | Daily |
+| `/end-of-day-review` | Evening — record learnings, update skills/refs/wiki | Daily |
+
+### SocratiCode protocol (when installed)
+
+Mandatory preflight for non-trivial code work:
+- Use SocratiCode `search` before broad `Grep`
+- Use SocratiCode `graph` before following many imports
+- Use SocratiCode `impact` analysis before refactors that cross module boundaries
+- Use SocratiCode `call-flow` for bug investigation
+- Use SocratiCode `context artifacts` for schema/spec/runbook lookups
+
+When SocratiCode is not installed (current state), fall back to `code-review-graph` MCP (already live), then `Grep`/`Read`. The skill `socraticode-preflight` handles detection and fallback transparently.
+
+### Warp cockpit protocol
+
+- Warp = cockpit only. No governance, no execution.
+- **Do not run Warp cloud agents** on this repo unless explicitly approved — they bypass this file's governance.
+- Privacy: review Warp's "Help Improve" telemetry, crash reports, and cloud sync before opening this directory in Warp on a new machine. Defaults change between Warp versions.
+- All AI execution goes through `claude` (this OS), not Warp's own AI features.
+
+### Failure-to-learning rule
+
+Any failure that is not converted into a stable system change will repeat. After every failure:
+1. Identify whether it was missing context, missing capability, missing guard, or unsafe assumption.
+2. Update the relevant skill / reference / doc / hook / test.
+3. Log the decision in `decisions/log.md`.
+4. Try again with the updated system.
+
+This is the Curiosity Rule from `references/3ms-framework.md`, codified.
+
+## Karpathy Operating Constraints
+
+Behavioral governor for all coding tasks. Sits above every skill/agent/command — not as a new tool, as a check on how AI ships code. Distilled from forrestchang/andrej-karpathy-skills (which catalogues common LLM coding failure modes). Full reference: [`references/karpathy-principles.md`](./references/karpathy-principles.md). Reviewer skill: [`skills/karpathy-review/SKILL.md`](./skills/karpathy-review/SKILL.md).
+
+For non-trivial code work, follow these four constraints:
+
+1. **Think Before Coding.** State assumptions. Surface ambiguity. Push back when a simpler or safer path exists. Ask one sharp question when the request has multiple materially different interpretations — never silently pick one.
+2. **Simplicity First.** Implement the smallest solution that satisfies the goal. No speculative features, abstractions, configurability, or flexibility for hypothetical future requirements. Boring deterministic code beats clever frameworks. Three similar lines is better than a premature abstraction.
+3. **Surgical Changes.** Touch only files and lines needed for the task. No drive-by refactors. No "while I was here" cleanup. No re-ordering imports or normalising whitespace as a side-effect. Every changed line must trace directly to the user's request. Split unrelated cleanup into a separate explicit PR.
+4. **Goal-Driven Execution.** Convert tasks into success criteria before coding. Define verification before implementation. Loop until the goal is verified, or explain explicitly why verification is blocked. "Should work" is not evidence — `ran X, got Y` is.
+
+**Apply with judgment, not dogma.** Trivial fixes (typos, one-line docs, whitespace) skip these constraints — overhead exceeds value. Non-trivial work (features, refactors, bug fixes, security changes, releases) gets full weight. The reviewer skill returns "out of scope, skip" for trivial cases — that's a valid result.
+
+**Quality-gate plug-ins** (where the karpathy-review skill is invoked):
+
+| Workflow | When |
+|----------|------|
+| `/ship` | After plan (Think + Simplicity); after edits (Surgical + Goal-driven) |
+| `/fix-root` | After diagnosis (Think); after patch (Goal-driven) |
+| `/review` | On every diff (all four) |
+| `/refactor*` | Mandatory before AND after (highest non-surgical drift risk) |
+| `/audit-deep` | Skip (audit is itself a review — recursion) |
+| `/level-up` | Sometimes (flag over-ambitious artifacts) |
+| `/test-gen` | Sometimes (flag over-mocking, tests-testing-mocks) |
+
 ## Active MCP Servers
 
 Live status: `claude mcp list`. Pipe-table rows below are the authoritative source-of-truth that `scripts/inventory.sh` counts. Do not assume access to auth-pending or aspirational servers.
@@ -175,7 +264,7 @@ Full 5-mode cognitive depth engine: [`skills/ultrathink/SKILL.md`](./skills/ultr
 | Evolution | `/evolution status\|disable\|promote\|prune` | `commands/evolution.md` |
 | Council | `/council` · wider panel: `/sc:business-panel` | `commands/`, `skills/council/` |
 
-84 commands total (38 custom + 31 SuperClaude `/sc:*` + 15 BMAD `/bmad:*`). Full routing: [`docs/SURFACE-MAP.md`](./docs/SURFACE-MAP.md).
+88 commands total (42 custom + 31 SuperClaude `/sc:*` + 15 BMAD `/bmad:*`). Full routing: [`docs/SURFACE-MAP.md`](./docs/SURFACE-MAP.md).
 
 ## CLI Tools (13)
 
@@ -239,7 +328,7 @@ After 14+ days of `~/.claude/usage.jsonl`, replace with telemetry-derived rankin
 
 ## Counts (disk-verified)
 
-**201 skills** · **84 commands** · **240 agents** · 13 recipes · 6 path rules · 8 live MCPs. Regenerate: `make inventory`. Validate drift: `make validate`. Source of truth: [`docs/INVENTORY.md`](./docs/INVENTORY.md).
+**209 skills** · **88 commands** · **243 agents** · 13 recipes · 6 path rules · 8 live MCPs. Regenerate: `make inventory`. Validate drift: `make validate`. Source of truth: [`docs/INVENTORY.md`](./docs/INVENTORY.md).
 
 ## Architecture References
 

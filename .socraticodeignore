@@ -1,0 +1,86 @@
+# SocratiCode ignore patterns. Same syntax as .gitignore.
+# Used by SocratiCode (when installed) to exclude paths from indexing.
+# Mirrors .gitignore for sensitive paths plus build/cache/dependency dirs.
+
+# Version control
+.git/
+.gitignore
+.gitleaksignore
+.gitkeep
+
+# Dependencies
+node_modules/
+vendor/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Build artifacts
+dist/
+build/
+.next/
+.nuxt/
+.cache/
+coverage/
+target/
+out/
+
+# Caches and ephemeral state
+.DS_Store
+state/
+sessions/
+shell-snapshots/
+contexts/
+cache/
+tmp/
+temp/
+
+# Secrets and credentials (defence in depth — these are also in .gitignore)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+credentials/
+
+# Data files (avoid indexing large binaries / DBs)
+*.sqlite
+*.sqlite-journal
+*.db
+*.parquet
+*.feather
+
+# Logs
+*.log
+audit*.log
+history.jsonl
+usage.jsonl
+
+# Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# This repo's own runtime
+projects/
+worktrees/
+backups/
+file-history/
+plans/
+todos/
+metrics/
+skills-audit/
+mcp-snapshot-*.txt
+
+# Evolution layer raw evidence
+evolution/records/
+
+# Cloned external reference repos (we index our own analysis, not upstream code)
+references/external/*/repo/
