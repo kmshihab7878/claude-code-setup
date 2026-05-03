@@ -7,7 +7,7 @@ description: >
   Use for multi-platform delivery, closed learning loops, and cron-scheduled tasks.
 license: MIT
 metadata:
-  author: Khaled Shihab
+  author: <your-name>
   version: "1.0.0"
   mcp_servers:
     - hermes

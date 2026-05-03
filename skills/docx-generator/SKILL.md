@@ -47,7 +47,7 @@ font.size = Pt(11)
 
 # Title
 doc.add_heading('Document Title', level=0)
-doc.add_paragraph('Author: Khaled Shihab | Date: 2026-03-23')
+doc.add_paragraph('Author: <your-name> | Date: 2026-03-23')
 doc.add_page_break()
 
 # Sections
