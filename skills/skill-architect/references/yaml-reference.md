@@ -106,7 +106,7 @@ version: 1.0.0
 keywords: trading, crypto, DeFi, perpetuals, futures, spot
 license: MIT
 metadata:
-  author: <contributor>
+  author: example-author
   mcp-server: aster
   category: mcp-enhancement
   tags: [finance, defi, exchange]
