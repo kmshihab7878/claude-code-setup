@@ -239,7 +239,7 @@ After 14+ days of `~/.claude/usage.jsonl`, replace with telemetry-derived rankin
 
 ## Counts (disk-verified)
 
-**202 skills** · **84 commands** · **240 agents** · 13 recipes · 6 path rules · 8 live MCPs. Regenerate: `make inventory`. Validate drift: `make validate`. Source of truth: [`docs/INVENTORY.md`](./docs/INVENTORY.md).
+**201 skills** · **84 commands** · **240 agents** · 13 recipes · 6 path rules · 8 live MCPs. Regenerate: `make inventory`. Validate drift: `make validate`. Source of truth: [`docs/INVENTORY.md`](./docs/INVENTORY.md).
 
 ## Architecture References
 
