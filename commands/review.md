@@ -37,6 +37,19 @@ Before reviewing, check if `.understand-anything/knowledge-graph.json` exists in
 
 This analysis uses the `/understand-diff` skill under the hood. If no knowledge graph exists, skip this section.
 
+### Karpathy Review (Behavioral Governor)
+
+For non-trivial diffs, run `skills/karpathy-review/SKILL.md` after the 6-aspect review. It checks the diff against four behavioral principles that catch issues the technical review can miss:
+
+1. **Think Before Coding** — were assumptions stated? Was ambiguity resolved or silently chosen?
+2. **Simplicity First** — is this the smallest solution, or did it grow speculative abstractions?
+3. **Surgical Changes** — does every changed line trace to the user's request? Any drive-by edits?
+4. **Goal-Driven Execution** — was a success criterion stated and verified?
+
+Skip this for trivial diffs (typos, whitespace, one-line docs). The skill returns "out of scope, skip" for those cases — that's a valid result.
+
+Output: a 4-section terse report with verdict PROCEED / SIMPLIFY / ASK / STOP. See `references/karpathy-principles.md` for the full reasoning behind each principle.
+
 ### SHA-Based Review Requesting (KhaledPowers)
 
 When requesting a review from a subagent or another session:

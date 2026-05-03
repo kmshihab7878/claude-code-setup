@@ -1,7 +1,7 @@
 # Agent Registry — JARVIS-Mirrored Architecture
 
-> Central dispatch table for 240 agents across 7 authority levels.
-> 69 core (includes self-evolution trio) + 126 Wave 1 stage agents + 45 Wave 2 surface agents.
+> Central dispatch table for 243 agents across 7 authority levels.
+> 72 core (includes self-evolution trio + AIS-OS layer trio: devex-operator, wiki-curator, automation-designer) + 126 Wave 1 stage agents + 45 Wave 2 surface agents.
 > Mirrors JARVIS-FRESH's AgentRegistry + DelegationEngine + SEC-001 routing.
 
 ## Authority Hierarchy

@@ -1,6 +1,6 @@
 # Inventory — Generated Source of Truth
 
-_Generated: 2026-05-03T05:33:28Z · commit: `b80d3f1`_
+_Generated: 2026-05-03T18:52:04Z · commit: `83367d8`_
 
 Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md`.
 
@@ -8,18 +8,18 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 
 | Surface | Count | Notes |
 |---------|-------|-------|
-| Skills | 201 | SKILL.md files; 46,055 total lines |
-| Commands | 85 | 39 custom + 31 SuperClaude + 15 BMAD |
-| Agent definitions | 242 | 240 real + 2 metadata (REGISTRY, README) |
-| — core (L0–L6) | 69 | top-level .md files |
+| Skills | 209 | SKILL.md files; 47,049 total lines |
+| Commands | 88 | 42 custom + 31 SuperClaude + 15 BMAD |
+| Agent definitions | 245 | 243 real + 2 metadata (REGISTRY, README) |
+| — core (L0–L6) | 72 | top-level .md files |
 | — Wave 1 stage | 126 | department subdirs |
 | — Wave 2 surface | 45 | `agents/surfaces/` |
 | Path rules | 6 | `rules/*.md` |
-| Reference docs | 30 | `docs/*.md` |
-| Hook scripts | 13 | `hooks/*.sh` |
+| Reference docs | 40 | `docs/*.md` |
+| Hook scripts | 16 | `hooks/*.sh` |
 | Hook entries (total) | 21 | in `settings.json`; 7 are inline commands |
 | Recipes | 13 | 10 primary + 3 sub-recipes |
-| KB wiki articles | 7 | `kb/wiki/*.md` — includes INDEX, methodology |
+| KB wiki articles | 8 | `kb/wiki/*.md` — includes INDEX, methodology |
 | KB raw files | 0 | `kb/raw/` |
 | KB outputs | 0 | `kb/outputs/` |
 | MCP — connected | 8 | from CLAUDE.md table |
@@ -30,29 +30,29 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 
 ```json
 {
-  "generated_at": "2026-05-03T05:33:28Z",
-  "commit": "b80d3f1",
+  "generated_at": "2026-05-03T18:52:04Z",
+  "commit": "83367d8",
   "skills": {
-    "count": 201,
-    "skill_md_total_lines": 46055
+    "count": 209,
+    "skill_md_total_lines": 47049
   },
   "commands": {
-    "total": 85,
-    "custom": 39,
+    "total": 88,
+    "custom": 42,
     "superclaude": 31,
     "bmad": 15
   },
   "agents": {
-    "files_total": 242,
-    "agents_real": 240,
-    "core_l0_l6": 69,
+    "files_total": 245,
+    "agents_real": 243,
+    "core_l0_l6": 72,
     "wave1_stage": 126,
     "wave2_surface": 45
   },
   "rules": 6,
-  "docs": 30,
+  "docs": 40,
   "hooks": {
-    "shell_scripts": 13,
+    "shell_scripts": 16,
     "settings_entries": 21,
     "inline_commands": 7
   },
@@ -62,7 +62,7 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
     "sub": 3
   },
   "kb": {
-    "wiki_articles": 7,
+    "wiki_articles": 8,
     "raw_files": 0,
     "outputs_files": 0
   },

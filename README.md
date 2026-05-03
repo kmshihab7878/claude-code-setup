@@ -1,6 +1,6 @@
 # Claude Code Setup
 
-A `~/.claude/` configuration that makes Claude Code behave like an owner-level engineer with explicit guardrails, governed agents, and an Elite Operations execution layer — not a chatbot.
+A `~/.claude/` configuration that turns Claude Code into a four-layer personal AI Engineering OS — Warp cockpit, Claude Code execution, SocratiCode intelligence, AIS-OS context layer — with explicit guardrails, governed agents, and a controlled self-evolution loop. Not a chatbot.
 
 ## For whom
 
@@ -9,12 +9,15 @@ Engineers who want Claude Code to:
 - Inspect first, fix root-cause, and leave a regression test (`/audit-deep`, `/fix-root`).
 - Refuse to commit secrets, force-push, or delete system paths without confirmation.
 - Route by risk tier and authority level, not by vibe.
+- Own a personal operating layer that knows your business, tracks repeat work, and improves weekly (`/onboard`, `/audit`, `/level-up`).
 
 If you want a one-file prompt tweak, this is not it. This is a full operating environment, mounted at `~/.claude/`.
 
 ## Start here
 
-Three entrypoints cover the common cases. Full map in [`docs/SURFACE-MAP.md`](docs/SURFACE-MAP.md). Common workflow recipes in [`docs/RUNBOOK.md`](docs/RUNBOOK.md).
+Two surfaces cover the common cases — engineering work and AI OS operation. Full map in [`docs/SURFACE-MAP.md`](docs/SURFACE-MAP.md). Common workflow recipes in [`docs/RUNBOOK.md`](docs/RUNBOOK.md).
+
+### Engineering surface
 
 | Intent | Command | What happens |
 |--------|---------|--------------|
@@ -22,6 +25,16 @@ Three entrypoints cover the common cases. Full map in [`docs/SURFACE-MAP.md`](do
 | Inspect before acting | `/audit-deep <area>` | 6-dimension review (arch / quality / perf / UX / security / tests) with P0–P3 severity. |
 | Fix a bug the right way | `/fix-root <bug>` | Root-cause diagnosis + narrow patch + regression test. |
 | Refine a skill / agent / doc | `/improve <target>` | Evidence-driven minimal refinement loop (telemetry-informed after 14d of usage). |
+
+### AI OS surface (AIS-OS layer)
+
+| Intent | Command | What happens |
+|--------|---------|--------------|
+| First-time setup of personal context | `/onboard` | 7-question intake. Hard PII guard — never auto-fills identity from session env. Populates `context/`, seeds `connections.md`. |
+| Score the OS this week | `/audit` | 0-100 across the Four Cs (Context · Connections · Capabilities · Cadence). Saves to `docs/audits/YYYY-MM-DD.md`. |
+| Recommend ONE next artifact | `/level-up` | 5 reflection questions mapped to Three Ms. Plan, no code. |
+| Friday combo | `/weekly-operating-review` | `/audit` + `/level-up` + refresh of `kb/wiki/_hot.md`. |
+| Daily | `/daily-plan`, `/end-of-day-review` | Morning focus + evening reflection. |
 
 For planning heavy/cross-system work, `/plan` is canonical (`/ultraplan` for enterprise-risk only). Pick one.
 
@@ -40,16 +53,30 @@ Then:
 - Review `~/.claude/rules/` — adapt path rules to your conventions.
 - Run `claude` and type `/plan test` to confirm the pipeline wires up.
 
+## Four-layer architecture
+
+| Layer | Role | Source of truth |
+|-------|------|-----------------|
+| **Warp** | Cockpit — terminal panes, blocks, workflows, diff review | `WARP.md` (thin pointer), [`docs/WARP_COCKPIT.md`](docs/WARP_COCKPIT.md), [`docs/WARP_WORKFLOWS.md`](docs/WARP_WORKFLOWS.md) |
+| **Claude Code** | Governed execution engine — hooks, MCP gates, skills, agents | `CLAUDE.md` (canonical) |
+| **SocratiCode** | Codebase intelligence — AST search, graph, impact, call-flow (when installed) | [`docs/SOCRATICODE.md`](docs/SOCRATICODE.md) |
+| **claude-code-setup** | Constitution, policy, memory — this repo | `core/`, `memory/`, `agents/REGISTRY.md` |
+| **AIS-OS context layer** | Personal/business operating model — Three Ms, Four Cs, weekly loops | [`references/3ms-framework.md`](references/3ms-framework.md), [`references/four-cs-framework.md`](references/four-cs-framework.md), [`docs/AIS_OS_INTEGRATION.md`](docs/AIS_OS_INTEGRATION.md) |
+
+Adapted from [AIS-OS by Nate Herk](https://github.com/nateherkai/AIS-OS) (the personal/business layer); built on top of [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (the execution engine). `CLAUDE.md` is canonical — every other config (`WARP.md`, `AGENTS.md`, AIS-OS docs) points back to it instead of competing.
+
 ## What's real today
 
 | Tier | What it means | How many |
 |------|---------------|---------:|
-| **Live capabilities** | Installed and usable after `rsync`: hooks, path rules, skills, commands, agents | all of `skills/`, `commands/`, `rules/`, `hooks/`, `agents/`, `recipes/` |
+| **Live capabilities** | Installed and usable after `rsync`: hooks, path rules, skills, commands, agents | 209 skills · 88 commands · 243 agents · 13 recipes |
 | **Connected MCP servers** | Live via `claude mcp list` | 8 (see `CLAUDE.md` Tier 1) |
 | **Auth-pending MCP** | Configured, needs re-auth | 2 |
 | **Aspirational MCP** | Listed in docs as options; **not installed** until `claude mcp add ...` is run | 20 (see `CLAUDE.md` Tier 3 — do not assume access) |
 | **Knowledge base** | Infrastructure + workflow built; content is sparse (see [`docs/KB-STATUS.md`](docs/KB-STATUS.md)) | scaffold / pilot |
 | **Self-evolution layer** | Active on every session via a SessionStart hook. Records evidence, never auto-promotes. See `evolution/` and `/evolution status`. | enabled |
+| **AIS-OS personal/business layer** | Onboarding, audit, level-up, weekly loops, connections roadmap, capabilities registry | added 2026-05-03; populate via `/onboard` |
+| **SocratiCode codebase intelligence** | Documented; install requires explicit approval (`docs/SOCRATICODE.md`) | not installed by default |
 
 ## Proof
 
@@ -98,7 +125,9 @@ See [`evolution/README.md`](evolution/README.md) for full architecture.
 
 ```
 ~/.claude/
-├── CLAUDE.md            # Always-loaded operating contract (≤270 lines, ~4k tokens)
+├── CLAUDE.md            # Always-loaded operating contract (≤270 lines, ~4k tokens) — canonical
+├── WARP.md              # Thin pointer to CLAUDE.md (Warp cockpit rules)
+├── AGENTS.md            # Thin pointer to CLAUDE.md (for tools that look for AGENTS.md)
 ├── settings.json        # Hook bindings, enabled plugins
 │
 ├── core/                # Lazy-loaded contract expansions
@@ -113,18 +142,33 @@ See [`evolution/README.md`](evolution/README.md) for full architecture.
 │   └── marketing/DOMAIN.md    + 4 subdomains (growth, content, brand, ads)
 │
 ├── memory/              # File-based auto-memory + MEMORY.md always-loaded index
-├── skills/              # Prompt-library skills (SKILL.md + references) — unchanged paths
-├── commands/            # Slash commands: custom + SuperClaude + BMAD
-├── agents/              # Agent definitions + REGISTRY.md dispatch table
+├── skills/              # Prompt-library skills (SKILL.md + references) — 209 skills
+├── commands/            # Slash commands: 42 custom + 31 SuperClaude + 15 BMAD = 88
+├── agents/              # Agent definitions (243) + REGISTRY.md dispatch table
 ├── rules/               # Path-scoped rules (python, typescript, security, testing, infrastructure, implementation)
 ├── hooks/               # Shell scripts invoked from settings.json
 ├── recipes/             # Parameterized YAML workflows
 ├── evolution/           # Self-evolution layer (observe → record → evaluate → promote, kill-switchable)
 ├── kb/                  # Knowledge base — wiki + decisions (ADRs) + retrospectives
-└── docs/                # AUDIT · ARCHITECTURE · RUNBOOK · SURFACE-MAP · INVENTORY · OVERHEAD · TELEMETRY · KB-STATUS · EXTRACTABLE-PRODUCTS
+│   └── wiki/_hot.md     # Current-week cache (AIS-OS pattern), refreshed via /weekly-operating-review
+│
+├── ── AIS-OS personal/business layer ──
+├── context/             # About Me · About Business · Priorities · Voice Sample · Operating Preferences
+├── decisions/log.md     # Append-only operating log (lighter than ADRs in kb/decisions/)
+├── archives/            # Cold storage for retired material; quarterly review only
+├── references/          # Three Ms · Four Cs · skill-building · API integration · direct-API-vs-MCP
+├── connections.md       # Single source of truth for tools/accounts/sensitivity tiers
+├── aios-intake.md       # The 7-question /onboard interview
+├── .env.example         # Placeholder credential vars (real .env stays gitignored)
+├── .socraticodeignore   # Patterns SocratiCode (when installed) should skip
+├── templates/ai-engineering-os/  # Starter pack for replicating this pattern in other repos
+│
+└── docs/                # AUDIT · ARCHITECTURE · RUNBOOK · SURFACE-MAP · INVENTORY · OVERHEAD · TELEMETRY · KB-STATUS
+                         # + AIS_OS_INTEGRATION · CADENCE · CAPABILITIES · CONNECTIONS_ROADMAP
+                         # + MCP_GOVERNANCE · SECURITY · SOCRATICODE · WARP_COCKPIT · WARP_WORKFLOWS · WIKI_LAYER
 ```
 
-Risk tiers control execution: T0 auto, T1 log+proceed, T2 wait for approval, T3 block unless pre-authorized. Agents operate only within their declared MCP server bindings (aspirational Tier-3 bindings gated at runtime by `hooks/mcp-security-gate.sh`). Full structural rationale in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
+Risk tiers control execution: T0 auto, T1 log+proceed, T2 wait for approval, T3 block unless pre-authorized. Agents operate only within their declared MCP server bindings (aspirational Tier-3 bindings gated at runtime by `hooks/mcp-security-gate.sh`). Full structural rationale in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). AIS-OS integration mapping in [`docs/AIS_OS_INTEGRATION.md`](docs/AIS_OS_INTEGRATION.md).
 
 ## Inventory
 
@@ -145,6 +189,10 @@ make usage        # analyze ~/.claude/usage.jsonl (last 30 days)
 Patterns and skills integrated from:
 
 - [Anthropic Skills Spec](https://github.com/anthropics/skills)
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — the execution engine
+- [AIS-OS by Nate Herk](https://github.com/nateherkai/AIS-OS) — personal/business operating layer (Three Ms, Four Cs, /onboard, /audit, /level-up, weekly loops, connections roadmap)
+- [SocratiCode](https://github.com/giancarloerra/socraticode) — codebase intelligence (AST search, graph, impact, call-flow) — documented; install on demand
+- [Warp](https://www.warp.dev/) — terminal cockpit (panes, blocks, workflows, diff review)
 - [SuperClaude Framework](https://github.com/SuperClaude-Org/SuperClaude_Framework) — 31 commands, specialized agents, cognitive personas
 - [BMAD Method](https://github.com/bmadcode/BMAD-METHOD) — 15 agile/product commands
 - [oh-my-claudecode](https://github.com/nicobailon/oh-my-claudecode) — hook patterns, persistent mode
