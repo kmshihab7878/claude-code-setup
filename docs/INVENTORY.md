@@ -1,6 +1,6 @@
 # Inventory — Generated Source of Truth
 
-_Generated: 2026-05-03T05:18:58Z · commit: `a7cb3a4`_
+_Generated: 2026-05-03T05:35:22Z · commit: `dcdf08c`_
 
 Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md`.
 
@@ -8,7 +8,7 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 
 | Surface | Count | Notes |
 |---------|-------|-------|
-| Skills | 209 | SKILL.md files; 47,060 total lines |
+| Skills | 208 | SKILL.md files; 46,878 total lines |
 | Commands | 88 | 42 custom + 31 SuperClaude + 15 BMAD |
 | Agent definitions | 245 | 243 real + 2 metadata (REGISTRY, README) |
 | — core (L0–L6) | 72 | top-level .md files |
@@ -30,11 +30,11 @@ Do not hand-edit. Regenerate with `make inventory` or `scripts/inventory.sh --md
 
 ```json
 {
-  "generated_at": "2026-05-03T05:18:58Z",
-  "commit": "a7cb3a4",
+  "generated_at": "2026-05-03T05:35:22Z",
+  "commit": "dcdf08c",
   "skills": {
-    "count": 209,
-    "skill_md_total_lines": 47060
+    "count": 208,
+    "skill_md_total_lines": 46878
   },
   "commands": {
     "total": 88,
