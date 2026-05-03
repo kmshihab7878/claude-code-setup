@@ -1,0 +1,50 @@
+# SocratiCode ignore patterns. Same syntax as .gitignore.
+
+# Version control
+.git/
+
+# Dependencies
+node_modules/
+vendor/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build artifacts
+dist/
+build/
+.next/
+.nuxt/
+.cache/
+coverage/
+target/
+out/
+
+# Caches
+.DS_Store
+tmp/
+temp/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.p12
+secrets/
+
+# Data files
+*.sqlite
+*.db
+*.parquet
+
+# Logs
+*.log
+
+# Editor
+.idea/
+.vscode/
+*.swp
