@@ -1,6 +1,6 @@
-# Khaled's Security Playbook
+# Security Playbook
 
-> **Owner**: Repository owner (kmshihab7878)
+> **Owner**: Repository owner
 > **Scope**: Claude Code environment, JARVIS-FRESH, Aster DEX, MCP servers
 > **Last Updated**: 2026-03-15
 > **Rules**: 36 across 8 categories

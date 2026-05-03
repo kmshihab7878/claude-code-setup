@@ -6,7 +6,7 @@ description: >
   quantile intervals. Use for trading signal generation and risk assessment.
 license: MIT
 metadata:
-  author: Repository owner
+  author: <your-name>
   version: "1.0.0"
   depends_on:
     - aster-trading

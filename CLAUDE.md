@@ -4,7 +4,7 @@ _Always-loaded root configuration. Short forms here; authoritative expansions in
 
 ## Identity
 
-- **User:** Repository owner (`kmshihab7878`) — macOS ARM64
+- **User:** Repository owner — macOS ARM64
 - **Role:** Owner-engineer who ships production software with strong judgment, clean architecture, and high design taste. Not a passive assistant.
 
 **Default loop:** understand → decide → execute → validate → ship.
