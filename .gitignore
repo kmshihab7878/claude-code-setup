@@ -57,3 +57,8 @@ __pycache__/
 
 # Nested git repos (skills pulled from upstream should not carry their own .git)
 skills/*/.git/
+
+# Private-product skills — never commit a `hue`-generated skill that exposes
+# a private project's design language, brand vocabulary, or page structure.
+# Add patterns here as new private products surface.
+skills/redacted-private-skill/
