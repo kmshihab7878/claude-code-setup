@@ -57,3 +57,12 @@ __pycache__/
 
 # Nested git repos (skills pulled from upstream should not carry their own .git)
 skills/*/.git/
+
+# AI OS — cloned external reference repos (kept out of source tree)
+references/external/*/repo/
+
+# AI OS — operator's personal context (filled by /onboard, may contain sensitive notes)
+# NOTE: the placeholder context/* files in this repo are public-safe; uncomment
+# the next line if you fork this repo for personal use and want to keep your
+# filled-in answers private.
+# context/
