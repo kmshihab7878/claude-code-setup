@@ -189,3 +189,159 @@ hooks/mcp-security-gate.sh
 ## Status
 
 Phase 7 deliverable from the restructure. This file will grow as new workflows emerge — it's additive.
+
+---
+
+# AI OS — Operator Workflows
+
+> The AIS-OS-style personal operating layer added in 2026-05-03 commit `<sha>`. Daily, weekly, and "what to do when something fails" recipes for the four-layer system: Warp · Claude Code · SocratiCode · this repo · AIS-OS context.
+
+## First-time AI OS setup
+
+If this is a fresh clone or a fresh machine:
+
+1. **Open a terminal in the repo.** Warp is recommended — see `docs/WARP_COCKPIT.md` for layout suggestions and the privacy checklist.
+2. **Run Claude Code:** `claude`
+3. **Onboard the OS:** `/onboard`
+   - 7-question intake. Privacy guard active — never paste credentials, customer PII, or your email into the answers.
+   - Populates `context/`, seeds `connections.md` Tier-4 rows, logs the run in `decisions/log.md`.
+4. **Review the connections roadmap** (`docs/CONNECTIONS_ROADMAP.md`) and decide your first 1-2 connections to wire.
+5. **Run the first audit:** `/audit`
+   - First-ever scores typically land 15-30/100. That's the baseline, not a verdict.
+6. **Run the first level-up:** `/level-up`
+   - One recommended next artifact. Don't build it yet — sit with it 24h.
+7. **Build one small skill or script.** Use `references/skill-building-framework.md` as the pattern.
+
+After this you have a baseline. The OS now has enough context to be useful.
+
+## Daily
+
+### Morning
+```
+/daily-plan
+```
+Reads `context/Priorities.md` + `kb/wiki/_hot.md` + last 7 days of `decisions/log.md`. Outputs three lines: top focus, AI-assisted task, what you're not doing today.
+
+### Working
+Use `/ship`, `/fix-root`, `/review`, `/test-gen`, etc. as needed. Each goes through this repo's hooks and MCP gates.
+
+### Evening
+```
+/end-of-day-review
+```
+Five lines: what changed, what skills worked, what broke, context gap, tomorrow's hint. Logs to `decisions/log.md`.
+
+## Weekly (Friday)
+
+```
+/weekly-operating-review
+```
+
+Combines:
+- `/audit` — Four-Cs scorecard, top 3 gaps, recommended action
+- `/level-up` — five reflection questions, one recommended artifact
+- `_hot.md` refresh from current state
+
+Or run them separately if you prefer.
+
+The recommended artifact is for **next week** — don't build it Friday afternoon. Use the weekend to sit with whether it's the right thing.
+
+## When a task fails
+
+This is the failure-to-learning rule from `CLAUDE.md § AI OS Layered Architecture`:
+
+1. **Ask why it failed.**
+   - Missing context? (which `context/`, `references/`, or `kb/wiki/` file would have helped?)
+   - Missing capability? (no skill / script / agent for this work?)
+   - Bad skill step? (the skill ran but did the wrong thing?)
+   - Unsafe assumption? (the code or data wasn't what the OS thought?)
+2. **Update the relevant artifact.**
+   - Missing context → add to the right file
+   - Missing capability → add to `/level-up` candidates
+   - Bad skill step → edit the skill (`skills/<name>/SKILL.md`)
+   - Unsafe assumption → add a guard or validation step
+3. **Log the decision** in `decisions/log.md` with date, root cause, and what you changed.
+4. **Try again** with the updated system.
+
+If the same failure recurs after the update → the update was wrong. Repeat the loop with a different fix.
+
+## When a destructive command is blocked
+
+The destructive command gate (inline in `settings.json`, plus extracted `hooks/destructive-command-gate.sh`) blocks force-pushes-without-lease and `rm -rf` on system paths. If you hit a block:
+
+1. **Read the block message.** It tells you which pattern matched and why.
+2. **Check intent.** Did you mean to do this? Often the block is correct.
+3. **If the intent is genuine,** rephrase the command:
+   - `git push --force` → `git push --force-with-lease`
+   - `rm -rf /tmp/foo` → `rm -rf ./tmp/foo` (relative path)
+4. **Never bypass with `--no-verify` or by editing the hook** without explicit deliberation. If the hook is over-blocking, propose an addition to the pattern in a separate commit.
+
+## When SocratiCode is unavailable
+
+SocratiCode is documented but not installed in the default state. Skills that prefer SocratiCode (`/ship`, `/audit-deep`, `/fix-root`) fall back gracefully via `skills/socraticode-preflight/SKILL.md`:
+
+1. First fallback: `code-review-graph` MCP (already live)
+2. Second fallback: `Grep` + `Read` + `git grep`
+
+The skill logs which tool was actually used, so you can see the fallback in the output.
+
+To install SocratiCode (requires explicit operator approval):
+```
+claude plugin marketplace add giancarloerra/socraticode
+claude plugin install socraticode@socraticode
+```
+
+See `docs/SOCRATICODE.md` for full details.
+
+## When a connection breaks
+
+If an MCP server stops responding or a Direct API integration starts failing:
+
+1. **Check `claude mcp list`** for MCP servers (auth status, connection health).
+2. **Check `~/.claude/audit-mcp.log`** for the last successful call vs. the first failed call.
+3. **Check the source** — has the credential expired? Has the API changed?
+4. **Use the kill switch** (documented in `connections.md`) to disable the integration cleanly while you fix.
+5. **Update the row** in `connections.md` to reflect status.
+6. **Log in `decisions/log.md`** if the fix involves a credential rotation or schema change.
+
+## When the AI OS feels "off"
+
+If the OS routes wrong, suggests stale things, or generally feels disconnected:
+
+1. **Check `kb/wiki/_hot.md`** — is it >7 days old? Run `/weekly-operating-review` to refresh.
+2. **Check `context/Priorities.md`** — does it still reflect this week's reality? Edit directly or re-run `/onboard --quick`.
+3. **Check `decisions/log.md`** last entries — has the OS been used? If the last 5 entries are >2 weeks old, the OS has been dormant.
+4. **Run `/audit`** — the score and the top-3 gaps usually point at what's missing.
+5. **If multiple things feel off,** schedule a quarterly review (refresh `Priorities.md`, prune `archives/`, re-baseline `connections.md`).
+
+## Success criteria for the OS
+
+You'll know the OS is working when:
+
+1. **You ask the AI OS before opening many tabs** — the OS is the first stop, not the last.
+2. **Knowledge leaves your head and lives in `context/`, `kb/wiki/`, `decisions/log.md`** — you can take a week off and the OS still knows what to do.
+3. **Repeated work becomes skills/scripts** within 2-3 weeks of being noticed via `/level-up`.
+4. **Your weekly `/audit` score trends up** over 4-6 weeks. Not monotonically — but the line goes up.
+5. **The OS produces useful outputs even when you're not micromanaging** — `/daily-plan`, `/audit`, `/level-up` give you signal you wouldn't have otherwise.
+
+If you're 30 days in and none of the above is true: the OS isn't working for you yet. Run `/audit` honestly, look at the lowest-scoring pillar, and consider whether the failing piece is worth fixing or whether to drop it. Not every operator needs every layer.
+
+## Layer-specific quick references
+
+| Need | Skill / doc |
+|------|-------------|
+| Operator mindset (Three Ms) | `references/3ms-framework.md` |
+| System structure (Four Cs) | `references/four-cs-framework.md` |
+| Skill-building pattern | `references/skill-building-framework.md` |
+| API integration rules | `references/api-integration-principles.md` |
+| Direct API vs MCP decision | `references/direct-api-vs-mcp.md` |
+| Connections roadmap | `docs/CONNECTIONS_ROADMAP.md` |
+| Cadence model | `docs/CADENCE.md` |
+| Wiki layer + naming aliases | `docs/WIKI_LAYER.md` |
+| SocratiCode integration | `docs/SOCRATICODE.md` |
+| Warp cockpit setup | `docs/WARP_COCKPIT.md` |
+| Warp workflow snippets | `docs/WARP_WORKFLOWS.md` |
+| Security defence layers | `docs/SECURITY.md` |
+| MCP governance | `docs/MCP_GOVERNANCE.md` |
+| Capability registry | `docs/CAPABILITIES.md` |
+| AIS-OS integration mapping | `docs/AIS_OS_INTEGRATION.md` |
