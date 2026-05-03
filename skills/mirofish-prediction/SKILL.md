@@ -7,7 +7,7 @@ description: >
   complement to TimesFM quantitative forecasts for trading and strategy decisions.
 license: AGPL-3.0
 metadata:
-  author: Khaled Shihab
+  author: <your-name>
   version: "1.0.0"
   depends_on:
     - aster-trading

@@ -4,7 +4,7 @@
 
 ## Operator
 
-- **User:** Khaled Shihab (kmshihab7878)
+- **User:** Repository owner
 - **Platform:** macOS ARM64 (Apple Silicon)
 
 ## Execution posture
