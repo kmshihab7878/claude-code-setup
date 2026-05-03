@@ -1,6 +1,6 @@
-# Operator's Security Playbook
+# Security Playbook
 
-> **Owner**: Repository owner (<contributor>)
+> **Owner**: Repository owner
 > **Scope**: Claude Code environment, CoreMind-FRESH, Aster DEX, MCP servers
 > **Last Updated**: 2026-03-15
 > **Rules**: 36 across 8 categories
