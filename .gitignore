@@ -66,3 +66,8 @@ references/external/*/repo/
 # the next line if you fork this repo for personal use and want to keep your
 # filled-in answers private.
 # context/
+
+# Private-product skills — never commit a `hue`-generated skill that exposes
+# a private project's design language, brand vocabulary, or page structure.
+# Add patterns here as new private products surface.
+skills/redacted-private-skill/
