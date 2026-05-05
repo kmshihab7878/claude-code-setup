@@ -1,7 +1,7 @@
 version: "1.0"
 title: "API Endpoint Creator"
 description: "Scaffold a new API endpoint with route, handler, validation, tests, and docs"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["engineering", "api", "backend"]
 
 parameters:

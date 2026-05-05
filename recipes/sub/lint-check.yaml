@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Lint Check"
 description: "Run linters on target path (reusable sub-recipe)"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["sub-recipe", "quality"]
 
 parameters:

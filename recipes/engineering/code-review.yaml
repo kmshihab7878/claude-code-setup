@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Structured Code Review"
 description: "Multi-dimensional code review: correctness, performance, security, maintainability"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["engineering", "review", "quality"]
 
 parameters:

@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Pre-Deployment Check"
 description: "Verify deployment readiness: tests, deps, security, config"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["devops", "deployment", "verification"]
 
 parameters:

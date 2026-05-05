@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Systematic Refactor"
 description: "Structured refactoring with safety nets: tests before, refactor, tests after"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["engineering", "refactor", "quality"]
 
 parameters:

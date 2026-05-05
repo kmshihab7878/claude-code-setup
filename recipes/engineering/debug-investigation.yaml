@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Debug Investigation"
 description: "Systematic root cause analysis: reproduce, hypothesize, verify, fix"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["engineering", "debug", "investigation"]
 
 parameters:
