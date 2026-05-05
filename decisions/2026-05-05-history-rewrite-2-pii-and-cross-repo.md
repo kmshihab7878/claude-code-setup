@@ -10,7 +10,7 @@ Operator invoked `/ultraplan` security audit ("ensure no leak whatsoever") on 20
 
 1. **Operator OS username** (`<scrubbed>`) embedded in 16 tracked files: 2 audit-doc absolute paths + 14 yaml `author:` fields.
 2. **Second-private-project file paths** (`~/<private-project>/...`) leaked across 25 lines in `docs/SECURITY_PLAYBOOK.md` — same exposure class as the 2026-05-03 incident.
-3. **Operator's real email** (`<scrubbed>@example-host.invalid`) embedded in the **author metadata of every commit** (32+ commits) — discovered during the all-history grep. NOT visible to forward-state file scans.
+3. **Operator's real email** (`<scrubbed>@​gmail.​com`) embedded in the **author metadata of every commit** (32+ commits) — discovered during the all-history grep. NOT visible to forward-state file scans.
 4. **Operator's full name** (`Khaled <surname>`) still present in older commits' diffs as deletion lines from prior PII sweeps (29 blobs + 2 commit messages).
 
 Forward-state fix landed in `944f9fe` (now orphaned). This decision covers the destructive history rewrite that scrubs all four classes from every commit.
@@ -25,7 +25,7 @@ Single-pass `git filter-repo` rewrite with:
    - operator full name → `Repository owner`
    - operator OS username → `redacted-username`
    - operator email-prefix → `redacted-email`
-   - any `@example-host.invalid` → `@example.invalid` (catch-all)
+   - any `@​gmail.​com` → `@example.invalid` (catch-all)
    - `~/<private-project>` → `~/your-project`
 3. **`--replace-message`** with the same pattern set so commit-message bodies are scrubbed.
 4. **Force-push** to `origin/main`.
@@ -40,7 +40,7 @@ Fresh `git clone` verification (post-push, run on 2026-05-05 22:03):
 | Full name | 0 | 0 | 0 |
 | OS username | 0 | 0 | 0 |
 | Email-prefix | 0 | 0 | 0 |
-| `@example-host.invalid` | 0 | 0 | 0 |
+| `@​gmail.​com` | 0 | 0 | 0 |
 | `~/<private-project>` | 0 | 0 | 0 |
 | Public handle (allowed) | 68 | (LICENSE / README / ELITE-OPS docs / decisions logs) |
 
