@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Test Run"
 description: "Execute test suite and report results (reusable sub-recipe)"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["sub-recipe", "testing"]
 
 parameters:

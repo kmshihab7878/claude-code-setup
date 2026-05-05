@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Dependency Audit"
 description: "Audit dependencies for vulnerabilities (reusable sub-recipe)"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["sub-recipe", "security"]
 
 parameters:

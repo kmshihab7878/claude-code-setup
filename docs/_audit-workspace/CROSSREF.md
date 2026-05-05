@@ -1,6 +1,6 @@
 # Cross-Reference Dependency Map — Phase 0.2
 
-_Source scope: `/Users/redacted-username/Projects/claude-code-setup/` · 202 skills, 84 commands, 242 agent files, 13 hook scripts, 13 recipes, 26 docs._
+_Source scope: `~/Projects/claude-code-setup/` · 202 skills, 84 commands, 242 agent files, 13 hook scripts, 13 recipes, 26 docs._
 
 Generated programmatically by scanning every `.md`, `.yaml`, `.json`, `.sh` file for cross-references. Inbound/outbound counts use strict word-boundary matching with one of: backtick-wrapped name, `kind/name` path, YAML list membership, double-quoted token, or bullet-list entry.
 

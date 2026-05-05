@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Security Audit Pipeline"
 description: "Full security audit: dependency scan, SAST, secrets detection, container scan"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["security", "audit", "ci"]
 
 parameters:

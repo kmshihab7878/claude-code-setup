@@ -144,7 +144,7 @@ Read an existing SKILL.md file and generate a parameterized recipe YAML from it:
 version: "1.0"
 title: "Security Audit Pipeline"
 description: "Full security audit: dependency scan, SAST, secrets detection, container scan"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["security", "audit", "ci"]
 
 parameters:

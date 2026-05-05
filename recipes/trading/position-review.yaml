@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Position Review"
 description: "Review open positions, P&L, and risk exposure"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["trading", "risk", "portfolio"]
 
 parameters:

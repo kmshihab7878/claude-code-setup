@@ -31,7 +31,7 @@ _Generated 2026-04-17 at HEAD `8157457`. Synthesis of three parallel audit passe
 
 ### 1.1 Totals
 
-986 non-hidden files under `/Users/redacted-username/Projects/claude-code-setup/` (excluding `.git`, `.DS_Store`).
+986 non-hidden files under `~/Projects/claude-code-setup/` (excluding `.git`, `.DS_Store`).
 
 Disk-verified surface counts (from `scripts/inventory.sh`):
 

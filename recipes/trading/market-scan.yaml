@@ -1,7 +1,7 @@
 version: "1.0"
 title: "Market Scan"
 description: "Scan market data across symbols with technical indicators"
-author: "redacted-username"
+author: "<your-name>"
 tags: ["trading", "market-data", "analysis"]
 
 parameters:
