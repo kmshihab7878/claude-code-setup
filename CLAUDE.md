@@ -251,7 +251,7 @@ Full 5-mode cognitive depth engine: [`skills/ultrathink/SKILL.md`](./skills/ultr
 | Intent | Canonical | Source |
 |--------|-----------|--------|
 | Plan | `/plan` · enterprise: `/ultraplan` · UI: `/planUI` | `commands/` |
-| Implement | `/ship` · task: `/start-task` · complete: `/complete` | `commands/` |
+| Implement | `/ship` · bounded: `/goal` · task: `/start-task` · complete: `/complete` | `commands/` |
 | Fix | `/fix-root` · looser: `/debug` | `commands/` |
 | Review | `/review` · pressure-test: `/council-review` | `commands/` |
 | Audit | `/audit-deep` · setup-only: `/setup-audit` · security: `/security-audit` | `commands/` |
@@ -264,7 +264,7 @@ Full 5-mode cognitive depth engine: [`skills/ultrathink/SKILL.md`](./skills/ultr
 | Evolution | `/evolution status\|disable\|promote\|prune` | `commands/evolution.md` |
 | Council | `/council` · wider panel: `/sc:business-panel` | `commands/`, `skills/council/` |
 
-88 commands total (42 custom + 31 SuperClaude `/sc:*` + 15 BMAD `/bmad:*`). Full routing: [`docs/SURFACE-MAP.md`](./docs/SURFACE-MAP.md).
+89 commands total (43 custom + 31 SuperClaude `/sc:*` + 15 BMAD `/bmad:*`). Full routing: [`docs/SURFACE-MAP.md`](./docs/SURFACE-MAP.md).
 
 ## CLI Tools (13)
 
@@ -328,7 +328,7 @@ After 14+ days of `~/.claude/usage.jsonl`, replace with telemetry-derived rankin
 
 ## Counts (disk-verified)
 
-**209 skills** · **88 commands** · **243 agents** · 13 recipes · 6 path rules · 8 live MCPs. Regenerate: `make inventory`. Validate drift: `make validate`. Source of truth: [`docs/INVENTORY.md`](./docs/INVENTORY.md).
+**209 skills** · **89 commands** · **243 agents** · 13 recipes · 6 path rules · 8 live MCPs. Regenerate: `make inventory`. Validate drift: `make validate`. Source of truth: [`docs/INVENTORY.md`](./docs/INVENTORY.md).
 
 ## Architecture References
 

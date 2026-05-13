@@ -18,7 +18,7 @@ This is a full operating environment mounted at `~/.claude/`, not a one-file pro
 
 ## What it includes
 
-- **Slash commands** — engineering (`/ship`, `/audit-deep`, `/fix-root`, `/plan`, `/review`, `/test-gen`) plus AI OS workflow (`/onboard`, `/audit`, `/level-up`, `/daily-plan`).
+- **Slash commands** — engineering (`/ship`, `/goal`, `/audit-deep`, `/fix-root`, `/plan`, `/review`, `/test-gen`) plus AI OS workflow (`/onboard`, `/audit`, `/level-up`, `/daily-plan`).
 - **Skills** — domain-specific prompt libraries with structured `SKILL.md` frontmatter.
 - **Agents** — registry-routed specialist agents organized by authority level (executive → department head → specialist → worker) with declared MCP bindings.
 - **Hooks** — 16 shell scripts wired to Claude Code lifecycle events (SessionStart, PreToolUse, PostToolUse, Stop). See [`docs/HOOKS.md`](docs/HOOKS.md).
@@ -204,6 +204,7 @@ If you fork this repo for personal use, the first commit on your fork should NOT
 | Architecture rationale | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) |
 | Inventory (auto-generated) | [`docs/INVENTORY.md`](docs/INVENTORY.md) |
 | Surface map | [`docs/SURFACE-MAP.md`](docs/SURFACE-MAP.md) |
+| Bounded autonomous workflow | [`docs/GOAL_WORKFLOW.md`](docs/GOAL_WORKFLOW.md) |
 | Common workflows | [`docs/RUNBOOK.md`](docs/RUNBOOK.md) |
 | Telemetry protocol | [`docs/TELEMETRY.md`](docs/TELEMETRY.md) |
 | Self-evolution layer | [`evolution/README.md`](evolution/README.md) |
