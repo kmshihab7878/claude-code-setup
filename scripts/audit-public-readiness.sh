@@ -43,7 +43,7 @@ fi
 
 # -----------------------------------------------------------------------------
 section "Free-form leak grep (forward tree)"
-LEAK_RE='[k]haled|[s]hihab|[k]mshihab|[J]ARVIS|[j]arvis|[k]haledpowers|[s]hihab-task|MacBook'
+LEAK_RE='[k]haled|[s]hihab|[k]mshihab|[J]ARVIS|[j]arvis|[k]haledpowers|[s]hihab-task|[M]acBook'
 if git grep -nEi -- "$LEAK_RE" ':!.gitignore' ':!scripts/check-public-safety.sh' \
      ':!scripts/audit-public-readiness.sh' >/dev/null 2>&1; then
   bad "banned terms detected in tracked files (see git grep)"
@@ -134,11 +134,41 @@ fi
 if [[ $QUICK -eq 0 ]]; then
   section "History blob grep (slow — pass --quick to skip)"
   if [[ "$(git rev-list --all | wc -l | tr -d ' ')" -gt 0 ]]; then
-    HISTORY_HITS=$(git grep -nEi -- "$LEAK_RE" $(git rev-list --all) -- 2>/dev/null | head -1 || true)
-    if [[ -z "$HISTORY_HITS" ]]; then
-      ok "no banned terms in history blobs"
+    # Excluding local backup tags created by the scrub process; their entire
+    # purpose is to preserve pre-rewrite state. If those tags are the only
+    # thing keeping leaks reachable, this is a WARN (delete tags to clear),
+    # not a FAIL.
+    LIVE_REFS=$(git for-each-ref --format='%(refname)' \
+      | grep -vE '^refs/tags/(pre-public-scrub|pre-handle-rewrite)-' || true)
+    LIVE_COMMITS=$(echo "$LIVE_REFS" | xargs -I{} git rev-list {} 2>/dev/null | sort -u || true)
+
+    if [[ -z "$LIVE_COMMITS" ]]; then
+      ok "no live refs to scan"
     else
-      bad "banned terms in history (see PUBLICATION_CHECKLIST.md §4)"
+      # Exclude gate machinery / docs about the gate from the history scan.
+      # These files legitimately reference the patterns they're protecting
+      # against and would self-match; the forward-tree gate excludes them
+      # for the same reason.
+      HISTORY_HITS=$(echo "$LIVE_COMMITS" \
+        | xargs git grep -nEi -- "$LEAK_RE" \
+            ':!scripts/audit-public-readiness.sh' \
+            ':!scripts/check-public-safety.sh' \
+            ':!docs/PUBLICATION_CHECKLIST.md' \
+            ':!.github/workflows/public-safety.yml' \
+            2>/dev/null | head -1 || true)
+      if [[ -z "$HISTORY_HITS" ]]; then
+        ok "no banned terms in history blobs (excluding gate machinery)"
+      else
+        bad "banned terms in history blobs reachable from non-backup refs"
+      fi
+    fi
+
+    # Backup-tag advisory
+    BACKUP_TAGS=$(git tag | grep -E '^(pre-public-scrub|pre-handle-rewrite)-' || true)
+    if [[ -n "$BACKUP_TAGS" ]]; then
+      warn "backup tags retain pre-scrub commits locally — delete when confident:"
+      echo "$BACKUP_TAGS" | sed 's/^/        /'
+      echo "        (git tag -d <tagname> && git reflog expire --expire=now --all && git gc --prune=now)"
     fi
   fi
 fi
