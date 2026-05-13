@@ -1,0 +1,150 @@
+#!/usr/bin/env bash
+# Orchestrator: runs every check that gates a public-safe state.
+# Designed to be re-runnable, fail fast, and produce a single PASS/FAIL summary
+# at the end. Each section is independently rerunnable.
+#
+# Usage:
+#   bash scripts/audit-public-readiness.sh [--quick]
+#
+#   --quick  Skip the cross-history blob grep (the slowest check).
+
+set -uo pipefail
+
+QUICK=0
+[[ "${1:-}" == "--quick" ]] && QUICK=1
+
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd "$ROOT"
+
+PASS=0
+FAIL=0
+WARN=0
+
+ok()    { echo "  PASS  $*"; PASS=$((PASS+1)); }
+bad()   { echo "  FAIL  $*"; FAIL=$((FAIL+1)); }
+warn()  { echo "  WARN  $*"; WARN=$((WARN+1)); }
+section() { echo; echo "== $* =="; }
+
+# -----------------------------------------------------------------------------
+section "Working tree state"
+if [[ -z "$(git status --short)" ]]; then
+  ok "clean working tree"
+else
+  warn "uncommitted changes present (expected if you're iterating)"
+fi
+
+# -----------------------------------------------------------------------------
+section "Public-safety banned-term check"
+if bash scripts/check-public-safety.sh >/dev/null 2>&1; then
+  ok "scripts/check-public-safety.sh"
+else
+  bad "scripts/check-public-safety.sh (run it directly for detail)"
+fi
+
+# -----------------------------------------------------------------------------
+section "Free-form leak grep (forward tree)"
+LEAK_RE='[k]haled|[s]hihab|[k]mshihab|[J]ARVIS|[j]arvis|[k]haledpowers|[s]hihab-task|MacBook'
+if git grep -nEi -- "$LEAK_RE" ':!.gitignore' ':!scripts/check-public-safety.sh' \
+     ':!scripts/audit-public-readiness.sh' >/dev/null 2>&1; then
+  bad "banned terms detected in tracked files (see git grep)"
+else
+  ok "no banned terms in tracked files"
+fi
+
+# /Users/ path leaks excluding known placeholders
+USERS_RE='/Users/[a-z]+'
+USERS_HITS=$(git grep -nE -- "$USERS_RE" ':!.gitignore' ':!scripts/check-public-safety.sh' \
+                ':!scripts/audit-public-readiness.sh' 2>/dev/null \
+              | grep -viE '/Users/me|/Users/<|/Users/redacted-username' || true)
+if [[ -z "$USERS_HITS" ]]; then
+  ok "no /Users/<real-name> path leaks"
+else
+  bad "/Users/<name> path present:"
+  echo "$USERS_HITS" | head -5 | sed 's/^/        /'
+fi
+
+# -----------------------------------------------------------------------------
+section "Untracked artifacts that should never appear"
+DS_HITS=$(find . -path ./.git -prune -o -name ".DS_Store" -print 2>/dev/null | head -10)
+if [[ -z "$DS_HITS" ]]; then
+  ok "no .DS_Store on disk"
+else
+  warn ".DS_Store on disk (gitignored, just delete them)"
+  echo "$DS_HITS" | sed 's/^/        /'
+fi
+
+ENV_HITS=$(find . -path ./.git -prune -o -name "*.env" -not -name "*.env.example" -print 2>/dev/null | head -5)
+if [[ -z "$ENV_HITS" ]]; then
+  ok "no *.env on disk (other than .env.example)"
+else
+  bad "real *.env file present:"
+  echo "$ENV_HITS" | sed 's/^/        /'
+fi
+
+# -----------------------------------------------------------------------------
+section "Secret detection (working tree + history)"
+if command -v gitleaks >/dev/null 2>&1; then
+  if gitleaks detect --no-banner --redact --source . >/dev/null 2>&1; then
+    ok "gitleaks (working tree)"
+  else
+    bad "gitleaks reports leaks (working tree)"
+  fi
+  if gitleaks detect --no-banner --redact >/dev/null 2>&1; then
+    ok "gitleaks (history)"
+  else
+    bad "gitleaks reports leaks (history)"
+  fi
+else
+  warn "gitleaks not installed — skipping (install via brew install gitleaks)"
+fi
+
+if command -v trivy >/dev/null 2>&1; then
+  if trivy fs --scanners secret --quiet --no-progress . 2>&1 | grep -qE '^.*✗|HIGH|CRITICAL' ; then
+    bad "trivy reports findings"
+  else
+    ok "trivy secret scan"
+  fi
+else
+  warn "trivy not installed — skipping (install via brew install trivy)"
+fi
+
+# -----------------------------------------------------------------------------
+section "Validation suite"
+if bash scripts/validate.sh 2>&1 | tail -1 | grep -q 'fail=0'; then
+  ok "scripts/validate.sh (fail=0)"
+else
+  bad "scripts/validate.sh has failures"
+fi
+
+# -----------------------------------------------------------------------------
+section "Broken-rename refs (post-scrub safety)"
+STALE=$(git grep -lE \
+  "skills/jarvis-core|skills/jarvis-sec|skills/understand-jarvis|skills/using-khaledpowers|commands/jarvis-sec\\.md" \
+  ':!.gitignore' ':!scripts/check-public-safety.sh' ':!scripts/audit-public-readiness.sh' 2>/dev/null || true)
+if [[ -z "$STALE" ]]; then
+  ok "no references to pre-scrub paths"
+else
+  bad "references to pre-scrub paths detected:"
+  echo "$STALE" | sed 's/^/        /'
+fi
+
+# -----------------------------------------------------------------------------
+if [[ $QUICK -eq 0 ]]; then
+  section "History blob grep (slow — pass --quick to skip)"
+  if [[ "$(git rev-list --all | wc -l | tr -d ' ')" -gt 0 ]]; then
+    HISTORY_HITS=$(git grep -nEi -- "$LEAK_RE" $(git rev-list --all) -- 2>/dev/null | head -1 || true)
+    if [[ -z "$HISTORY_HITS" ]]; then
+      ok "no banned terms in history blobs"
+    else
+      bad "banned terms in history (see PUBLICATION_CHECKLIST.md §4)"
+    fi
+  fi
+fi
+
+# -----------------------------------------------------------------------------
+echo
+echo "================================================================"
+printf "Summary:  pass=%d  warn=%d  fail=%d\n" "$PASS" "$WARN" "$FAIL"
+echo "================================================================"
+
+[[ $FAIL -eq 0 ]] && exit 0 || exit 1

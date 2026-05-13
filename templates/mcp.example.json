@@ -1,0 +1,61 @@
+{
+  "_comment": "Example MCP server config. Copy to a path your Claude Code installation reads (typically ~/.claude/.mcp.json or a project-level .mcp.json) and edit. Never commit a populated copy of this file with real tokens — keep it untracked.",
+  "_governance": "All MCP calls pass through hooks/mcp-security-gate.sh against recipes/lib/mcp-whitelist.json. Write-capable servers require explicit whitelisting.",
+
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "<workspace>"],
+      "_notes": "Replace <workspace> with the absolute path you want exposed (typically a single project root). Avoid exposing $HOME."
+    },
+
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+
+    "git": {
+      "command": "uvx",
+      "args": ["mcp-server-git", "--repository", "<project-root>"]
+    },
+
+    "github": {
+      "_status": "tier-3 (not installed by default)",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<set-in-env-not-here>"
+      },
+      "_security": "Token must come from an env var, not be inlined. Scope: minimum needed (repo read, optional issues/PRs). Rotate every 90 days."
+    },
+
+    "postgres": {
+      "_status": "tier-3 (not installed by default)",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "<set-in-env-not-here>"
+      },
+      "_security": "Prefer a read-only role for the connection string. Never use a superuser."
+    },
+
+    "playwright": {
+      "_status": "tier-3 (not installed by default)",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp"]
+    },
+
+    "context7": {
+      "_status": "tier-3 (not installed by default)",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    }
+  },
+
+  "_publishing_rule": "If you copy this template, the populated file MUST be in your .gitignore. Real tokens, real connection strings, and real workspace paths must never be committed."
+}

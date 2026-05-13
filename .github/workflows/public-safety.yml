@@ -1,0 +1,73 @@
+name: public-safety
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  banned-terms:
+    name: banned-term gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: scripts/check-public-safety.sh
+        run: bash scripts/check-public-safety.sh
+
+  internal-consistency:
+    name: validate.sh
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: scripts/validate.sh
+        run: bash scripts/validate.sh
+
+  broken-renames:
+    name: stale-path references
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git grep -lE 'skills/jarvis-core|skills/jarvis-sec|skills/understand-jarvis|skills/using-khaledpowers|commands/jarvis-sec\.md' \
+               ':!.gitignore' ':!scripts/check-public-safety.sh' \
+               ':!scripts/audit-public-readiness.sh' ':!.github/'; then
+            echo "::error::References to pre-scrub paths detected."
+            exit 1
+          fi
+
+  forbidden-files:
+    name: forbidden-file check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: scan
+        shell: bash
+        run: |
+          set -euo pipefail
+          if find . -path ./.git -prune -o -name ".DS_Store" -print | grep -q .; then
+            echo "::error::.DS_Store committed somewhere"
+            find . -path ./.git -prune -o -name ".DS_Store" -print
+            exit 1
+          fi
+          if git ls-files | grep -E '^\.env$|\.env\.[a-z]+$' | grep -v '\.env\.example' | head -1 | grep -q .; then
+            echo "::error::real .env file is tracked"
+            exit 1
+          fi
+          if git ls-files | grep -E '\.(pem|key|p12|pfx)$' | head -1 | grep -q .; then
+            echo "::error::credential/key file is tracked"
+            exit 1
+          fi
