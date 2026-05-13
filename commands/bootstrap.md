@@ -1,3 +1,7 @@
+---
+description: Guide creation or refinement of a project instruction file through structured onboarding.
+---
+
 # Bootstrap — Interactive CLAUDE.md Generator
 
 Inspired by DeerFlow's SOUL.md bootstrap skill. Guide the user through creating a personalized CLAUDE.md via conversational onboarding.

@@ -1,3 +1,7 @@
+---
+description: Audit a project or scope for security risks, secret exposure, dependency issues, and remediation.
+---
+
 # Security Audit
 
 Run a comprehensive security audit on the specified scope.

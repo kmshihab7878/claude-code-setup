@@ -1,3 +1,7 @@
+---
+description: Review code changes for correctness, security, performance, readability, error handling, and tests.
+---
+
 # Code Review
 
 Perform a comprehensive 6-aspect code review on the specified files or recent changes.

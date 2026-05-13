@@ -1,3 +1,7 @@
+---
+description: Route security operations to the appropriate scan, audit, posture, or mission workflow.
+---
+
 # CoreMind Security Ecosystem
 
 Run the orchestrator Security Ecosystem against a target. Routes to the appropriate agent or attack chain.

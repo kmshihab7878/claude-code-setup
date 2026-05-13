@@ -1,3 +1,7 @@
+---
+description: Review repository health across structure, code quality, dependencies, git practices, docs, and security.
+---
+
 Perform a quality review of the current repository. Assess code health, project structure, and development practices.
 
 ## Review Dimensions

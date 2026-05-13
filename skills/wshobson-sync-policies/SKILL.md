@@ -1,3 +1,8 @@
+---
+name: GitOps Sync Policies
+description: Reference for ArgoCD and Flux sync policies, options, and health checks.
+---
+
 # GitOps Sync Policies
 
 ## ArgoCD Sync Policies

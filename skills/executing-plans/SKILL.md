@@ -1,3 +1,8 @@
+---
+name: Executing Plans
+description: Guidance for executing approved plans sequentially with branch checks, progress tracking, and verification.
+---
+
 # Executing Plans
 
 > Never start on main. Execute sequentially. Verify each step. Track progress.

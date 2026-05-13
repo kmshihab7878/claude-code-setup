@@ -1,3 +1,8 @@
+---
+name: Verification Before Completion
+description: Guidance for verifying work with concrete evidence before reporting completion.
+---
+
 # Verification Before Completion
 
 > No "done" without evidence. No "works" without proof. No "correct" without output.

@@ -1,3 +1,8 @@
+---
+name: Subagent-Driven Development
+description: Guidance for assigning, coordinating, and reviewing focused subagent work.
+---
+
 # Subagent-Driven Development
 
 > Fresh agents per task. Two-stage review. Status protocol. No context bleeding.

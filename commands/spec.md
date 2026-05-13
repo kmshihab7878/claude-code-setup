@@ -1,3 +1,7 @@
+---
+description: Create a specification with requirements, acceptance criteria, API contracts, and scope boundaries.
+---
+
 # Specification
 
 Create an executable specification with clear acceptance criteria.

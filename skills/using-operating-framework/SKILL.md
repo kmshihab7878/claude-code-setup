@@ -1,3 +1,8 @@
+---
+name: Operating Framework Meta-Skill
+description: Process checks for applying the operating framework before actions and task transitions.
+---
+
 # Operating Framework Meta-Skill
 
 > Process discipline enforcement layer. Always active. No exceptions.

@@ -1,3 +1,8 @@
+---
+name: Kubernetes Service Specification
+description: Reference for Kubernetes Service types, networking, discovery, and troubleshooting.
+---
+
 # Kubernetes Service Specification Reference
 
 Comprehensive reference for Kubernetes Service resources, covering service types, networking, load balancing, and service discovery patterns.

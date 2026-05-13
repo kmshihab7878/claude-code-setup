@@ -1,3 +1,7 @@
+---
+description: Profile a target, identify bottlenecks, apply focused improvements, and benchmark results.
+---
+
 # Performance Optimization
 
 Profile and optimize the specified code or system component.

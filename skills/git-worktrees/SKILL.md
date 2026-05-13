@@ -1,3 +1,8 @@
+---
+name: Git Worktrees
+description: Guidance for isolated Git worktree workflows and parallel branch development.
+---
+
 # Git Worktrees
 
 > Isolated development environments. Parallel work without branch switching. Clean separation.

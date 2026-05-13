@@ -1,3 +1,8 @@
+---
+name: RBAC Patterns and Best Practices
+description: Reference for Kubernetes RBAC roles, service accounts, permissions, and access checks.
+---
+
 # RBAC Patterns and Best Practices
 
 ## Common RBAC Patterns

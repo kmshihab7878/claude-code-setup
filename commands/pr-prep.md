@@ -1,3 +1,7 @@
+---
+description: Prepare pull request context with change summary, checks, and reviewer notes.
+---
+
 # PR Preparation
 
 Prepare a pull request with summary, tests verification, and reviewer checklist.

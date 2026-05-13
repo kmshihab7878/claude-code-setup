@@ -1,3 +1,8 @@
+---
+name: Branch Finishing
+description: Guidance for verifying, presenting finish options, and closing feature branches safely.
+---
+
 # Branch Finishing
 
 > Tests pass. Base determined. Options presented. Clean finish.

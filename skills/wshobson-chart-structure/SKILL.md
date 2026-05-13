@@ -1,3 +1,8 @@
+---
+name: Helm Chart Structure
+description: Reference for Helm chart organization, metadata, templates, dependencies, and tests.
+---
+
 # Helm Chart Structure Reference
 
 Complete guide to Helm chart organization, file conventions, and best practices.
