@@ -73,7 +73,7 @@ Incremental update: process raw files not yet in wiki/
 This KB is **Layer 4** in the 4-layer memory stack:
 1. claude-mem (vector semantic, cross-session)
 2. MEMORY.md (confidence-scored facts)
-3. Obsidian vault (~Downloads/[redacted-AI-surface], PARA structure)
+3. Obsidian vault (~Downloads/notes-vault, PARA structure)
 4. This KB (synthesized topic articles)
 
 Query order for /ultraplan PRE-STAGE 0: claude-mem → MEMORY.md → Obsidian + INDEX.md → web search

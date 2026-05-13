@@ -1,4 +1,4 @@
-# Operating Framework Quickstart Guide
+# Quickstart Guide
 
 > The 5 most common workflows, end-to-end. Reference this when starting a new
 > session or when unsure which path to take.

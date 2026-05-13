@@ -1,5 +1,5 @@
 # Elite Operations Methodology
-## For `<contributor>/claude-code-setup`
+## For `<your-org>/<your-repo>`
 
 A behavioral execution layer that integrates with your existing `~/.claude/` setup. Turns the Claude Code Operations System doctrine into files that slot directly into your 202-skill, 242-agent-definition, governed-pipeline setup.
 

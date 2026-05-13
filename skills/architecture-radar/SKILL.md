@@ -1,6 +1,6 @@
 ---
 name: "architecture-radar"
-description: "Automated technology trend scanning and architecture pattern extraction for the Engineering department. Monitors open-source trends, framework releases, and architecture patterns. Evaluates applicability to CoreMind stack, produces adoption recommendations, and feeds the engineering self-improvement loop. Use when evaluating new technologies, scanning for architecture patterns, planning tech radar updates, or running the engineering UAOP pipeline."
+description: "Automated technology trend scanning and architecture pattern extraction for the Engineering department. Monitors open-source trends, framework releases, and architecture patterns. Evaluates applicability to orchestrator stack, produces adoption recommendations, and feeds the engineering self-improvement loop. Use when evaluating new technologies, scanning for architecture patterns, planning tech radar updates, or running the engineering UAOP pipeline."
 risk: low
 tags: [engineering, architecture, research, trends]
 created: 2026-03-23

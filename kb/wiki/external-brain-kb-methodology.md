@@ -35,7 +35,7 @@ This is **the fourth memory layer** in a 4-layer stack:
 |-------|----------|------|
 | 1. Vector semantic | claude-mem (SQLite+ChromaDB) | Conversation excerpts |
 | 2. Confidence facts | MEMORY.md | Verified facts with scores |
-| 3. Personal notes | Obsidian (~/Downloads/[redacted-AI-surface]) | PARA-organized notes |
+| 3. Personal notes | Obsidian (~/notes-vault) | PARA-organized notes |
 | 4. Synthesized KB | ~/.claude/kb/wiki/ | Topic articles |
 
 ---
@@ -131,7 +131,7 @@ This is what Andrej Karpathy calls an "external brain" — knowledge that accumu
 
 ## Obsidian Integration
 
-The Obsidian vault at `~/Downloads/[redacted-AI-surface]` is Layer 3 of our memory stack. For the KB specifically, useful Obsidian plugins:
+The Obsidian vault at `~/notes-vault` is Layer 3 of our memory stack. For the KB specifically, useful Obsidian plugins:
 - **Dataview** — query wiki like a database
 - **Obsidian Git** — version control
 - **Linter** — enforce frontmatter standards

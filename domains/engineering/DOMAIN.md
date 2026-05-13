@@ -63,7 +63,7 @@ The SUBDOMAIN.md files are secondary indexes; they exist so a deep-dive into one
 |-------|-----------|--------|-------|
 | `coremind-core` | core/process | CORE | 10-stage pipeline |
 | `governance-gate` | core/process | CORE | 5-layer safety gate |
-| `operating-framework` | core/process | CORE | Operating Framework framework |
+| `operating-framework` | core/process | CORE | framework |
 | `elite-ops` | core/process | CORE | Owner-engineer execution posture |
 | `moyu` | core/process | CORE | Anti-over-engineering guardrail |
 | `coding-workflow` | full-stack | CORE | Pre-impl checklist + incremental workflow |

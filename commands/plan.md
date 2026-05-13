@@ -54,7 +54,7 @@ INTENT:
 | Past conversations | `/recall` skill | Cross-session search across all memory layers |
 | Existing recipes | filesystem | Check `~/.claude/recipes/` for a recipe that already solves this |
 | Library docs | context7 MCP | `resolve-library-id` → `query-docs` for any framework/library question |
-| Obsidian vault | obsidian MCP | Search `~/Downloads/[redacted-AI-surface]` for project notes, research, templates |
+| Obsidian vault | obsidian MCP | Search `~/notes-vault` for project notes, research, templates |
 | External knowledge | brave-search / tavily | Web search for current information beyond training cutoff |
 
 **CRITICAL: Recipe-First Check** — Before building anything from scratch, check if a recipe exists:
@@ -211,7 +211,7 @@ L6  Workers     (13)   tester, debugger, refactorer, documenter, code-reviewer, 
 | Kubernetes | kubernetes | pods, deployments, services, logs, exec |
 | IaC | terraform | plan, apply, state, modules, providers, resources |
 | Maps | google-maps | geocode, directions, places, distance, elevation |
-| Notes vault | obsidian | read/write/search notes, manage tags, frontmatter (~/Downloads/[redacted-AI-surface]) |
+| Notes vault | obsidian | read/write/search notes, manage tags, frontmatter (~/notes-vault) |
 | Sim Studio | sim-studio | visual AI workflow builder (localhost:3100) |
 | Self-improving agent | hermes | conversations, messages, events, skills, multi-platform delivery |
 

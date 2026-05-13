@@ -31,7 +31,7 @@ Layer 2 — Confidence Facts (MEMORY.md)
   Purpose: Load verified ground truth — don't re-derive what's already proven
 
 Layer 3 — Obsidian Vault + KB Wiki
-  obsidian MCP: search ~/Downloads/[redacted-AI-surface] for <topic keywords>
+  obsidian MCP: search ~/notes-vault for <topic keywords>
   Read ~/.claude/kb/wiki/INDEX.md (if exists)
   Purpose: Personal research, prior decisions, project notes
 ```
@@ -106,7 +106,7 @@ INTENT:
 | Past conversations | `/recall` skill | Cross-session search across all memory layers |
 | Existing recipes | filesystem | Check `~/.claude/recipes/` |
 | Library docs | context7 MCP | `resolve-library-id` → `query-docs` |
-| Obsidian vault | obsidian MCP | Search `~/Downloads/[redacted-AI-surface]` |
+| Obsidian vault | obsidian MCP | Search `~/notes-vault` |
 | External knowledge | brave-search / tavily | For current info beyond training cutoff |
 | Raw KB inputs | filesystem | Read `~/.claude/kb/raw/` — unstructured source material |
 

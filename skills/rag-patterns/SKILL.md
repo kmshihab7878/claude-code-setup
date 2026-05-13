@@ -276,7 +276,7 @@ class EpisodicMemory:
 
 ### Integration with Memory MCP
 ```
-# Operator's memory MCP server for persistent RAG memory
+# the operator's memory MCP server for persistent RAG memory
 mcp__memory__create_entities → Document entities
 mcp__memory__add_observations → Document chunks as observations
 mcp__memory__search_nodes → Semantic search across stored knowledge
@@ -356,4 +356,4 @@ def evaluate_rag(
 - **context7** MCP server: Library documentation retrieval
 - **research-methodology** skill: Source credibility assessment
 - **RAG_LLM_REFERENCE.md**: Comprehensive RAG/LLM reference
-- **CoreMind knowledge**: `CoreMind-FRESH/src/coremind/knowledge/`
+- **CoreMind knowledge**: `CoreMind/src/coremind/knowledge/`

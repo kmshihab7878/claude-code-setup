@@ -1,4 +1,4 @@
-# Operating Framework Operating Framework — Pointer
+# Operating Framework — Pointer
 
 > This doc used to be a 255-line reference covering the Operating Framework framework (Test-First, Root-Cause-First, Evidence-First, Approval-First, 1% rule). That content moved to [`skills/operating-framework/SKILL.md`](../skills/operating-framework/SKILL.md) (447 lines — richer and actively loaded on invocation).
 

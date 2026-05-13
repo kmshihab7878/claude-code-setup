@@ -175,7 +175,7 @@ Screenshot → Vision Model → Action Plan → Execute Actions
 
 **Value**: Browser automation via AI agent — natural language → browser actions.
 
-**Comparison with Operator's webapp-testing skill**:
+**Comparison with the operator's webapp-testing skill**:
 | Feature | webapp-testing (Playwright) | Bytebot |
 |---------|---------------------------|---------|
 | Approach | Code-driven selectors | AI vision + NL commands |

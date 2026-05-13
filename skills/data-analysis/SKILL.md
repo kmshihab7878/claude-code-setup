@@ -311,7 +311,7 @@ CREATE TRIGGER entities_updated_at BEFORE UPDATE ON entities
 FOR EACH ROW EXECUTE FUNCTION update_updated_at();
 ```
 
-## integration with operator's environment
+## integration with the operator's environment
 
 | Component | Integration |
 |-----------|------------|

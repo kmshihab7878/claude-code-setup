@@ -356,13 +356,13 @@ Math: 10 + 7 = 17, not 18. Off-by-one. `INVENTORY.md:18` says "Hook entries (tot
 | `CLAUDE.md:270-308` | "Planning & Autonomous Execution Protocol (MANDATORY)" — 13 numbered steps |
 | `commands/plan.md` | **10-stage** pipeline, authoritative for /plan |
 | `commands/ultraplan.md` | **15-stage** pipeline, authoritative for /ultraplan, claims "absorbs /plan entirely" |
-| `skills/coremind-core/SKILL.md` | "10-stage governed orchestration pipeline mirroring CoreMind-FRESH CoreMind" |
+| `skills/coremind-core/SKILL.md` | "10-stage governed orchestration pipeline mirroring the CoreMind orchestrator" |
 | `docs/ELITE-OPS-METHODOLOGY.md:63-81` | Describes pipeline with slightly different stage names: "SANITIZE → PARSE → POLICY GATE → GOAL → PLAN → POLICY GATE → DELEGATE → EXECUTE → REFLECT → TRACK → WORLD STATE → VALIDATE → DELIVER" (13 stages, not 10) |
 | `skills/governance-gate/SKILL.md` | Policy-gate component of the pipeline, but written as if standalone |
-| `skills/operating-framework/SKILL.md` | "Operating Framework Ultimate Operating Framework v1.0" — another pipeline overlay |
+| `skills/operating-framework/SKILL.md` | "Operating Framework v1.0" — another pipeline overlay |
 | `docs/OPERATING_FRAMEWORK.md` | Reference doc for operating-framework skill |
 
-**Count of "the pipeline" authorities:** 9 locations. **Stages disagree:** 10 (plan, coremind-core, CLAUDE.md-section1) vs 13 (ELITE-OPS) vs 15 (ultraplan) vs "13 numbered steps" (CLAUDE.md protocol section) vs "Operating Framework framework" (operating-framework).
+**Count of "the pipeline" authorities:** 9 locations. **Stages disagree:** 10 (plan, coremind-core, CLAUDE.md-section1) vs 13 (ELITE-OPS) vs 15 (ultraplan) vs "13 numbered steps" (CLAUDE.md protocol section) vs "framework" (operating-framework).
 
 **Recommendation**: declare one source of truth (coremind-core SKILL.md is the obvious pick — it's an L0 skill). All other pipeline descriptions should defer to it.
 
@@ -371,7 +371,7 @@ Math: 10 + 7 = 17, not 18. Off-by-one. `INVENTORY.md:18` says "Hook entries (tot
 | File | Scope |
 |---|---|
 | `skills/governance-gate/SKILL.md` | "5 safety layers, 7 policy constraints, 4 escalation tiers" — the mechanical enforcer |
-| `skills/operating-framework/SKILL.md` | "Operating Framework Ultimate Operating Framework" — behavioral rules |
+| `skills/operating-framework/SKILL.md` | "Operating Framework" — behavioral rules |
 | `docs/OPERATING_FRAMEWORK.md` | Reference for operating-framework |
 | `CLAUDE.md § Non-Negotiables` (lines 40-53) | 11 hard rules |
 | `CLAUDE.md § Operating Philosophy` (lines 54-68) | 13 rules |

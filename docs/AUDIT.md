@@ -313,7 +313,7 @@ Lines 209 and 259 of the same file contradict each other. `make validate` passes
 |------|------:|------------------|-------------------|
 | **Self-evolution layer** | ~17 + 5 skills + 3 agents | Explicit evidence gates, kill switch, schema-validated candidates | 2 session records, 0 promoted candidates, empty `candidates/`, `rejected/`, `reports/` |
 | **KB (`kb/`)** | 10 | Schema clear, `/wiki-{ingest,query,lint}` wired, honesty doc labeled | 5 seed articles, `kb/raw/` and `kb/outputs/` empty |
-| **Wave 1 agents (10 domains × intel/gen/loop)** | 126 | 3-stage taxonomy mirrors proven CoreMind-FRESH pattern | ~13-line stubs, no invoking command, dispatched only via REGISTRY dept-head expansion |
+| **Wave 1 agents (10 domains × intel/gen/loop)** | 126 | 3-stage taxonomy mirrors proven CoreMind pattern | ~13-line stubs, no invoking command, dispatched only via REGISTRY dept-head expansion |
 | **Wave 2 surface agents (5 products × 3 stages × 3 agents)** | 45 | Surface-aware routing concept | The 5 surfaces aren't actual products in this repo; 17-line parameterized templates |
 | **MCP-gated skills** (aster-*, hermes-*, sim-studio, aidesigner-frontend) | ~8 | Real content; clear extraction path if MCPs land | Tier-3 MCPs not installed |
 | **Autoresearch** | 2 | Good pattern — iterate, score, keep wins | One template only (aster-trading.md) |

@@ -54,7 +54,7 @@ These files pull the whole graph together. Changing them has the largest blast r
 | — | `agents/README.md` | 52 | Agent index for the directory |
 | — | `skills/README.md` | 51 | Skill index for the directory |
 | — | `commands/planUI.md` | 45 | UI pipeline — routes 28 UI skills + 4 agents |
-| — | `skills/operating-framework/SKILL.md` | 34 | Operating Framework framework references every other core skill |
+| — | `skills/operating-framework/SKILL.md` | 34 | framework references every other core skill |
 | — | `docs/ELITE-OPS-METHODOLOGY.md` | 31 | Methodology doc for Elite-Ops layer |
 | — | `docs/OPERATING_FRAMEWORK.md` | 30 | Framework reference — mentions many /sc: commands |
 

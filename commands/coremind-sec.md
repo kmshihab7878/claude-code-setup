@@ -1,6 +1,6 @@
 # CoreMind Security Ecosystem
 
-Run the CoreMind Security Ecosystem against a target. Routes to the appropriate agent or attack chain.
+Run the orchestrator Security Ecosystem against a target. Routes to the appropriate agent or attack chain.
 
 ## Instructions
 

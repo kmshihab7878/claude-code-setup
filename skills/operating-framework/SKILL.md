@@ -1,8 +1,8 @@
-# Operating Framework Ultimate Operating Framework v1.0
+# Operating Framework v1.0
 
 > The macro-level operating system for Claude Code. Routes tasks, governs execution,
 > structures output. Activated on every meaningful task. Integrates with — never
-> replaces — existing Operating Framework gates, non-negotiables, and commands.
+> replaces — existing framework gates, non-negotiables, and commands.
 
 ## Triggers
 
@@ -11,7 +11,7 @@ This skill activates **automatically on every meaningful task**. It works alongs
 routing, risk assessment, and completion standards.
 
 Trivial tasks (single lookups, file reads, quick answers) bypass the full framework
-but still respect Operating Framework gates.
+but still respect framework gates.
 
 ---
 
@@ -63,7 +63,7 @@ Risk tiers determine **how carefully** to proceed.
 | Tier | Scope | Examples | Requirements |
 |------|-------|----------|--------------|
 | **T0 Safe** | Local, reversible, no side effects | Read files, add comments, format code | Proceed freely |
-| **T1 Local** | Local codebase changes, testable | New function, refactor, add tests | Follow lane + Operating Framework gates |
+| **T1 Local** | Local codebase changes, testable | New function, refactor, add tests | Follow lane + framework gates |
 | **T2 Shared** | Affects shared state, other systems, data | DB migration, API change, config change | Explicit checkpoint before action |
 | **T3 Critical** | Production, financial, security, irreversible | Deploy, trading, credentials, data deletion | Full council review + user approval |
 
@@ -203,7 +203,7 @@ Every task type has **required outputs**.
 
 ## 8. Enforcement Rules
 
-These rules bind the framework to existing Operating Framework non-negotiables.
+These rules bind the framework to existing framework non-negotiables.
 
 | # | Rule | Maps To | Effect |
 |---|------|---------|--------|

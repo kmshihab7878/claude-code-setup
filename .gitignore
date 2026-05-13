@@ -47,8 +47,37 @@ settings.local.json
 metrics/
 skills-audit/
 
-# OS
+# OS / editor artifacts
 .DS_Store
+*.swp
+*.swo
+.vscode/
+!.vscode/extensions.json
+.idea/
+
+# Local environment variants
+.env.*
+!.env.example
+*.local
+
+# Keys and credentials
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+*_rsa
+*_ed25519
+credentials.json
+token.json
+secrets/
+private/
+.local/
+tmp/
+temp/
+
+# Runtime logs
+*.log
+logs/
 
 # Python bytecode / caches (must not leak local paths via .pyc)
 __pycache__/

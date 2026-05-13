@@ -50,7 +50,7 @@ Skip this for trivial diffs (typos, whitespace, one-line docs). The skill return
 
 Output: a 4-section terse report with verdict PROCEED / SIMPLIFY / ASK / STOP. See `references/karpathy-principles.md` for the full reasoning behind each principle.
 
-### SHA-Based Review Requesting (Operating Framework)
+### SHA-Based Review Requesting
 
 When requesting a review from a subagent or another session:
 

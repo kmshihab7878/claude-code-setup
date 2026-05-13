@@ -2,7 +2,7 @@
 
 > Central dispatch table for 243 agents across 7 authority levels.
 > 72 core (includes self-evolution trio + AIS-OS layer trio: devex-operator, wiki-curator, automation-designer) + 126 Wave 1 stage agents + 45 Wave 2 surface agents.
-> Mirrors CoreMind-FRESH's AgentRegistry + DelegationEngine + SEC-001 routing.
+> Mirrors CoreMind's AgentRegistry + DelegationEngine + SEC-001 routing.
 
 ## Authority Hierarchy
 

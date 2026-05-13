@@ -35,7 +35,7 @@ Sync the most important entities from a project's knowledge graph to the Memory 
    - For each `contains` edge (module → key class) → `contains` relation
 
 5. **Add a project-level observation** via `mcp__memory__add_observations`:
-   - Entity: `CoreMind-FRESH`
+   - Entity: `CoreMind`
    - Observations:
      - "Knowledge graph: {N} nodes, {M} edges, {L} layers"
      - "Analyzed at: {timestamp}, commit: {hash}"

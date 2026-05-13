@@ -74,7 +74,7 @@ Model (HF) → Compile (TVM) → Optimize → Deploy
                                     └── CPU (x86/ARM)
 ```
 
-**Operator's Integration**: Complements existing Ollama setup for scenarios needing mobile/browser LLM inference.
+**the operator's Integration**: Complements existing Ollama setup for scenarios needing mobile/browser LLM inference.
 
 ---
 

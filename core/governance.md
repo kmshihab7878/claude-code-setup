@@ -9,7 +9,7 @@
 3. **Verify before asserting** — Read files before claiming their content. Check state before modifying.
 4. **Incremental changes** — Small, testable steps. Commit after each meaningful change.
 5. **Existing conventions** — Follow the project's existing patterns, naming, and structure.
-6. **Test first** — RED-GREEN-REFACTOR. No production code without a failing test. (Operating Framework)
+6. **Test first** — RED-GREEN-REFACTOR. No production code without a failing test.
 7. **Root cause first** — No fixes without investigation and evidence. State root cause before fixing.
 8. **Evidence first** — No "done" without proof. Show test output, logs, or build results.
 9. **Approval first** — No coding from unapproved brainstorm/spec. Get explicit user approval.
@@ -55,7 +55,7 @@
 |---------|-------|------|
 | `core/governance.md` (this file) | Behavioral rules — what to do / not do | doctrine |
 | `skills/governance-gate/SKILL.md` | 5 safety layers + 7 policies + 4 tiers — the policy engine | runtime |
-| `skills/operating-framework/SKILL.md` | Operating Framework framework — process doctrine | reference |
+| `skills/operating-framework/SKILL.md` | framework — process doctrine | reference |
 | `agents/REGISTRY.md § Constitution Rules` | Copy of SEC-001 binding agent authority | reference |
 | `rules/*.md` | Path-scoped rules (python, typescript, security, testing, infrastructure, implementation) | runtime |
 | `hooks/mcp-security-gate.sh` | MCP whitelist enforcement | runtime |

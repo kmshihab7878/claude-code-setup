@@ -236,7 +236,7 @@ def correlate_entities(sources: list[dict]) -> list[dict]:
 - Phone → social media → real identity
 - Image → EXIF data → GPS coordinates → other photos
 
-## integration with operator's environment
+## integration with the operator's environment
 
 | Component | Integration |
 |-----------|------------|

@@ -122,7 +122,7 @@ CORE skills (top ~30 by integration + demo value + differentiation):
 |-------|---------------:|--------|-----------|
 | `skills/coremind-core` | 322 | CORE | 10-stage orchestration pipeline; anchors planning protocol |
 | `skills/governance-gate` | 251 | CORE | 5 safety layers; anchors risk tiers |
-| `skills/operating-framework` | 447 | CORE | Operating Framework framework; top-20 |
+| `skills/operating-framework` | 447 | CORE | framework; top-20 |
 | `skills/elite-ops` | 176 | CORE | Activates `/ship`/`/audit-deep`/`/fix-root` posture |
 | `skills/moyu` | 267 | CORE | Anti-over-engineering guardrail, cited in top-20 |
 | `skills/prompt-reliability-engine` | 386 | CORE | 9-mode prompt framework, top-20 |
@@ -177,7 +177,7 @@ CANDIDATE_FOR_CONSOLIDATION — overlapping skills flagged in `docs/SURFACE-MAP.
 
 Understand-family note: `understand`, `understand-chat`, `understand-dashboard`, `understand-diff`, `understand-explain`, `understand-coremind`, `understand-memory-sync`, `understand-onboard`, `understand-setup` — 9 skills under 70 lines each, all thin wrappers. Keep `understand` + 2–3 differentiated children; the rest are CANDIDATE_FOR_CONSOLIDATION.
 
-Confidence-check / verification-before-completion / subagent-development / executing-plans / receiving-code-review / branch-finishing / git-worktrees: **SUPPORTING** — imported Operating Framework process skills, useful but not routed daily.
+Confidence-check / verification-before-completion / subagent-development / executing-plans / receiving-code-review / branch-finishing / git-worktrees: **SUPPORTING** — imported framework process skills, useful but not routed daily.
 
 EXPERIMENTAL skills:
 
@@ -203,7 +203,7 @@ EXPERIMENTAL skills:
 | `skills/unified-router` | EXPERIMENTAL | Cross-engine router, speculative |
 | `skills/agent-orchestrator` | EXPERIMENTAL | Multi-agent pluggable tooling, unvalidated |
 | `skills/autoresearch` | EXPERIMENTAL | Self-improvement loop; one template only |
-| `skills/understand-coremind` | EXPERIMENTAL | Product-specific (CoreMind-FRESH) variant |
+| `skills/understand-coremind` | EXPERIMENTAL | Product-specific (CoreMind) variant |
 | `skills/understand-memory-sync` | EXPERIMENTAL | Niche sync path |
 
 SUPPORTING skills (the bulk, ~120 skills):
@@ -548,7 +548,7 @@ Which zones of the repo carry which kind of value:
 - **What would change bucket:** meet the exit criteria in `docs/KB-STATUS.md`.
 
 ### Wave 1 stage agents (`agents/{10 domains}/{intel,gen,loop}/*.md` — 126 files)
-- **Promising:** The 3-stage taxonomy (intelligence → generation → loop) mirrors proven CoreMind-FRESH patterns. Authority is declared (L6). Skills list is pre-populated.
+- **Promising:** The 3-stage taxonomy (intelligence → generation → loop) mirrors proven CoreMind patterns. Authority is declared (L6). Skills list is pre-populated.
 - **Unvalidated:** Every file is ~13 lines — frontmatter + one description sentence. No orchestrator actually invokes them (the REGISTRY table enumerates the 66 core agents + department heads, not these 126). No commands depend on them. The capability is advertised, not built.
 - **What would change bucket:** each stage agent gets ≥100 lines of working body + at least one invoking command/recipe OR registry citation. Otherwise, these are scaffolding and the honest move on next pruning pass is to consolidate per-domain into one agent per department with a stage field.
 
@@ -577,7 +577,7 @@ After walking every tracked file: **2 candidates**, both intentionally kept per 
 
 | Path | Reason | Verdict |
 |------|--------|---------|
-| `docs/OPERATING_FRAMEWORK.md` (255 lines) | Pre-dates `skills/operating-framework/SKILL.md` (447 lines). Both cover the same Operating Framework methodology. The skill version is richer; the doc is the earlier inherited artifact. | **CANDIDATE_FOR_CONSOLIDATION**, not ARCHIVAL — still coherent, could be either merged or linked as a summary. Not superseded per se. |
+| `docs/OPERATING_FRAMEWORK.md` (255 lines) | Pre-dates `skills/operating-framework/SKILL.md` (447 lines). Both cover the same framework methodology. The skill version is richer; the doc is the earlier inherited artifact. | **CANDIDATE_FOR_CONSOLIDATION**, not ARCHIVAL — still coherent, could be either merged or linked as a summary. Not superseded per se. |
 | `docs/CAPABILITIES_REPORT.md` (1180 lines) | Huge standalone narrative of capabilities that pre-dates `docs/INVENTORY.md`. The generated inventory replaces the need for a hand-written capabilities doc. | **CANDIDATE_FOR_CONSOLIDATION**, not ARCHIVAL — contains narrative not present in INVENTORY (tool-by-tool rationale). Recommend rewriting as "why these" section linked from README, not deletion. |
 
 **Confirmation: zero true ARCHIVAL files found in the tracked repo.** The `.gitignore` already prevents committed backups (`settings.local.json`, `projects/`, `audit.log`, `history.jsonl`, `usage.jsonl`, `.env`, `*.pem`, `*.key`, `__pycache__/`, `*.pyc`). The expected `CLAUDE.md.backup.*` files from typical `~/.claude/` setups are not in-repo, as intended.

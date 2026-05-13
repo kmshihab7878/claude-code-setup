@@ -1,6 +1,6 @@
 # Elite Operations Methodology
 
-## Integration Map for `<contributor>/claude-code-setup`
+## Integration Map for `<your-org>/<your-repo>`
 
 This methodology transforms the Claude Code Operations System doctrine into an execution layer that integrates with your existing `~/.claude/` setup — 202 skills (includes `elite-ops`), 84 commands (includes 5 mode commands), 242 agent definitions (240 agents + REGISTRY + README), 13 recipes, and the governed pipeline.
 

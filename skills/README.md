@@ -14,8 +14,8 @@
 
 | Skill | Risk | Tags | Description |
 |-------|------|------|-------------|
-| operating-framework | low | process, routing | Operating Framework operating framework v1.0 — lane routing, risk tiers, councils |
-| using-operating-framework | low | meta, process | Meta-skill — always active, routes to other Operating Framework skills |
+| operating-framework | low | process, routing | operating framework v1.0 — lane routing, risk tiers, councils |
+| using-operating-framework | low | meta, process | Meta-skill — always active, routes to other framework skills |
 | confidence-check | low | gate, quality | Pre-implementation confidence assessment (>=90% required) |
 | test-driven-development | low | gate, testing | RED-GREEN-REFACTOR enforcement |
 | verification-before-completion | low | gate, quality | No "done" without evidence |

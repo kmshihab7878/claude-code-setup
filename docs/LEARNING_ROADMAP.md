@@ -1,6 +1,6 @@
 # Learning Roadmap & Curated Resources
 
-> Curated learning paths and tool collections mapped to Operator's environment
+> Curated learning paths and tool collections mapped to the operator's environment
 > Compiled: 2026-03-15
 
 ---
@@ -27,7 +27,7 @@
 
 ### Track 2: LLM Application Development
 
-| Topic | Key Pattern | Operator's Skill/Agent |
+| Topic | Key Pattern | the operator's Skill/Agent |
 |-------|------------|---------------------|
 | Prompt Engineering | System prompts, few-shot, chain-of-thought | claude-api skill |
 | RAG Systems | Chunk → embed → retrieve → generate | rag-patterns skill |
@@ -54,7 +54,7 @@
 
 ### Track 4: DevOps & Infrastructure
 
-| Topic | Key Skills | Operator's Tools |
+| Topic | Key Skills | the operator's Tools |
 |-------|-----------|----------------|
 | Containers | Docker, multi-stage builds, security | docker-specialist agent |
 | Orchestration | Kubernetes, Helm, operators | infra-engineer agent |
@@ -67,7 +67,7 @@
 
 ## Curated Tool Collections
 
-### Top AI Tools Not in Operator's Setup
+### Top AI Tools Not in the operator's Setup
 
 | Tool | Category | Why Notable |
 |------|----------|-------------|
@@ -162,7 +162,7 @@
 
 ---
 
-## Mapping to Operator's Environment
+## Mapping to the operator's Environment
 
 | Track | Relevant Skills | Relevant Agents | Projects |
 |-------|----------------|-----------------|----------|

@@ -11,7 +11,7 @@ triggers:
 
 # Governance Gate — GAOS for Claude Code
 
-> Mirrors CoreMind-FRESH's Governed Autonomous Operating System (GAOS).
+> Mirrors CoreMind's Governed Autonomous Operating System (GAOS).
 > 5 safety layers, 7 policy constraints, 4 escalation tiers.
 > "Governance is architecture, not afterthought."
 

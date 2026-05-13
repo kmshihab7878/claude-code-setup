@@ -1,6 +1,6 @@
 # Curated Tools Reference
 
-> Miscellaneous tools evaluated for Operator's environment
+> Miscellaneous tools evaluated for the operator's environment
 > Compiled: 2026-03-15
 
 ---
@@ -114,7 +114,7 @@ barcharts:
 - Image input for vision models
 - Voice input
 
-**Integration**: Complements Operator's Ollama setup with a polished GUI client. Alternative to terminal-based Ollama interactions.
+**Integration**: Complements the operator's Ollama setup with a polished GUI client. Alternative to terminal-based Ollama interactions.
 
 **Install**: Download from GitHub releases or `brew install --cask enchanted`
 
@@ -207,7 +207,7 @@ cd my-docs && npm start
 | termscp | Transfer files to/from CoreMind servers |
 | sampler | Custom terminal dashboard for CoreMind metrics |
 | Label Studio | Training data for CoreMind ML models (Docker MCP) |
-| Handsontable | CoreMind frontend spreadsheet components |
+| Handsontable | orchestrator frontend spreadsheet components |
 | Enchanted | GUI for local Ollama interactions |
 | Docusaurus | CoreMind documentation site |
 | CoAI | Multi-model chat alternative |

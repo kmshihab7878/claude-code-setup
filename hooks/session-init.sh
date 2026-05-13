@@ -1,5 +1,5 @@
 #!/bin/bash
-# Operating Framework Session Init Hook
+# Session Init Hook
 # Runs on SessionStart — outputs rich project context into the conversation.
 # Inspired by altmemy/claude-code-templates session-context pattern.
 

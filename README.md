@@ -43,7 +43,7 @@ Tasks route via three domain indexes — [`domains/engineering/DOMAIN.md`](domai
 ## Install
 
 ```bash
-git clone https://github.com/<contributor>/claude-code-setup.git
+git clone https://github.com/<your-org>/<your-repo>.git
 cp -r ~/.claude ~/.claude.backup.$(date +%Y%m%d) 2>/dev/null
 rsync -av --exclude='.git' claude-code-setup/ ~/.claude/
 ```

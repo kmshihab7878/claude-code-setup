@@ -1,23 +1,23 @@
 ---
 name: understand-coremind
-description: CoreMind-FRESH specific knowledge graph queries with governance-aware layer mapping and agent hierarchy understanding
+description: CoreMind specific knowledge graph queries with governance-aware layer mapping and agent hierarchy understanding
 argument-hint: <query>
 ---
 
 # /understand-coremind
 
-Query the CoreMind-FRESH knowledge graph with governance-aware context. This skill understands the GAOS architecture, agent hierarchy, and 10-stage pipeline.
+Query the CoreMind knowledge graph with governance-aware context. This skill understands the GAOS architecture, agent hierarchy, and 10-stage pipeline.
 
 ## Instructions
 
-1. **Load the knowledge graph** from `CoreMind-FRESH/.understand-anything/knowledge-graph.json`
+1. **Load the knowledge graph** from `CoreMind/.understand-anything/knowledge-graph.json`
 2. **Parse the query** from `$ARGUMENTS` and determine query type:
 
 ### Query Types
 
 **Architecture queries** ("how does X work", "what is the pipeline", "explain governance"):
 - Map the query to relevant layers and nodes in the graph
-- Explain using the CoreMind governance model:
+- Explain using the orchestrator governance model:
   - **10-stage pipeline**: IntentParser -> PolicyGate -> GoalLedger -> Planner -> DelegationEngine -> AgentCoordinator -> ReflectionLoop -> OutcomeTracker -> WorldState
   - **4-tier governance**: ALLOW (auto-approve) / REVIEW (human check) / ESCALATE (multi-agent review) / BLOCK (deny)
   - **5-layer safety stack**: Input sanitization -> Policy gate -> Execution sandbox -> Output validation -> Recovery

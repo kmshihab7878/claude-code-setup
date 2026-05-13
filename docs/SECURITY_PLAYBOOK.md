@@ -1,7 +1,7 @@
 # Security Playbook
 
 > **Owner**: Repository owner
-> **Scope**: Claude Code environment, CoreMind-FRESH, Aster DEX, MCP servers
+> **Scope**: Claude Code environment, CoreMind, Aster DEX, MCP servers
 > **Last Updated**: 2026-03-15
 > **Rules**: 36 across 8 categories
 
@@ -9,7 +9,7 @@
 
 ## Overview
 
-This playbook defines 36 security rules tailored to Operator's environment. Every rule references a specific file, hook, config, or enforcement mechanism. This is not a generic checklist — it maps to the actual infrastructure.
+This playbook defines 36 security rules tailored to the operator's environment. Every rule references a specific file, hook, config, or enforcement mechanism. This is not a generic checklist — it maps to the actual infrastructure.
 
 ### Category Summary
 

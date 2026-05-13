@@ -80,7 +80,7 @@ class GroupChat:
 ```
 
 **When to use**: Tasks decomposable into independent subtasks, need centralized monitoring.
-**Operator's examples**: `/sc:spawn` (task orchestration), CoreMind AgentCoordinator (SEC-001).
+**the operator's examples**: `/sc:spawn` (task orchestration), CoreMind AgentCoordinator (SEC-001).
 
 ### 2. Tool-Use Agent (ReAct Pattern)
 Agent reasons about tool use in a loop: Thought → Action → Observation.
@@ -217,7 +217,7 @@ Agents communicate directly without central coordinator.
 Multi-level delegation tree with authority cascading.
 
 **When to use**: Organization-like structures, authority-gated operations.
-**Operator's examples**: CoreMind executive suite, GAOS PolicyGate tiers.
+**the operator's examples**: CoreMind executive suite, GAOS PolicyGate tiers.
 
 ### 10. Swarm Intelligence
 Large group of simple agents with emergent collective behavior.
@@ -465,7 +465,7 @@ class RealtimeAgent:
 
 ---
 
-## Integration with Operator's Environment
+## Integration with the operator's Environment
 
 | Component | Role |
 |-----------|------|
@@ -478,7 +478,7 @@ class RealtimeAgent:
 
 ## Cross-references
 
-- **subagent-development** skill (Operating Framework): Claude Code subagent lifecycle
+- **subagent-development** skill: Claude Code subagent lifecycle
 - **AI_AGENT_LANDSCAPE.md**: Framework comparison (AG2, Parlant, LiveKit, etc.)
 - **CoreMind GAOS**: Governed agent execution patterns
 - **SECURITY_PLAYBOOK.md** Rules 15-20: Agent security controls

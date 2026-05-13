@@ -1,5 +1,5 @@
 #!/bin/bash
-# Operating Framework Stop Verification Hook
+# Stop Verification Hook
 # Runs on Stop/SubagentStop — quality gate before Claude finishes.
 # Inspired by altmemy/claude-code-templates stop-verification pattern.
 # Exit 2 = block stopping (critical issues found)

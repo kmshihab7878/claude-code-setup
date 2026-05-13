@@ -12,7 +12,7 @@ Analyze the current codebase and produce a `knowledge-graph.json` file in `.unde
 
 - `$ARGUMENTS` may contain:
   - `--full` — Force a full rebuild, ignoring any existing graph
-  - `--mode coremind` — Use CoreMind-FRESH specific layer patterns and 10-stage pipeline tour (default for CoreMind-FRESH)
+  - `--mode coremind` — Use CoreMind specific layer patterns and 10-stage pipeline tour (default for CoreMind)
   - `--mode claude` — Analyze the Claude Code setup (~/.claude/) instead of a project
   - `--mode generic` — Use generic layer detection for any project
   - A directory path — Analyze a specific project directory
@@ -26,7 +26,7 @@ cd ~/.claude/tools && python3 -m coremind_understand <project_root> [options fro
 ```
 
 **Default behavior:**
-- If current directory is CoreMind-FRESH (contains `src/coremind/`): uses `--mode coremind`
+- If current directory is CoreMind (contains `src/coremind/`): uses `--mode coremind`
 - If `$ARGUMENTS` contains `claude` or `setup`: uses `--mode claude` with `~/.claude` as target
 - Otherwise: uses `--mode generic`
 

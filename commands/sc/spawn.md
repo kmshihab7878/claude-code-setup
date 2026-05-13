@@ -102,7 +102,7 @@ This command produces a TASK HIERARCHY ONLY - delegates execution to other comma
 - Delegation assignments (which `/sc:*` command handles each task)
 - Coordination strategy
 
-### Subagent Status Protocol (Operating Framework)
+### Subagent Status Protocol
 
 Every spawned subagent MUST report using exactly one status:
 
@@ -113,14 +113,14 @@ Every spawned subagent MUST report using exactly one status:
 | `NEEDS_CONTEXT` | Missing information — specify what files/docs needed |
 | `DONE_WITH_CONCERNS` | Complete but flagged issues — list concerns |
 
-### Two-Stage Review Requirement (Operating Framework)
+### Two-Stage Review Requirement
 
 Each subagent's output goes through two reviews before acceptance:
 
 1. **Spec Compliance**: Does output match task description? All acceptance criteria met? No out-of-scope changes?
 2. **Code Quality**: Follows conventions? No security issues? Adequate error handling? Testable?
 
-### Domain Grouping (Operating Framework)
+### Domain Grouping
 
 Group subtasks by domain for efficient delegation:
 - **Data Layer**: schema, migrations, queries, models

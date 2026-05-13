@@ -32,7 +32,7 @@
 - MCP server configuration templates
 - Hook configuration examples
 
-**Integration with Operator's Setup**:
+**Integration with the operator's Setup**:
 - Compare template patterns with existing 40 agents for improvement ideas
 - Evaluate CLAUDE.md template against existing global CLAUDE.md
 - Check for skill patterns not yet in the 34-skill inventory
@@ -81,7 +81,7 @@ gh repo clone UfoMiao/zcf
 - Integration guides with IDEs and tools
 - Performance tips and best practices
 
-**Gap Analysis Against Operator's Setup**:
+**Gap Analysis Against the operator's Setup**:
 
 | Category | Operator Has | Potential Gaps |
 |----------|-----------|----------------|
@@ -103,7 +103,7 @@ gh repo clone UfoMiao/zcf
 - Performance monitoring for agents
 
 **Integration Assessment**:
-- Operator's SuperClaude + BMAD already provide 40 agents
+- the operator's SuperClaude + BMAD already provide 40 agents
 - Could offer patterns for agent monitoring not currently implemented
 - Evaluate for agent health dashboard concepts
 
@@ -125,7 +125,7 @@ gh repo clone UfoMiao/zcf
 - **High value**: Would give Claude Code semantic code understanding
 - **Complementary**: Works alongside existing Pyright LSP plugin in `~/.claude/plugins/`
 - **Multi-language**: Supports any language with an LSP server
-- **MCP Server #9**: Would fit into Operator's MCP server collection
+- **MCP Server #9**: Would fit into the operator's MCP server collection
 
 **Potential Installation**:
 ```bash

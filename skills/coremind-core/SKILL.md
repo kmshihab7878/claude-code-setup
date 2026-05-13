@@ -1,6 +1,6 @@
 ---
 name: coremind-core
-description: 10-stage governed orchestration pipeline mirroring CoreMind-FRESH CoreMind — intent parsing, policy gates, DAG planning, delegation, reflection, and outcome tracking for all non-trivial tasks
+description: 10-stage governed orchestration pipeline mirroring the CoreMind orchestrator — intent parsing, policy gates, DAG planning, delegation, reflection, and outcome tracking for all non-trivial tasks
 type: skill
 triggers:
   - Any non-trivial task requiring multi-step execution
@@ -12,7 +12,7 @@ triggers:
 # CoreMind Core — 10-Stage Governed Pipeline
 
 > "The mind reasons; the system enforces."
-> Adapted from CoreMind-FRESH CoreMind — singleton orchestrator with exclusive decision authority.
+> Adapted from the CoreMind orchestrator — singleton orchestrator with exclusive decision authority.
 
 Claude Code acts as CoreMind. Every objective flows through this pipeline. No shortcuts.
 

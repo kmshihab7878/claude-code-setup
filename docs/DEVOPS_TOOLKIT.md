@@ -1,6 +1,6 @@
 # DevOps & Infrastructure Toolkit
 
-> Infrastructure tools mapped to Operator's environment
+> Infrastructure tools mapped to the operator's environment
 > Covers: desktop apps, dev environments, monitoring, task queues, data anonymization, IoT, IT management
 > Compiled: 2026-03-15
 
@@ -60,7 +60,7 @@ npm run tauri dev
 npm run tauri build
 ```
 
-**When to Use**: Desktop apps where binary size and RAM matter. Operator's `coremind-desktop` could benefit from Tauri migration.
+**When to Use**: Desktop apps where binary size and RAM matter. the operator's `orchestrator-desktop` could benefit from Tauri migration.
 
 ---
 
@@ -101,7 +101,7 @@ devbox generate dockerfile
 }
 ```
 
-**Integration**: Could standardize CoreMind-FRESH dev environment setup.
+**Integration**: Could standardize CoreMind dev environment setup.
 
 ---
 
@@ -260,12 +260,12 @@ docker run -d --name glpi -p 80:80 diouxx/glpi
 
 ---
 
-## Integration with Operator's Environment
+## Integration with the operator's Environment
 
-| Tool | Operator's Integration Point |
+| Tool | the operator's Integration Point |
 |------|---------------------------|
-| Tauri | `coremind-desktop` modernization |
-| Devbox | CoreMind-FRESH dev environment standardization |
+| Tauri | `orchestrator-desktop` modernization |
+| Devbox | CoreMind dev environment standardization |
 | Nezha | Server monitoring for deployed CoreMind instances |
 | Hatchet | CoreMind distributed task execution |
 | Neosync | Test data generation, GDPR compliance |
@@ -274,7 +274,7 @@ docker run -d --name glpi -p 80:80 diouxx/glpi
 | GLPI | IT asset tracking for infrastructure |
 
 ### Deployment via Docker MCP
-All self-hosted tools can be deployed via Operator's Docker MCP server:
+All self-hosted tools can be deployed via the operator's Docker MCP server:
 ```
 mcp__MCP_DOCKER__mcp-exec → Run containers
 mcp__MCP_DOCKER__mcp-find → Find running services

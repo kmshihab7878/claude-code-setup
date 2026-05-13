@@ -11,7 +11,7 @@ Operator invoked `/ultraplan` security audit ("ensure no leak whatsoever") on 20
 1. **Operator OS username** (`<scrubbed>`) embedded in 16 tracked files: 2 audit-doc absolute paths + 14 yaml `author:` fields.
 2. **Second-private-project file paths** (`~/<private-project>/...`) leaked across 25 lines in `docs/SECURITY_PLAYBOOK.md` — same exposure class as the 2026-05-03 incident.
 3. **Operator's real email** (`<scrubbed>@​gmail.​com`) embedded in the **author metadata of every commit** (32+ commits) — discovered during the all-history grep. NOT visible to forward-state file scans.
-4. **Operator's full name** (`Operator <surname>`) still present in older commits' diffs as deletion lines from prior PII sweeps (29 blobs + 2 commit messages).
+4. **Operator's full name** (`the operator`) still present in older commits' diffs as deletion lines from prior PII sweeps (29 blobs + 2 commit messages).
 
 Forward-state fix landed in `944f9fe` (now orphaned). This decision covers the destructive history rewrite that scrubs all four classes from every commit.
 
@@ -113,7 +113,7 @@ Both rewrites combined have orphaned the following from `main`:
 >
 > However, orphaned commits remain cached on github.com and resolve via direct `/commit/<sha>` URLs.
 >
-> Repo: https://github.com/<contributor>/claude-code-setup
+> Repo: https://github.com/<your-org>/<your-repo>
 > Affected PR refs (still pin pre-rewrite SHAs): #1 through #7 — `refs/pull/{1..7}/head`
 > Affected dangling commits include (non-exhaustive): `8482de66...`, `944f9fe3...`, plus ancestors.
 >
@@ -128,7 +128,7 @@ Both rewrites combined have orphaned the following from `main`:
 - [ ] Send GitHub Support email above
 - [ ] Decide whether to encrypt or delete the two pre-rewrite backups in `~/Backups/`
 - [ ] Decide whether to update GLOBAL git config: `git config --global user.email <contributor>@users.noreply.github.com`
-- [ ] After GitHub confirms GC, re-test orphaned SHA URLs with `curl -s -o /dev/null -w "%{http_code}" https://github.com/<contributor>/claude-code-setup/commit/944f9fe` — expect 404
+- [ ] After GitHub confirms GC, re-test orphaned SHA URLs with `curl -s -o /dev/null -w "%{http_code}" https://github.com/<your-org>/<your-repo>/commit/944f9fe` — expect 404
 - [ ] Schedule a follow-up audit in 30 days to verify no regression
 
 ## What this document does NOT contain

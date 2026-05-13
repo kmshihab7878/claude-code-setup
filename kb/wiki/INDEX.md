@@ -42,7 +42,7 @@ This KB is the **fourth memory layer** in a 4-layer stack:
 |-------|----------|------|-------|
 | 1. Vector semantic | claude-mem (SQLite+ChromaDB) | Conversation excerpts | Cross-session search |
 | 2. Confidence facts | MEMORY.md | Verified facts with scores | Persistent ground truth |
-| 3. Personal notes | Obsidian (~/Downloads/[redacted-AI-surface]) | PARA-organized notes | Personal knowledge |
+| 3. Personal notes | Obsidian (~/notes-vault) | PARA-organized notes | Personal knowledge |
 | 4. Synthesized KB | ~/.claude/kb/wiki/ | Topic articles | Persistent synthesis |
 
 **Query order for /ultraplan PRE-STAGE 0:**
@@ -68,7 +68,7 @@ This KB is the **fourth memory layer** in a 4-layer stack:
 - [port-map.md](port-map.md) — Service port assignments *(pending)*
 
 ### Projects
-- [coremind-aion.md](coremind-aion.md) — CoreMind-FRESH / AION architecture *(pending)*
+- [coremind-aion.md](coremind-aion.md) — CoreMind / AION architecture *(pending)*
 - [fincalc-ai.md](fincalc-ai.md) — FinCalc AI project *(pending)*
 
 ### Patterns

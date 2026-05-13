@@ -116,7 +116,7 @@
 ### ASCII Architecture: CoreMind Mapping
 
 ```
-CoreMind GAOS Architecture (Operator's)
+CoreMind GAOS Architecture (the operator's)
 ═══════════════════════════════════
 
                   ┌──────────────┐
@@ -146,7 +146,7 @@ CoreMind GAOS Architecture (Operator's)
 
 ---
 
-## Integration Opportunities with Operator's Setup
+## Integration Opportunities with the operator's Setup
 
 ### Direct Integrations
 

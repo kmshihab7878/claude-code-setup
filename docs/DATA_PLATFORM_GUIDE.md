@@ -98,7 +98,7 @@ walker = pyg.walk(df)  # Opens interactive Tableau-like UI
 
 ---
 
-## Integration with Operator's Environment
+## Integration with the operator's Environment
 
 ### Docker MCP Deployments
 ```bash

@@ -1,6 +1,6 @@
 ---
 name: coremind-sec
-description: CoreMind Autonomous Security Ecosystem — 14 AI-powered agents, 48 tools, 9 attack chains for macOS native pentesting
+description: Autonomous Security Ecosystem — 14 AI-powered agents, 48 tools, 9 attack chains for macOS native pentesting
 version: 1.0.0
 tags: [security, pentesting, hacking, offensive, defensive, osint, forensics, cloud]
 trigger: security testing, pentesting, hacking, vulnerability scanning, OSINT, forensics, exploit, credential attack, compliance

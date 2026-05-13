@@ -66,7 +66,7 @@ Pre-rewrite snapshot at `~/Backups/claude-code-setup-pre-history-rewrite-2026050
 >
 > I've performed a `git filter-repo` history rewrite on a public repository to remove sensitive product information that was accidentally committed. I've force-pushed clean history to all branches. Fresh clones are now clean, but orphaned commits remain cached and accessible via direct SHA URLs.
 >
-> Repo: https://github.com/<contributor>/claude-code-setup
+> Repo: https://github.com/<your-org>/<your-repo>
 > Affected PR refs: #1, #2, #3, #4 — `refs/pull/{1,2,3,4}/head` still pin pre-rewrite SHAs.
 >
 > The orphaned commit SHAs are listed in the operator's local incident notes; I can share them privately if you need them, but I'd prefer not to put them in this public ticket.

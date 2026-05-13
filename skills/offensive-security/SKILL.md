@@ -37,7 +37,7 @@ Before any engagement:
 2. Confirm target scope boundaries
 3. Establish communication channels with asset owners
 4. Document all activities for audit trail
-5. Integration: Use Operator's PostToolUse hook (audit.log) for activity logging
+5. Integration: Use the operator's PostToolUse hook (audit.log) for activity logging
 
 ## methodology: PTES framework
 
@@ -198,7 +198,7 @@ Patterns to test (from SET concepts):
 
 ## tool integration map
 
-| Tool | Purpose | Operator's Integration |
+| Tool | Purpose | the operator's Integration |
 |------|---------|---------------------|
 | Nmap/Masscan | Port scanning | Bash tool |
 | Nuclei | Vulnerability scanning | Bash tool |

@@ -1,6 +1,6 @@
 # Security Arsenal
 
-> Security tools inventory mapped to Operator's environment
+> Security tools inventory mapped to the operator's environment
 > Covers: reconnaissance, scanning, exploitation, forensics, CI/CD security
 > Compiled: 2026-03-15
 
@@ -77,7 +77,7 @@
 
 ## Integration Matrix
 
-### With Operator's MCP Servers
+### With the operator's MCP Servers
 
 | MCP Server | Security Integration |
 |------------|---------------------|
@@ -87,7 +87,7 @@
 | `memory` | Store investigation findings as knowledge graph |
 | `sequential` | Complex threat model reasoning |
 
-### With Operator's Skills & Agents
+### With the operator's Skills & Agents
 
 | Skill/Agent | Arsenal Integration |
 |-------------|---------------------|
@@ -163,7 +163,7 @@ steps:
 
 ## Defensive Patterns Derived from Offensive Tools
 
-| Offensive Technique | Defensive Countermeasure | Operator's Enforcement |
+| Offensive Technique | Defensive Countermeasure | the operator's Enforcement |
 |--------------------|--------------------------|---------------------|
 | SQL injection (sqlmap) | Parameterized queries | CoreMind GAOS Layer 1 |
 | Secret scanning (GitGraber) | Pre-commit hooks | `.githooks/pre-commit` |
