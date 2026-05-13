@@ -29,6 +29,9 @@ BANNED_REGEX=(
 EXCLUDE_PATHSPEC=(
   ':!.gitignore'
   ':!scripts/check-public-safety.sh'
+  ':!scripts/audit-public-readiness.sh'
+  ':!docs/PUBLICATION_CHECKLIST.md'
+  ':!.github/workflows/public-safety.yml'
 )
 
 EXIT=0

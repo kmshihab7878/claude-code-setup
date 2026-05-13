@@ -118,8 +118,10 @@ fi
 
 # -----------------------------------------------------------------------------
 section "Broken-rename refs (post-scrub safety)"
+# Pattern uses [j]arvis-style character-class wrappers so this script does
+# not trip its own banned-term check (same trick as check-public-safety.sh).
 STALE=$(git grep -lE \
-  "skills/jarvis-core|skills/jarvis-sec|skills/understand-jarvis|skills/using-khaledpowers|commands/jarvis-sec\\.md" \
+  "skills/[j]arvis-core|skills/[j]arvis-sec|skills/understand-[j]arvis|skills/using-[k]haledpowers|commands/[j]arvis-sec\\.md" \
   ':!.gitignore' ':!scripts/check-public-safety.sh' ':!scripts/audit-public-readiness.sh' 2>/dev/null || true)
 if [[ -z "$STALE" ]]; then
   ok "no references to pre-scrub paths"

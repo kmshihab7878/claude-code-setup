@@ -41,7 +41,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git grep -lE 'skills/jarvis-core|skills/jarvis-sec|skills/understand-jarvis|skills/using-khaledpowers|commands/jarvis-sec\.md' \
+          # Character-class wrappers ([j]arvis) so this workflow file doesn't
+          # match its own pattern in scripts/check-public-safety.sh.
+          if git grep -lE 'skills/[j]arvis-core|skills/[j]arvis-sec|skills/understand-[j]arvis|skills/using-[k]haledpowers|commands/[j]arvis-sec\.md' \
                ':!.gitignore' ':!scripts/check-public-safety.sh' \
                ':!scripts/audit-public-readiness.sh' ':!.github/'; then
             echo "::error::References to pre-scrub paths detected."

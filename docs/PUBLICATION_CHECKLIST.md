@@ -25,10 +25,13 @@ Both must report zero findings. If a "secret" is a placeholder, replace it with 
 
 ## 3. Forward-tree free-form sweep
 
+The orchestrator runs the canonical banned-term regex plus the broader free-form check (path leaks, env files, `.DS_Store`, stale renamed paths). Run it instead of hand-crafting greps:
+
 ```bash
-git grep -nEi "khaled|shihab|gmail|kmshihab|khaledshihab|jarvis|khaledpowers|shihab-task|MacBook|/Users/[a-z]+" \
-  -- ':!.gitignore' ':!scripts/check-public-safety.sh'
+bash scripts/audit-public-readiness.sh --quick
 ```
+
+Pattern definitions live in `scripts/check-public-safety.sh` (gate) and `scripts/audit-public-readiness.sh` (orchestrator). Both use character-class regex wrappers so the gate's own patterns don't appear as bare literals anywhere a fresh contributor or future history rewrite could neutralize.
 
 Allowed remaining hits:
 
@@ -42,11 +45,14 @@ Anything else: fix.
 ## 4. History scan
 
 ```bash
+# Working tree + history secret scan
 gitleaks detect --no-banner --redact
-git log --all --oneline -i \
-  --grep='khaled\|shihab\|kmshihab\|gmail\|jarvis\|khaledpowers\|shihab-task'
-git grep -nEi "khaled|shihab|kmshihab|khaledshihab|jarvis|khaledpowers|shihab-task" $(git rev-list --all) -- 2>/dev/null | head -100
+
+# Full orchestrator (drops the --quick flag — exercises the cross-history blob grep)
+bash scripts/audit-public-readiness.sh
 ```
+
+The orchestrator's history-blob grep uses the same character-class regex as the forward-tree pass; it greps every reachable commit in `$(git rev-list --all)`. Backup tags keep pre-scrub commits reachable locally and will trigger hits — that's expected. Delete the backup tags once you're certain the rewrite is good (`git tag -d pre-public-scrub-*  pre-handle-rewrite-*`).
 
 If history contains personally-identifying terms, decide:
 
