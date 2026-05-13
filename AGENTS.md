@@ -31,6 +31,7 @@ bash scripts/validate.sh
 - [`README.md`](./README.md)
 - [`docs/SETUP.md`](./docs/SETUP.md)
 - [`docs/SECURITY.md`](./docs/SECURITY.md)
+- [`docs/CONTEXT_BUDGET.md`](./docs/CONTEXT_BUDGET.md)
 - [`docs/PUBLICATION_CHECKLIST.md`](./docs/PUBLICATION_CHECKLIST.md)
 - [`docs/TROUBLESHOOTING.md`](./docs/TROUBLESHOOTING.md)
 - [`CONTRIBUTING.md`](./CONTRIBUTING.md)

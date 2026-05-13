@@ -70,6 +70,23 @@ claude                     # session-start banner should appear
 First-time configuration walkthrough: [`docs/SETUP.md`](docs/SETUP.md).
 If anything fails: [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md).
 
+## Adoption and diagnostics
+
+Before adopting the full setup, check the repo, your local tools, and the context
+surfaces that may load at startup:
+
+```bash
+bash scripts/doctor.sh
+bash scripts/context-budget-report.sh
+bash scripts/validate.sh
+bash scripts/check-public-safety.sh
+```
+
+For adoption depth, safe forking, private context handling, and publishing rules,
+see [`docs/ADOPTION_GUIDE.md`](docs/ADOPTION_GUIDE.md). For local and CI tool
+expectations, see [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md). For keeping
+always-loaded context compact, see [`docs/CONTEXT_BUDGET.md`](docs/CONTEXT_BUDGET.md).
+
 ## Public-safety model
 
 The repository is designed so a fresh clone is publishable without further redaction. Defence layers, in order:
@@ -174,6 +191,9 @@ If you fork this repo for personal use, the first commit on your fork should NOT
 | Topic | Doc |
 |---|---|
 | First-time install / adoption | [`docs/SETUP.md`](docs/SETUP.md) |
+| Adoption guide | [`docs/ADOPTION_GUIDE.md`](docs/ADOPTION_GUIDE.md) |
+| Compatibility matrix | [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) |
+| Context budget guidance | [`docs/CONTEXT_BUDGET.md`](docs/CONTEXT_BUDGET.md) |
 | Common failure modes | [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) |
 | Pre-publication safety checklist | [`docs/PUBLICATION_CHECKLIST.md`](docs/PUBLICATION_CHECKLIST.md) |
 | Hooks reference (all 16) | [`docs/HOOKS.md`](docs/HOOKS.md) |
