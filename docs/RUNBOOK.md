@@ -14,7 +14,15 @@ or, for a complete feature end-to-end:
 /ship <one-line description>
 ```
 
+or, for one bounded objective with explicit success criteria:
+
+```
+/goal <outcome> until <measurable done-state> without <constraints>
+```
+
 Behind the scenes: `/plan` runs Stages 1-3 (parse → context → route), then `/ship` enforces Elite Ops completion criteria. Max 3 parallel subagents. T2+ actions pause for your approval.
+
+`/goal` runs autonomous bounded-task execution using explicit success criteria, constraints, validation loops, and final proof. It stays inside the same risk tiers, approval gates, MCP governance, and safety checks. See [`docs/GOAL_WORKFLOW.md`](./GOAL_WORKFLOW.md).
 
 ## 2. Debug a production issue
 

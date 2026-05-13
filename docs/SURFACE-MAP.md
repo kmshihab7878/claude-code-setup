@@ -7,6 +7,7 @@ When multiple commands/skills overlap, pick the **canonical** one. Specialized a
 | Intent | Canonical | Alternatives | Why canonical |
 |--------|-----------|--------------|---------------|
 | Build a complete feature | `/ship` | `/start-task`, `/sc:implement` | `/ship` has the strictest completion standard and enforces the Elite Ops protocol |
+| Execute one bounded objective | `/goal` | `/ship`, `/plan`, `/complete`, `/handoff` | `/goal` runs autonomous bounded-task execution using explicit success criteria, constraints, validation loops, and final proof. |
 | Plan before building | `/plan` | `/ultraplan`, `/planUI`, `/spec` | `/plan` is the 10-stage governed default. Use `/ultraplan` only for enterprise-risk, cross-system tasks. `/planUI` is a UI-only sub-flow. |
 | Fix a bug | `/fix-root` | `/debug` | `/fix-root` mandates root-cause + regression protection; `/debug` is looser. |
 
