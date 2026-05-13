@@ -1,3 +1,7 @@
+---
+description: Explain a file, function, concept, or architecture at multiple levels of detail.
+---
+
 # Explain
 
 Provide a clear, multi-level explanation of the specified code or concept.

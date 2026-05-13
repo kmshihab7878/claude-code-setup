@@ -1,3 +1,8 @@
+---
+name: Operating Framework
+description: Task routing, risk assessment, execution modes, and completion standards for meaningful work.
+---
+
 # Operating Framework v1.0
 
 > The macro-level operating system for Claude Code. Routes tasks, governs execution,

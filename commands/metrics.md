@@ -1,3 +1,7 @@
+---
+description: Analyze collected operating metrics and report framework health against targets.
+---
+
 # /metrics
 
 > Show framework observability data — how the operating system is performing.

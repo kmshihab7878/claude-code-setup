@@ -1,3 +1,8 @@
+---
+name: Receiving Code Review
+description: Guidance for evaluating review feedback, applying valid changes, and responding with evidence.
+---
+
 # Receiving Code Review
 
 > Technical rigor over social performance. Verify before implementing. Push back with evidence.

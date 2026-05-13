@@ -1,3 +1,7 @@
+---
+description: Audit setup health, command and skill inventory, hooks, disk usage, and governance files.
+---
+
 Perform an automated health check of the ~/.claude/ setup. Report findings in a structured format.
 
 ## Audit Steps

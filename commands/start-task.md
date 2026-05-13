@@ -1,3 +1,7 @@
+---
+description: Classify a task by lane, risk, mode, artifacts, evidence, and next step.
+---
+
 # /start-task
 
 > Route before acting. Every meaningful task starts with a session contract.

@@ -1,3 +1,7 @@
+---
+description: Run a structured retrospective on framework health, memory promotion, and improvements.
+---
+
 # /retro
 
 > Monthly framework retrospective — evaluate and evolve the operating system itself.

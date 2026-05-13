@@ -1,3 +1,7 @@
+---
+description: Generate a completion packet with evidence, changed files, risks, and next steps.
+---
+
 # /complete
 
 > No "done" without proof. Generate the completion packet for the current task.

@@ -1,3 +1,7 @@
+---
+description: Load project structure, stack, architecture, conventions, and key files for task context.
+---
+
 # Context Load
 
 Load and analyze project context for effective assistance.

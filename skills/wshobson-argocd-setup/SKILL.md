@@ -1,3 +1,8 @@
+---
+name: ArgoCD Setup and Configuration
+description: Reference for installing, accessing, and configuring ArgoCD deployments.
+---
+
 # ArgoCD Setup and Configuration
 
 ## Installation Methods

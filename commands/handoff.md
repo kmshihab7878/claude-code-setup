@@ -1,3 +1,7 @@
+---
+description: Generate a session handoff packet for continuing work in a later conversation.
+---
+
 # /handoff
 
 > Generate a session handoff packet for cross-conversation continuity.

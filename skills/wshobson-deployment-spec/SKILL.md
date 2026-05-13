@@ -1,3 +1,8 @@
+---
+name: Kubernetes Deployment Specification
+description: Reference for Kubernetes Deployment fields, patterns, and troubleshooting.
+---
+
 # Kubernetes Deployment Specification Reference
 
 Comprehensive reference for Kubernetes Deployment resources, covering all key fields, best practices, and common patterns.

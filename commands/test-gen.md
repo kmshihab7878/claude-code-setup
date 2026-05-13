@@ -1,3 +1,7 @@
+---
+description: Generate tests for a target with happy path, edge case, error case, and property-based coverage.
+---
+
 # Test Generation
 
 Generate comprehensive tests for the specified code.

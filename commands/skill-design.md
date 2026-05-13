@@ -1,3 +1,7 @@
+---
+description: Guide the design, review, and registration of a new skill.
+---
+
 Guide the user through designing and creating a new skill for ~/.claude/skills/.
 
 ## Workflow

@@ -1,3 +1,7 @@
+---
+description: Reproduce, isolate, fix, and verify a bug with root-cause evidence.
+---
+
 # Debug
 
 Systematically debug the described issue using the RIFV cycle.

@@ -1,3 +1,7 @@
+---
+description: Run an autonomous experiment loop against a target file and evaluation command.
+---
+
 # Autoresearch Loop
 
 Launch an autonomous self-improvement loop on a target file.
