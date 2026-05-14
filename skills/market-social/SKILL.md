@@ -9,13 +9,40 @@ You are the social media engine for `/market social <topic/url>`. You generate a
 
 ## When This Skill Is Invoked
 
-The user runs `/market social <topic/url>`. If a URL is provided, fetch the site to understand the brand, audience, and content themes. If a topic is provided, build the strategy around that topic. Output a full calendar to SOCIAL-CALENDAR.md.
+The user runs `/market social <topic/url>`. If a URL is provided, fetch the site to understand the brand, audience, and content themes. If a topic is provided, build the strategy around that topic. Output a full calendar to `SOCIAL-CALENDAR.md`.
+
+## Reference map
+
+| When | Read |
+|---|---|
+| Picking content types per platform (Phase 2.2) | [`references/content-types-by-platform.md`](references/content-types-by-platform.md) |
+| Writing post hooks (Phase 3 — platform-specific formulas) | [`references/hooks.md`](references/hooks.md) |
+| Engagement tactics + content repurposing (Phases 5 & 6) | [`references/engagement-and-repurposing.md`](references/engagement-and-repurposing.md) |
+| Calendar entry format + trending formats (Phases 7 & 8) | [`references/calendar-and-trends.md`](references/calendar-and-trends.md) |
+
+## Claims, compliance, and platform-policy constraints
+
+Apply to **every** post. Violations get posts removed, accounts shadow-banned, or suspended.
+
+- **No fabricated proof** — testimonials, customer names, results, stats, user counts, awards, partnerships, press. Real data or placeholder slots only.
+- **No engagement bait** — "Like if you agree", "Comment YES", "Share with 5 friends". Banned by Meta; degrades reach across all platforms.
+- **FTC disclosure on paid/sponsored/affiliate.** `#ad` / `#sponsored` / `#partner` at the **start** of the post, not buried in hashtags. Influencer collabs disclose on both sides.
+- **No exaggerated outcome claims** ("Make $10K in a week", "Lose 20 lbs guaranteed"). Use realistic ranges + disclaimers.
+- **Substantiate factual claims.** Stats / comparisons / "studies show" need a citable source or "illustrative example" label.
+- **Regulated categories** (medical, financial, legal) — frame as general info, recommend professional consultation, never imply diagnosis or guaranteed return.
+- **Copyright cleared audio/video/images** only (Meta library, TikTok Commercial Music, Instagram licensed catalog). Many trending sounds are **not** cleared for brand use — verify before posting.
+- **No platform-banned topics in promo** — weapons, drugs, gambling (regulated), adult content, body-shaming, before/after weight-loss with target weight. Flag category.
+- **No personal-attribute implication** ("Hey diabetic", "We see you're in debt"). Banned in ads, degraded in organic.
+- **Content-relevant hashtags only.** No `#FollowForFollow` / `#L4L`, no Instagram-banned tags, no off-topic tags.
+- **Brand-safety pause** during politically sensitive moments, breaking-news cycles, and crisis windows. Flag time-sensitive posts for pre-publish review.
+
+When in doubt, flag for legal/policy review. This skill is not legal advice.
 
 ---
 
-## Phase 1: Brand and Audience Discovery
+## Phase 1: Brand and audience discovery
 
-### 1.1 Brand Context
+### 1.1 Brand context
 
 Establish before generating any content:
 
@@ -29,309 +56,137 @@ Establish before generating any content:
 | **Unique selling points** | Homepage, feature pages | Differentiation in content |
 | **Competitors** | Industry analysis | Competitive content strategy |
 
-### 1.2 Platform Selection
+### 1.2 Platform selection
 
-Recommend platforms based on business type and audience:
+Recommend platforms based on business type and audience. **Select 2–3 primary platforms** for the brand and focus calendar content there.
 
-| Platform | Best For | Audience | Content Type | Posting Frequency |
+| Platform | Best for | Audience | Content type | Posting frequency |
 |----------|---------|----------|-------------|-------------------|
-| **LinkedIn** | B2B, SaaS, agencies, professionals | Decision makers, 25-54 | Thought leadership, case studies | 3-5x/week |
-| **Twitter/X** | Tech, media, creators, real-time | Tech-savvy, 18-45 | Hot takes, threads, engagement | 1-3x/day |
-| **Instagram** | E-commerce, lifestyle, creators, agencies | Visual buyers, 18-40 | Carousels, Reels, Stories | 4-7x/week feed, daily Stories |
-| **TikTok** | Consumer brands, creators, education | Gen Z, millennials, 16-35 | Short-form video, trends | 1-3x/day |
-| **YouTube** | Education, SaaS demos, long-form | All ages, research-intent | Tutorials, reviews, vlogs | 1-2x/week |
-| **Facebook** | Local business, communities, older demo | 30-65+, local audiences | Community, events, groups | 3-5x/week |
-
-Select 2-3 primary platforms for the brand and focus calendar content there.
+| **LinkedIn** | B2B, SaaS, agencies, professionals | Decision makers, 25–54 | Thought leadership, case studies | 3–5×/week |
+| **Twitter/X** | Tech, media, creators, real-time | Tech-savvy, 18–45 | Hot takes, threads, engagement | 1–3×/day |
+| **Instagram** | E-commerce, lifestyle, creators, agencies | Visual buyers, 18–40 | Carousels, Reels, Stories | 4–7×/week feed, daily Stories |
+| **TikTok** | Consumer brands, creators, education | Gen Z, millennials, 16–35 | Short-form video, trends | 1–3×/day |
+| **YouTube** | Education, SaaS demos, long-form | All ages, research-intent | Tutorials, reviews, vlogs | 1–2×/week |
+| **Facebook** | Local business, communities, older demo | 30–65+, local audiences | Community, events, groups | 3–5×/week |
 
 ---
 
-## Phase 2: Content Strategy Framework
+## Phase 2: Content strategy framework
 
-### 2.1 Content Pillars
+### 2.1 Content pillars
 
-Define 4-5 content pillars that anchor all social content. Each pillar represents a broad theme the brand consistently covers:
+Define **4–5 pillars** that anchor all social content:
 
-**Pillar Framework:**
+| # | Pillar | Purpose | Content mix |
+|---|--------|---------|------------|
+| 1 | **Educational** | Establish authority, provide value | How-tos, tips, frameworks, mistakes to avoid |
+| 2 | **Behind-the-Scenes** | Build trust, humanize the brand | Process, team, culture, day-in-the-life |
+| 3 | **Social Proof** | Build credibility, drive conversion | Testimonials, case studies, results, milestones |
+| 4 | **Engagement** | Build community, boost algorithm | Questions, polls, debates, fill-in-the-blank |
+| 5 | **Promotional** | Drive revenue, announce offers | Product launches, features, offers, CTAs |
 
-| Pillar # | Type | Purpose | Content Mix |
-|----------|------|---------|------------|
-| Pillar 1 | **Educational** | Establish authority, provide value | How-tos, tips, frameworks, mistakes to avoid |
-| Pillar 2 | **Behind-the-Scenes** | Build trust, humanize the brand | Process, team, culture, day-in-the-life |
-| Pillar 3 | **Social Proof** | Build credibility, drive conversion | Testimonials, case studies, results, milestones |
-| Pillar 4 | **Engagement** | Build community, boost algorithm | Questions, polls, debates, fill-in-the-blank |
-| Pillar 5 | **Promotional** | Drive revenue, announce offers | Product launches, features, offers, CTAs |
+**Content mix ratio:** 40% educational, 20% behind-the-scenes, 15% social proof, 15% engagement, 10% promotional.
 
-**Content Mix Ratio:** 40% educational, 20% behind-the-scenes, 15% social proof, 15% engagement, 10% promotional
+### 2.2 Content types by platform
 
-### 2.2 Content Types by Platform
+Per-platform content-type mix percentages live in [`references/content-types-by-platform.md`](references/content-types-by-platform.md). One-line summary per platform:
 
-**LinkedIn Content Types:**
-- Text posts (opinion/insight) — 40% of content
-- Carousel documents (PDF slideshows) — 25%
-- Image + caption — 15%
-- Video (native, under 3 min) — 10%
-- Polls — 5%
-- Articles (long-form) — 5%
-
-**Twitter/X Content Types:**
-- Text tweets (opinions, observations) — 40%
-- Threads (3-10 tweets) — 25%
-- Image + caption — 15%
-- Quote tweets with commentary — 10%
-- Polls — 5%
-- Video clips — 5%
-
-**Instagram Content Types:**
-- Carousel posts (educational, storytelling) — 35%
-- Reels (short-form video, 15-60 sec) — 30%
-- Single image + caption — 15%
-- Stories (daily, interactive) — 15%
-- Live — 5%
-
-**TikTok Content Types:**
-- Trending format adaptation — 30%
-- Educational/how-to — 30%
-- Behind-the-scenes — 20%
-- Storytelling — 15%
-- Duets and stitches — 5%
-
-**YouTube Content Types:**
-- Tutorial/how-to (8-15 min) — 35%
-- Listicle/compilation — 20%
-- Review/comparison — 15%
-- Shorts (under 60 sec) — 20%
-- Interview/conversation — 10%
+- **LinkedIn** — text posts 40%, carousel PDFs 25%, image 15%, video 10%, polls 5%, articles 5%.
+- **Twitter/X** — text tweets 40%, threads 25%, image 15%, quote tweets 10%, polls 5%, video 5%.
+- **Instagram** — carousels 35%, Reels 30%, single image 15%, Stories 15%, Live 5%.
+- **TikTok** — trending adaptation 30%, educational 30%, BTS 20%, storytelling 15%, duets/stitches 5%.
+- **YouTube** — tutorial/how-to 35%, listicle 20%, review 15%, Shorts 20%, interview 10%.
 
 ---
 
-## Phase 3: Hook Formulas
+## Phase 3: Hook formulas
 
-### 3.1 Platform-Specific Hooks
+**The first line (or first 3 seconds for video) determines whether someone reads or scrolls past.** Use platform-specific formulas. SKILL.md generates 5–10 hook variants per post by drawing from the catalogs in [`references/hooks.md`](references/hooks.md):
 
-The first line (or first 3 seconds for video) determines whether someone reads or scrolls past. Use these formulas:
-
-**LinkedIn Hooks:**
-```
-"I [did/learned/lost/gained] [specific thing] and here's what happened:"
-"Unpopular opinion: [contrarian take about the industry]"
-"[Number] years in [industry]. Here's what nobody tells you:"
-"Stop [common practice]. Start [better alternative]. Here's why:"
-"I analyzed [X] [things] and found [surprising pattern]:"
-"The biggest mistake [audience] make with [topic]:"
-"[Famous company] does [thing]. Here's what we can learn:"
-"3 things I'd do differently if I started [X] today:"
-```
-
-**Twitter/X Hooks:**
-```
-"Here's a thread on [topic] that nobody is talking about:"
-"[Contrarian statement]. Let me explain."
-"[Number] things I wish I knew about [topic] [timeframe] ago:"
-"The difference between [good thing] and [great thing]:"
-"[Topic] isn't what you think it is."
-"Hot take: [bold claim]"
-"I spent [time] studying [topic]. Here's what I found:"
-"[Audience]: You need to stop [mistake]. Here's why."
-```
-
-**Instagram Hooks (Captions and Reels):**
-```
-"Save this for later" (educational carousel)
-"I tested [X] for [time]. Results inside."
-"The [topic] nobody talks about:"
-"POV: You just discovered [benefit]"
-"[Number] signs you're [problem] (and how to fix it)"
-"My exact [framework/process/system] for [result]:"
-"Before vs after [transformation]"
-"What [audience] gets wrong about [topic]:"
-```
-
-**TikTok Hooks (First 3 Seconds):**
-```
-"Wait, you're still doing [old way]?"
-"Here's the [topic] hack nobody showed you"
-"I need to talk about [trending topic]"
-"If you're a [audience], watch this"
-"The #1 reason your [thing] isn't working"
-"Story time: [intriguing setup]"
-"Replying to @[comment]: [answer]"
-"[Industry] secrets they don't want you to know"
-```
+- **LinkedIn** — story/learning, contrarian opinion, time-in-industry insight, stop/start, analysis-of-X, biggest-mistake, learn-from-Y, "things I'd do differently".
+- **Twitter/X** — thread tease, contrarian statement, retrospective "things I wish I knew", difference between, "isn't what you think", hot take, study insight, audience-direct callout.
+- **Instagram** — "save this", tested-X, "the topic nobody talks about", POV, signs-you-are-X, "my exact system", before/after, "what audience gets wrong".
+- **TikTok** — "wait, you're still doing X?", "the hack nobody showed you", "I need to talk about", "if you're a [audience]", "the #1 reason", story time, "replying to [comment]", "secrets they don't want you to know".
 
 ---
 
-## Phase 4: Hashtag Strategy
+## Phase 4: Hashtag strategy
 
-### 4.1 Hashtag Framework
+### 4.1 Tier framework
 
-Use a tiered approach for every post:
-
-| Tier | Follower Range of Tag | Count | Purpose |
-|------|----------------------|-------|---------|
-| **Niche** | Under 100K posts | 3-5 | Highly targeted, easier to rank |
-| **Medium** | 100K-1M posts | 3-5 | Moderate competition, relevant audience |
-| **Broad** | 1M+ posts | 2-3 | Discovery potential, lower engagement rate |
+| Tier | Tag size | Count | Purpose |
+|------|---------|-------|---------|
+| **Niche** | < 100K posts | 3–5 | Highly targeted, easier to rank |
+| **Medium** | 100K–1M posts | 3–5 | Moderate competition, relevant audience |
+| **Broad** | 1M+ posts | 2–3 | Discovery potential, lower engagement |
 | **Branded** | Custom | 1 | Brand recognition, UGC collection |
 
-**Platform-Specific Hashtag Counts:**
-- Instagram: 5-15 hashtags (in caption or first comment)
-- LinkedIn: 3-5 hashtags (at bottom of post)
-- Twitter/X: 1-2 hashtags (inline or at end)
-- TikTok: 3-5 hashtags (in caption)
+### 4.2 Platform-specific counts
 
-### 4.2 Hashtag Research Process
+- **Instagram:** 5–15 hashtags (in caption or first comment).
+- **LinkedIn:** 3–5 hashtags (at bottom of post).
+- **Twitter/X:** 1–2 hashtags (inline or at end).
+- **TikTok:** 3–5 hashtags (in caption).
 
-For each content pillar, research and document:
-- 5 niche hashtags specific to the brand's sub-industry
-- 5 medium hashtags for the broader industry
-- 3 broad hashtags for general discovery
-- 1 branded hashtag (e.g., #BrandNameTips)
+For each content pillar, research and document: 5 niche + 5 medium + 3 broad + 1 branded hashtag.
 
 ---
 
-## Phase 5: Engagement Tactics
-
-### 5.1 Engagement Boosters
+## Phase 5: Engagement tactics
 
 Include these in the content calendar:
 
-**Questions:** End 30% of posts with an open-ended question to prompt comments
-```
-"What's your biggest challenge with [topic]? Drop it below."
-"Agree or disagree? [Statement]"
-"Which one are you? A) [option] B) [option] C) [option]"
-```
+- **End 30% of posts with an open-ended question.**
+- **Use platform-native polls 1–2× per week.**
+- **Post 1–2× per week of controversial/debate content** (driven by reasoning, not bait — see compliance rules above on "no engagement bait").
+- **Post 1–2× per week of storytelling content** for connection.
 
-**Polls:** Use platform-native polls 1-2x per week
-```
-"What matters most to you in [category]?"
-"How often do you [behavior]?"
-"Which would you choose: [A] or [B]?"
-```
-
-**Controversial/Debate Posts:** 1-2x per week to drive high engagement
-```
-"[Common advice] is terrible advice. Here's why..."
-"[Industry practice] is dead. Change my mind."
-"The industry won't tell you this, but [honest truth]."
-```
-
-**Storytelling Posts:** 1-2x per week for connection
-```
-"3 years ago, I [starting point]. Today, [result]. Here's the journey:"
-"The worst [professional situation] I ever had taught me [lesson]."
-"A client told me [surprising thing] — it changed how I think about [topic]."
-```
+Full templates for each engagement tactic (question / poll / debate / story formulas): [`references/engagement-and-repurposing.md`](references/engagement-and-repurposing.md#5-engagement-tactics).
 
 ---
 
-## Phase 6: Content Repurposing Strategy
+## Phase 6: Content repurposing strategy
 
-### 6.1 The 1-to-10 Repurposing Framework
+**1-to-10 framework:** take ONE long-form piece of content and turn it into 10+ social posts across LinkedIn / Twitter / Instagram (feed + Reel + Story) / TikTok / LinkedIn carousel / quotable single tweet / YouTube Short / Facebook discussion post.
 
-Take ONE long-form piece of content and turn it into 10+ social posts:
+**2-week repurposing schedule** (Day 1 publish → Day 1–2 LinkedIn + Twitter share → Day 3 Instagram carousel + Reel → Day 5 TikTok + Short → Day 7 different angle → Day 10 engagement question → Day 14 ICYMI reshare).
 
-```
-SOURCE: 1 Blog Post / Podcast Episode / YouTube Video / Newsletter
-
-OUTPUT:
-  1. LinkedIn text post — Key insight from the piece
-  2. Twitter thread — 5-7 key takeaways
-  3. Instagram carousel — Main framework or steps visualized
-  4. Instagram Reel — 30-second summary of the key point
-  5. TikTok — Quick tip format of the #1 takeaway
-  6. LinkedIn carousel — PDF slideshow of the framework
-  7. Twitter single tweet — The most quotable line
-  8. Instagram Story — Behind-the-scenes of creating the content
-  9. YouTube Short — Condensed video version
-  10. Facebook post — Discussion question based on the topic
-```
-
-### 6.2 Repurposing Schedule
-
-For each piece of pillar content, schedule repurposed posts over 2 weeks:
-- Day 1: Publish the original content
-- Day 1-2: Share the key insight on LinkedIn and Twitter
-- Day 3: Create an Instagram carousel and Reel
-- Day 5: Post TikTok and YouTube Short
-- Day 7: Share a different angle or takeaway
-- Day 10: Post engagement question related to the topic
-- Day 14: Reshare with "In case you missed it" framing
+Full 1-to-10 framework with platform-specific transformation guidance and the day-by-day schedule: [`references/engagement-and-repurposing.md`](references/engagement-and-repurposing.md#6-content-repurposing).
 
 ---
 
-## Phase 7: 30-Day Content Calendar
+## Phase 7: 30-day content calendar
 
-### 7.1 Calendar Structure
+Generate a complete 30-day calendar with platform-specific posts. Full per-day entry format with placeholder slots: [`references/calendar-and-trends.md`](references/calendar-and-trends.md#calendar-structure).
 
-Generate a complete 30-day calendar with this format:
+### Calendar distribution rules
 
-```
-DAY 1 (Monday):
-  LinkedIn: [Pillar 1 - Educational]
-    Hook: "[Hook text]"
-    Post: [Full post text, 150-300 words]
-    Hashtags: #tag1 #tag2 #tag3
-    Time: 9:00 AM
-    Type: Text post
+The 30-day calendar must follow:
 
-  Twitter/X: [Pillar 4 - Engagement]
-    Tweet: "[Full tweet text, under 280 chars]"
-    Hashtags: #tag1 #tag2
-    Time: 12:00 PM
-    Type: Single tweet
-
-  Instagram: [Pillar 2 - Behind the Scenes]
-    Caption: "[Full caption, 100-200 words]"
-    Visual: [Description of what the image/carousel should contain]
-    Hashtags: [10-15 hashtags]
-    Time: 6:00 PM
-    Type: Carousel (5 slides)
-    Slide 1: [Content]
-    Slide 2: [Content]
-    ...
-```
-
-### 7.2 Calendar Distribution
-
-Ensure the 30-day calendar follows:
-- Each content pillar appears at least 6 times across the month
-- Promotional content never appears 2 days in a row
-- Engagement posts are spread evenly (every 2-3 days)
-- Platform-specific content maximizes each platform's strengths
-- A mix of content types (not all text posts or all carousels)
-- Trending format slots are left flexible with guidance on how to adapt
+- **Each content pillar appears at least 6 times** across the month.
+- **Promotional content never appears 2 days in a row.**
+- **Engagement posts are spread evenly** (every 2–3 days).
+- **Platform-specific content** maximizes each platform's strengths (don't just cross-post identically).
+- **Mix of content types** within each platform (not all text or all carousels).
+- **Trending format slots stay flexible** with adaptation guidance.
 
 ---
 
-## Phase 8: Trending Format Detection
+## Phase 8: Trending format detection
 
-### 8.1 Evergreen Trending Formats
+### Evergreen trending formats
 
-Include these proven formats that consistently perform:
+Ten proven formats that consistently perform across platforms — Listicle Thread, This vs That, Day-in-the-Life, Tutorial Reel, Hot Take, Before/After, Myth vs Reality, Fill-in-the-Blank, POV, Reaction. Full catalog with platform fit per format: [`references/calendar-and-trends.md`](references/calendar-and-trends.md#trending-formats).
 
-| Format | Platform | Description |
-|--------|----------|-------------|
-| **Listicle Thread** | Twitter, LinkedIn | "7 things I learned from [X]" |
-| **This vs That** | All platforms | Side-by-side comparison |
-| **Day in the Life** | TikTok, Instagram | Show daily routine |
-| **Tutorial Reel** | Instagram, TikTok | Step-by-step how-to |
-| **Hot Take** | Twitter, LinkedIn | Contrarian opinion + reasoning |
-| **Before/After** | Instagram, TikTok | Transformation content |
-| **Myth vs Reality** | All platforms | Debunk common misconceptions |
-| **Fill in the Blank** | LinkedIn, Twitter | Community engagement |
-| **POV** | TikTok, Instagram | Point-of-view storytelling |
-| **Reaction** | TikTok | React to industry news or competitor content |
-
-### 8.2 Trend Adaptation Framework
+### Trend adaptation framework
 
 When a new trend emerges, adapt it to the brand using this process:
-1. Identify the trend format (audio, visual style, caption structure)
-2. Find the brand angle (how does this connect to the brand's pillars?)
-3. Adapt the trend within 24-48 hours (speed matters)
-4. Add brand-specific value (don't just copy — add unique insight)
-5. Tag the trend appropriately (hashtags, sounds, formats)
+
+1. **Identify** the trend format (audio, visual style, caption structure).
+2. **Find the brand angle** — how does this connect to the brand's pillars?
+3. **Adapt within 24–48 hours** — speed matters.
+4. **Add brand-specific value** — don't just copy; add unique insight.
+5. **Tag the trend appropriately** — hashtags, sounds, formats. **Verify the audio is cleared for commercial use** before brand accounts post (see compliance rules above).
 
 ---
 
@@ -394,8 +249,6 @@ Write the full output to `SOCIAL-CALENDAR.md`:
 
 ## Terminal Output
 
-Display a condensed summary:
-
 ```
 === SOCIAL MEDIA CALENDAR GENERATED ===
 
@@ -425,8 +278,8 @@ Full calendar saved to: SOCIAL-CALENDAR.md
 
 ## Cross-Skill Integration
 
-- If `BRAND-VOICE.md` exists, match all social copy to documented voice guidelines
-- If `COPY-SUGGESTIONS.md` exists, reuse value propositions and messaging
-- If `COMPETITOR-REPORT.md` exists, use competitor analysis for differentiation content
-- If `EMAIL-SEQUENCES.md` exists, align social content with email campaigns
-- Suggest follow-up: `/market copy` for website messaging, `/market ads` for paid social
+- If `BRAND-VOICE.md` exists, match all social copy to documented voice guidelines.
+- If `COPY-SUGGESTIONS.md` exists, reuse value propositions and messaging.
+- If `COMPETITOR-REPORT.md` exists, use competitor analysis for differentiation content (subject to no-unverified-claims rule above).
+- If `EMAIL-SEQUENCES.md` exists, align social content with email campaigns.
+- Suggest follow-up: `/market copy` for website messaging, `/market ads` for paid social.
