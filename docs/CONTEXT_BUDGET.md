@@ -96,6 +96,25 @@ optimization pick is informed, not arbitrary.
 The report still exits 0 in all of these cases — risk labels are advisory, not
 gates. Treat them as priority guidance for the next PR, not as failures.
 
+### Reference / example / build-output data
+
+Large data artifacts under `references/`, `reference/`, `examples/`, `example/`,
+`output/`, `outputs/`, or any nested `docs/` subtree classify as
+`ACCEPTABLE_LARGE` regardless of byte size. These directories hold lazy assets
+that only enter context when the skill, command, or human explicitly reads
+them. Treat them as lower priority than any startup or routing surface:
+
+- A 130 KB `animation_data.json` under `skills/<x>/examples/<y>/output/` costs
+  nothing per turn — it is reference data for one specific example script.
+- A 700-line `reference/<api>.md` under a skill is fine — it loads only when the
+  skill itself reads it.
+- A 200-line `docs/<subtopic>.md` nested under a skill is fine — same logic.
+
+Do not delete capability-defining examples, API schemas, model tables,
+endpoint docs, or troubleshooting catalogs to make this number smaller. If a
+file is genuinely a generated build artifact, add a short README to its
+folder explaining how to regenerate it and leave the file tracked.
+
 ## Reduce Token Bloat Safely
 
 1. Preserve safety rules, validation, secret scanning, MCP governance, hooks, and
