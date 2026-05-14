@@ -5,137 +5,81 @@ description: Full marketing audit orchestrator launching 5 parallel subagents an
 
 # Marketing Audit Orchestrator
 
-You are the full marketing audit engine for `/market audit <url>`. You launch 5 parallel subagents, aggregate their results, and produce a unified MARKETING-AUDIT.md report that is client-ready and revenue-focused.
+You are the marketing audit engine for `/market audit <url>`. You orchestrate a comprehensive analysis by launching 5 specialist subagents in parallel, then synthesize their findings into a single client-ready marketing audit report. This is the most complex marketing skill — it produces the highest-value deliverable.
 
 ## When This Skill Is Invoked
 
-The user runs `/market audit <url>`. This is the flagship command of the entire suite. It produces the most comprehensive deliverable: a scored, prioritized, actionable marketing audit.
+The user runs `/market audit <url>`. Fetch the target URL, classify the business, launch 5 specialist subagents in parallel, aggregate findings into a unified report saved to `MARKETING-AUDIT.md`, and display a terminal summary.
+
+## Reference map
+
+| When | Read |
+|---|---|
+| Phase 1 discovery — business-type detection signals + key-page map | [`references/audit-framework.md`](references/audit-framework.md) |
+| Phase 2 — per-subagent evaluation checklists | [`references/channel-audits.md`](references/channel-audits.md) |
+| Phase 3.2–3.3 — recommendation classification + revenue impact framework | [`references/benchmarks-and-prioritization.md`](references/benchmarks-and-prioritization.md) |
+| Phase 3.4 — competitor comparison example | [`references/output-examples.md`](references/output-examples.md) |
+
+## Compliance, claims, and audit-integrity constraints
+
+- **No fabricated competitive data.** Competitor scores, named results, and comparison entries must come from real observation of competitor URLs or marked illustrative examples.
+- **Revenue impact estimates are scenarios, not promises.** Always use conservative / moderate / aggressive ranges with confidence labels (High / Medium / Low). Never imply guaranteed outcomes.
+- **Industry benchmarks must be cited or labeled as estimates.** "Industry benchmark CR is 2–4%" needs a source or a 🟡 estimate tag.
+- **Don't recommend dark patterns** (hidden costs revealed late, manipulative opt-outs, forced continuity, "Yes / No-thanks" guilt copy). FTC-banned and damaging long-term.
+- **WCAG 2.2 AA accessibility is non-negotiable** in any recommendation — contrast ≥ 4.5:1 body / ≥ 3:1 large text, ≥ 16px body, keyboard nav, alt text, focus indicators.
+- **Privacy compliance (GDPR / CCPA)** — explicit opt-in for marketing, no pre-checked boxes, privacy policy near forms, no PII targeting in copy.
+- **Subagent independence.** Each subagent works from the same brief but produces its own findings — don't have one subagent's output bias another. Synthesize at Phase 3.
+- **Handle partial-data gracefully.** If a subagent fails or a page is gated, note the gap in the report — don't fabricate the missing analysis.
+- **Mobile-first.** Recommendations must work on the 60%+ of traffic that's mobile.
 
 ---
 
-## Phase 1: Discovery (Pre-Analysis)
+## Phase 1: Discovery (pre-analysis)
 
-Before launching subagents, perform these discovery steps:
+### 1.1 Fetch the target URL
 
-### 1.1 Fetch the Target URL
+`WebFetch` the homepage and up to 5 key interior pages (pricing, about, product/features, blog, contact). Store raw content for subagent consumption.
 
-Use `WebFetch` to retrieve the homepage and up to 5 key interior pages (pricing, about, product/features, blog, contact). Store raw content for subagent consumption.
+### 1.2 Detect business type
 
-### 1.2 Detect Business Type
+Classification shapes every subagent's analysis focus.
 
-Classify the business into one of these categories. This classification shapes every subagent's analysis focus:
+| Business Type | Analysis focus |
+|---|---|
+| **SaaS / Software** | Trial-to-paid conversion, onboarding, feature differentiation, churn signals |
+| **E-commerce** | Product pages, cart abandonment, upsells, reviews, AOV optimization |
+| **Agency / Services** | Trust signals, case studies, positioning, lead qualification |
+| **Local Business** | Local SEO, Google Business Profile, reviews, NAP consistency |
+| **Creator / Course** | Email capture rate, funnel design, testimonials, content quality |
+| **Marketplace** | Supply/demand balance, trust mechanisms, network effects |
 
-| Business Type | Detection Signals | Analysis Focus |
-|---------------|-------------------|----------------|
-| **SaaS/Software** | Free trial CTA, pricing tiers, feature pages, "login" link, API docs | Trial-to-paid conversion, onboarding, feature differentiation, churn signals |
-| **E-commerce** | Product listings, cart, checkout, product categories, reviews | Product pages, cart abandonment, upsells, reviews, AOV optimization |
-| **Agency/Services** | Case studies, portfolio, "work with us", testimonials, contact forms | Trust signals, case studies, positioning, lead qualification |
-| **Local Business** | Address, phone number, hours, "near me", Google Maps embed | Local SEO, Google Business Profile, reviews, NAP consistency |
-| **Creator/Course** | Lead magnets, email capture, course listings, community links | Email capture rate, funnel design, testimonials, content quality |
-| **Marketplace** | Two-sided messaging, buyer/seller flows, listing pages | Supply/demand balance, trust mechanisms, network effects |
+Full detection-signal table per type (free-trial CTA, product listings, case studies, address/hours, lead magnets, two-sided messaging): [`references/audit-framework.md`](references/audit-framework.md).
 
-### 1.3 Identify Key Pages
+### 1.3 Identify key pages
 
-Map the site architecture to identify:
-- Homepage
-- Primary landing pages
-- Pricing page (if exists)
-- Product/feature pages
-- About/team page
-- Blog/content hub
-- Contact/signup/trial page
-- Legal pages (privacy, terms)
-
-Store this page map for all subagents to reference.
+Map: homepage, primary landing pages, pricing page (if exists), product/feature pages, about/team, blog/content hub, contact/signup/trial, legal (privacy, terms). Store the page map for all subagents.
 
 ---
 
-## Phase 2: Analysis (Parallel Subagent Execution)
+## Phase 2: Analysis (parallel subagent execution)
 
-Launch all 5 subagents simultaneously using Claude Code's subagent capability. Each subagent receives the business type, page map, and fetched content.
+Launch **all 5 subagents simultaneously**. Each subagent receives the business type, page map, and fetched content. Full per-subagent evaluation checklists in [`references/channel-audits.md`](references/channel-audits.md).
 
-### Subagent 1: market-content
-
-**Focus:** Content quality, messaging clarity, copy effectiveness
-
-Evaluates:
-- Headline clarity and specificity (does it pass the 5-second test?)
-- Value proposition strength (is the unique value immediately obvious?)
-- Body copy persuasion (does it speak to pain points and desired outcomes?)
-- Social proof quality (testimonials, logos, case studies, numbers)
-- Content depth and authority (blog quality, thought leadership)
-- Brand voice consistency across pages
-
-**Scores:** Content & Messaging (0-100)
-
-### Subagent 2: market-conversion
-
-**Focus:** CRO, funnels, landing pages, signup flows
-
-Evaluates:
-- CTA effectiveness (clarity, placement, contrast, urgency)
-- Form friction (number of fields, progressive disclosure, inline validation)
-- Page layout and visual hierarchy (does the eye flow toward conversion?)
-- Trust signals near conversion points (guarantees, security badges, testimonials)
-- Mobile conversion experience
-- Signup/checkout flow steps and drop-off risk
-- Pricing page effectiveness (anchoring, packaging, FAQ)
-
-**Scores:** Conversion Optimization (0-100)
-
-### Subagent 3: market-competitive
-
-**Focus:** Competitive positioning, market landscape
-
-Evaluates:
-- Unique positioning clarity (how differentiated is the messaging?)
-- Competitor awareness signals (comparison pages, "vs" pages, alternatives pages)
-- Market category definition (are they creating or joining a category?)
-- Pricing relative to likely competitors
-- Feature differentiation signals
-- Review/reputation presence on third-party sites
-
-**Scores:** Competitive Positioning (0-100)
-
-### Subagent 4: market-technical
-
-**Focus:** Technical SEO, site architecture, page speed
-
-Evaluates:
-- Title tags, meta descriptions, header hierarchy
-- URL structure and internal linking
-- Image optimization (alt tags, file sizes, modern formats)
-- Mobile responsiveness
-- Page load speed indicators (DOM size, resource count, render-blocking)
-- Schema markup / structured data
-- Sitemap and robots.txt
-- Core Web Vitals signals (where detectable)
-- Accessibility basics (contrast, form labels, skip navigation)
-
-**Scores:** SEO & Discoverability (0-100)
-
-### Subagent 5: market-strategy
-
-**Focus:** Overall strategy, pricing, growth opportunities
-
-Evaluates:
-- Business model clarity
-- Pricing strategy (value-based, competitor-based, cost-plus)
-- Growth loops (referral, viral, content, sales-led)
-- Retention signals (loyalty programs, community, email nurture)
-- Expansion revenue opportunities (upsells, cross-sells, tiers)
-- Market timing and trends alignment
-- Brand trust signals (about page, team, mission, social proof depth)
-
-**Scores:** Brand & Trust (0-100), Growth & Strategy (0-100)
+| # | Subagent | Focus | Score produced |
+|---|----------|-------|----------------|
+| 1 | **market-content** | Content quality, messaging clarity, copy effectiveness | Content & Messaging (0–100) |
+| 2 | **market-conversion** | CRO, funnels, landing pages, signup flows | Conversion Optimization (0–100) |
+| 3 | **market-competitive** | Competitive positioning, market landscape | Competitive Positioning (0–100) |
+| 4 | **market-technical** | Technical SEO, site architecture, page speed, accessibility | SEO & Discoverability (0–100) |
+| 5 | **market-strategy** | Overall strategy, pricing, growth opportunities, brand trust | Brand & Trust (0–100) + Growth & Strategy (0–100) |
 
 ---
 
-## Phase 3: Synthesis (Aggregation and Scoring)
+## Phase 3: Synthesis (aggregation and scoring)
 
-### 3.1 Scoring Methodology
+### 3.1 Scoring methodology
 
-Compute the composite Marketing Score using weighted averages:
+Composite Marketing Score uses weighted averages:
 
 ```
 Marketing Score = (
@@ -149,80 +93,53 @@ Marketing Score = (
 ```
 
 **Score interpretation:**
+
 | Score Range | Grade | Meaning |
 |-------------|-------|---------|
-| 85-100 | A | Excellent — minor optimizations only |
-| 70-84 | B | Good — clear opportunities for improvement |
-| 55-69 | C | Average — significant gaps to address |
-| 40-54 | D | Below average — major overhaul needed |
-| 0-39 | F | Critical — fundamental marketing issues |
+| 85–100 | A | Excellent — minor optimizations only |
+| 70–84 | B | Good — clear opportunities for improvement |
+| 55–69 | C | Average — significant gaps to address |
+| 40–54 | D | Below average — major overhaul needed |
+| 0–39 | F | Critical — fundamental marketing issues |
 
-### 3.2 Aggregate Recommendations
+### 3.2 Aggregate recommendations
 
-Collect all recommendations from subagents and classify them:
+Classify each recommendation by effort-to-impact:
 
-**Quick Wins** (implement in < 1 week, low effort, high impact):
-- Copy changes to headlines and CTAs
-- Adding missing meta descriptions
-- Adding trust signals near CTAs
-- Fixing broken links or images
-- Adding urgency or social proof
+- **Quick Wins** — < 1 week, low effort, high impact (copy / CTAs / missing meta / trust signals / broken links / urgency).
+- **Strategic Recommendations** — 1–4 weeks, medium effort, high impact (pricing page redesign, comparison pages, lead magnets, email sequences, A/B tests).
+- **Long-Term Initiatives** — 1–3 months, high effort, transformative (content strategy overhaul, SEO gap campaign, funnel redesign, brand repositioning, new growth channel).
 
-**Strategic Recommendations** (1-4 weeks, medium effort, high impact):
-- Redesigning pricing page
-- Building comparison/alternatives pages
-- Creating lead magnets or content upgrades
-- Email sequence implementation
-- Landing page A/B test designs
+Full per-tier example recommendation lists: [`references/benchmarks-and-prioritization.md`](references/benchmarks-and-prioritization.md#aggregate-recommendations).
 
-**Long-Term Initiatives** (1-3 months, high effort, transformative impact):
-- Content marketing strategy overhaul
-- SEO content gap campaign
-- Funnel redesign
-- Brand repositioning
-- New growth channel development
-
-### 3.3 Revenue Impact Estimates
-
-For each recommendation, estimate the revenue impact:
+### 3.3 Revenue impact estimates
 
 ```
-Revenue Impact Formula:
-  Current Monthly Traffic x Conversion Rate Improvement x Average Deal Value
-  = Estimated Monthly Revenue Lift
-
-Example:
-  10,000 visitors x 0.5% conversion lift x $99 ARPU = $4,950/month
+Revenue Impact = Monthly Traffic × Conversion Rate Improvement × Avg Deal Value
+Example: 10,000 visitors × 0.5% conv lift × $99 ARPU = $4,950/mo
 ```
 
-Provide conservative, moderate, and aggressive estimates where possible. Use these qualifiers:
+Always provide conservative / moderate / aggressive ranges. Classify each recommendation:
 
-| Impact Level | Monthly Revenue Lift | Confidence |
-|-------------|---------------------|------------|
-| High Impact | >$5,000/mo or >20% improvement | Based on clear evidence from audit |
-| Medium Impact | $1,000-$5,000/mo or 5-20% improvement | Based on industry benchmarks |
-| Low Impact | <$1,000/mo or <5% improvement | Incremental optimization |
+| Impact level | Monthly revenue lift | Confidence |
+|---|---|---|
+| **High** | >$5,000/mo or >20% improvement | Based on clear evidence from audit |
+| **Medium** | $1,000–$5,000/mo or 5–20% | Based on industry benchmarks |
+| **Low** | <$1,000/mo or <5% | Incremental optimization |
 
-### 3.4 Competitor Comparison Table
+Full framework + worked examples: [`references/benchmarks-and-prioritization.md`](references/benchmarks-and-prioritization.md#revenue-impact).
 
-If the competitive subagent identified competitors, include a comparison:
+### 3.4 Competitor comparison
 
-```markdown
-| Factor | [Target] | Competitor A | Competitor B | Competitor C |
-|--------|----------|-------------|-------------|-------------|
-| Headline Clarity | 6/10 | 8/10 | 5/10 | 7/10 |
-| Value Prop Strength | 5/10 | 7/10 | 6/10 | 8/10 |
-| Trust Signals | 7/10 | 9/10 | 4/10 | 6/10 |
-| CTA Effectiveness | 4/10 | 8/10 | 6/10 | 7/10 |
-| Pricing Clarity | 6/10 | 7/10 | 8/10 | 5/10 |
-| Content Depth | 5/10 | 9/10 | 3/10 | 6/10 |
-```
+If the competitive subagent identified competitors, build a comparison table scoring across factors (headline clarity, value prop strength, trust signals, CTA effectiveness, pricing clarity, content depth) on a 0–10 scale per competitor.
+
+Full template + worked example: [`references/output-examples.md`](references/output-examples.md).
 
 ---
 
 ## Output Format: MARKETING-AUDIT.md
 
-Write the final report to `MARKETING-AUDIT.md` in the current directory with this structure:
+Write the final report to `MARKETING-AUDIT.md` in the current directory:
 
 ```markdown
 # Marketing Audit: [Business Name]
@@ -326,8 +243,6 @@ resource requirements, and projected ROI.]
 
 ## Terminal Output
 
-In addition to the file, display a condensed summary in the terminal:
-
 ```
 === MARKETING AUDIT COMPLETE ===
 
@@ -362,14 +277,13 @@ Full report saved to: MARKETING-AUDIT.md
 
 ## Error Handling
 
-- If the URL is unreachable, report the error and suggest checking the URL
-- If a subagent fails, continue with remaining subagents and note the gap in the report
-- If the site is behind authentication, note what was accessible and recommend manual review for gated content
-- If the site has very little content (single page), adapt the analysis accordingly and note limited scope
+- If the URL is unreachable, report the error and suggest checking the URL.
+- If a subagent fails, continue with remaining subagents and note the gap in the report.
+- If the site is behind authentication, note what was accessible and recommend manual review for gated content.
+- If the site has very little content (single page), adapt the analysis accordingly and note limited scope.
 
 ## Cross-Skill Integration
 
-- If `COMPETITOR-REPORT.md` exists in the current directory, incorporate its findings
-- If `BRAND-VOICE.md` exists, use it to contextualize content analysis
-- Reference other available analyses in the executive summary
-- Suggest follow-up commands: `/market copy`, `/market funnel`, `/market competitors` for deeper dives
+- If `COMPETITOR-REPORT.md` exists in the current directory, incorporate its findings.
+- If `BRAND-VOICE.md` exists, use it to contextualize content analysis.
+- Reference other available analyses in the executive summary.
