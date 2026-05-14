@@ -698,5 +698,5 @@ return [{"json": lookup}]
 
 **See Also**:
 - [SKILL.md](SKILL.md) - Overview and quick start
-- [COMMON_PATTERNS.md](COMMON_PATTERNS.md) - Python-specific patterns
-- [ERROR_PATTERNS.md](ERROR_PATTERNS.md) - Avoid common mistakes
+- [common-patterns.md](common-patterns.md) - Python-specific patterns
+- [error-patterns.md](error-patterns.md) - Avoid common mistakes

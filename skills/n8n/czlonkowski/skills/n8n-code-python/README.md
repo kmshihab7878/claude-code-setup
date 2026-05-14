@@ -76,7 +76,7 @@ This skill activates when you:
 - Return format requirements
 - Standard library overview
 
-### DATA_ACCESS.md (703 lines)
+### references/data-access.md (703 lines)
 **Complete data access patterns**
 - `_input.all()` - Process all items
 - `_input.first()` - Get first item
@@ -85,7 +85,7 @@ This skill activates when you:
 - Webhook body structure (critical gotcha!)
 - Pattern selection guide
 
-### STANDARD_LIBRARY.md (850 lines)
+### references/standard-library.md (850 lines)
 **Available Python modules**
 - json - JSON parsing
 - datetime - Date/time operations
@@ -97,7 +97,7 @@ This skill activates when you:
 - What's NOT available (requests, pandas, numpy)
 - Workarounds for missing libraries
 
-### COMMON_PATTERNS.md (895 lines)
+### references/common-patterns.md (895 lines)
 **10 production-tested patterns**
 1. Multi-source data aggregation
 2. Regex-based filtering
@@ -110,7 +110,7 @@ This skill activates when you:
 9. Top N filtering
 10. String aggregation
 
-### ERROR_PATTERNS.md (730 lines)
+### references/error-patterns.md (730 lines)
 **Top 5 errors with solutions**
 1. ModuleNotFoundError (external libraries)
 2. Empty code / missing return
@@ -335,13 +335,13 @@ Use JavaScript instead when:
 
 **Beginner**:
 1. Read SKILL.md - Understand the limitation
-2. Try DATA_ACCESS.md examples - Learn `_input` patterns
+2. Try references/data-access.md examples - Learn `_input` patterns
 3. Practice safe dictionary access with `.get()`
 
 **Intermediate**:
-4. Study STANDARD_LIBRARY.md - Know what's available
-5. Try COMMON_PATTERNS.md examples - Use proven patterns
-6. Learn ERROR_PATTERNS.md - Avoid common mistakes
+4. Study references/standard-library.md - Know what's available
+5. Try references/common-patterns.md examples - Use proven patterns
+6. Learn references/error-patterns.md - Avoid common mistakes
 
 **Advanced**:
 7. Combine multiple patterns
@@ -354,8 +354,8 @@ Use JavaScript instead when:
 ## Support
 
 **Questions?**
-- Check ERROR_PATTERNS.md for common issues
-- Review COMMON_PATTERNS.md for examples
+- Check references/error-patterns.md for common issues
+- Review references/common-patterns.md for examples
 - Consider using JavaScript instead
 
 **Related Skills**:

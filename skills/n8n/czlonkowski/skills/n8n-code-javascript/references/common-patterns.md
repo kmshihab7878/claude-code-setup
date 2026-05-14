@@ -1105,6 +1105,6 @@ return [{json: {report, items: top10}}];
 - Template literals for formatting
 
 **See Also**:
-- [DATA_ACCESS.md](DATA_ACCESS.md) - Data access methods
-- [ERROR_PATTERNS.md](ERROR_PATTERNS.md) - Avoid common mistakes
-- [BUILTIN_FUNCTIONS.md](BUILTIN_FUNCTIONS.md) - Built-in helpers
+- [data-access.md](data-access.md) - Data access methods
+- [error-patterns.md](error-patterns.md) - Avoid common mistakes
+- [builtin-functions.md](builtin-functions.md) - Built-in helpers
