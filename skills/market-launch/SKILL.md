@@ -6,18 +6,31 @@ description: Product/service launch playbook generator producing week-by-week ta
 # Product/Service Launch Playbook Generator
 
 ## Skill Purpose
-Generate a complete, week-by-week launch playbook for any product, service, or feature launch. This skill produces a tactical plan with templates, checklists, email sequences, social posts, and metrics tracking -- everything needed to execute a successful launch.
+
+Generate a complete, week-by-week launch playbook for any product, service, or feature launch. This skill produces a tactical plan with templates, checklists, email sequences, social posts, and metrics tracking — everything needed to execute a successful launch.
 
 ## When to Use
-- User is planning to launch a new product, service, feature, or offering
-- User asks for a launch plan, go-to-market strategy, or launch checklist
-- User wants to coordinate a multi-channel launch campaign
-- Triggered by `/market launch` or `/market launch <product description>`
+
+- User is planning to launch a new product, service, feature, or offering.
+- User asks for a launch plan, go-to-market strategy, or launch checklist.
+- User wants to coordinate a multi-channel launch campaign.
+- Triggered by `/market launch` or `/market launch <product description>`.
+
+## Reference map
+
+| When | Read |
+|---|---|
+| Generating the week-by-week task list (Step 3) | [`references/timeline.md`](references/timeline.md) |
+| Writing the email sequences (Step 4) | [`references/email-templates.md`](references/email-templates.md) |
+| Writing the social-media posts (Step 5) | [`references/social-templates.md`](references/social-templates.md) |
+| Press outreach + partner coordination (Steps 6 & 7) | [`references/outreach.md`](references/outreach.md) |
+| Full KPI benchmarks + the common-mistakes catalog (Steps 8 & 9) | [`references/metrics-and-antipatterns.md`](references/metrics-and-antipatterns.md) |
 
 ## How to Execute
 
-### Step 1: Gather Launch Context
-Before generating the playbook, collect these inputs from the user (ask if not provided):
+### Step 1: Gather launch context
+
+Collect these inputs from the user (ask if not provided):
 
 1. **What are you launching?** (product, service, feature, course, event)
 2. **Who is the target audience?** (demographics, pain points, existing list size)
@@ -28,7 +41,8 @@ Before generating the playbook, collect these inputs from the user (ask if not p
 7. **Do you have existing customers/users?** (for beta, testimonials, case studies)
 8. **What is the budget?** (bootstrapped, moderate, well-funded)
 
-### Step 2: Determine Launch Type
+### Step 2: Determine launch type
+
 Select the primary launch strategy based on the user's context:
 
 | Launch Type | Best For | Key Channel | Timeline |
@@ -41,358 +55,60 @@ Select the primary launch strategy based on the user's context:
 | Partner Launch | B2B, enterprise, marketplace | Partner channels | 8-12 weeks |
 | Hybrid Launch | Any high-stakes launch | Multi-channel coordinated | 8-12 weeks |
 
-### Step 3: Generate the 8-Week Launch Timeline
-
-#### Weeks 1-2: Foundation
-**Objective:** Lock in positioning, build assets, set up infrastructure.
-
-**Tasks:**
-- [ ] Define launch positioning statement: "For [TARGET] who [PROBLEM], [PRODUCT] is a [CATEGORY] that [KEY BENEFIT]. Unlike [ALTERNATIVE], we [DIFFERENTIATOR]."
-- [ ] Create launch one-pager (internal alignment doc)
-- [ ] Set up landing page / waitlist page
-- [ ] Set up analytics and tracking (UTM parameters, conversion goals, event tracking)
-- [ ] Create launch-specific email list/segment
-- [ ] Draft all email sequences (see Email Templates below)
-- [ ] Brief design team on visual assets needed
-- [ ] Identify 10-20 potential beta testers or early access users
-- [ ] Research and list 20+ communities, forums, and groups where target audience gathers
-- [ ] Set up social media content calendar tool
-
-**Deliverables:**
-- Positioning statement
-- Landing page live
-- Email sequences drafted
-- Beta tester list
-
-#### Weeks 3-4: Audience Building
-**Objective:** Build anticipation, grow waitlist, recruit beta testers.
-
-**Tasks:**
-- [ ] Begin content seeding: publish 2-3 blog posts / threads related to the problem you solve
-- [ ] Share behind-the-scenes content on social media (building in public)
-- [ ] Start engaging in target communities (provide value, don't pitch yet)
-- [ ] Reach out to beta testers with personal invitations
-- [ ] Collect early feedback and testimonials from beta users
-- [ ] Begin influencer/partner outreach (see Partner Coordination below)
-- [ ] Set up referral mechanism for waitlist (e.g., viral waitlist with rewards)
-- [ ] Create teaser content (sneak peeks, countdowns, problem-awareness posts)
-- [ ] Record demo video or product walkthrough
-- [ ] Write press release or media pitch (if relevant)
-
-**Content Calendar (Weeks 3-4):**
-| Day | Content Type | Channel | Theme |
-|---|---|---|---|
-| Mon | Problem-awareness post | LinkedIn/Twitter | Why this problem matters |
-| Tue | Behind-the-scenes | Instagram/Twitter | Show what you're building |
-| Wed | Educational content | Blog/LinkedIn | Teach something related to your space |
-| Thu | Social proof | Twitter/LinkedIn | Beta tester quote or result |
-| Fri | Teaser/countdown | All channels | Build anticipation for launch |
-
-**Deliverables:**
-- 4-6 content pieces published
-- Beta testers onboarded and providing feedback
-- Waitlist growing
-- Partner/influencer commitments secured
-
-#### Weeks 5-6: Pre-Launch Intensification
-**Objective:** Maximize anticipation, finalize assets, prep launch infrastructure.
-
-**Tasks:**
-- [ ] Send pre-launch email sequence to waitlist (see Email Templates)
-- [ ] Increase social media posting frequency to daily
-- [ ] Publish case study or results from beta testers
-- [ ] Finalize pricing and offer structure
-- [ ] Create launch-day content package (all posts, emails, and graphics ready)
-- [ ] Brief partners/affiliates on launch plan and provide swipe copy
-- [ ] Set up live chat or support for launch day
-- [ ] Test all purchase/signup flows end-to-end
-- [ ] Prepare FAQ document for support team
-- [ ] Create urgency mechanism (early bird pricing, limited spots, bonus expiration)
-- [ ] Rehearse launch day by walking through every step
-- [ ] Set up real-time dashboard for launch metrics
-
-**Deliverables:**
-- All launch assets finalized and scheduled
-- Partners briefed and ready
-- Checkout/signup flow tested
-- Support team prepared
-
-#### Week 7: LAUNCH WEEK
-**Objective:** Execute the launch with maximum impact and coordinated effort.
-
-**Day-by-Day Breakdown:**
-
-**Monday - Soft Launch / VIP Access:**
-- Send early access email to VIPs, beta testers, and top waitlist members
-- Post on social: "We're live for our early supporters"
-- Collect first-day feedback and testimonials
-- Monitor for bugs and issues
-- Goal: First 50-100 users/customers
-
-**Tuesday - Public Announcement:**
-- Send main launch email to full list
-- Publish launch blog post
-- Post launch announcement on all social channels
-- Submit to Product Hunt (if applicable -- schedule for 12:01 AM PT)
-- Activate partner/affiliate promotions
-- Begin paid ad campaigns (if applicable)
-- Goal: Maximum visibility and traffic
-
-**Wednesday - Social Proof Push:**
-- Share first customer testimonials and results
-- Repost/retweet customer reactions
-- Send "look what people are saying" email
-- Post in communities (with genuine value, not spam)
-- Respond to every comment, mention, and question
-- Goal: Build momentum through social proof
-
-**Thursday - Objection Handling:**
-- Publish FAQ or "everything you need to know" post
-- Send email addressing top 3 objections
-- Host live Q&A or AMA (Twitter Space, LinkedIn Live, webinar)
-- Share comparison content (why this vs alternatives)
-- Goal: Convert fence-sitters
-
-**Friday - Urgency and Scarcity:**
-- Send "early bird pricing ends soon" email
-- Post countdown content on social
-- Share final testimonials and case studies
-- Activate scarcity mechanisms (limited spots, bonus expires)
-- Goal: Drive final wave of conversions
-
-**Saturday/Sunday - Wrap Up:**
-- Send "last chance" email for any time-limited offers
-- Compile launch week results
-- Thank early customers publicly
-- Begin post-launch content planning
+### Step 3: Generate the 8-week launch timeline
 
-#### Week 8: Post-Launch
-**Objective:** Maintain momentum, collect feedback, plan next iteration.
-
-**Tasks:**
-- [ ] Send post-launch survey to new customers
-- [ ] Compile and analyze launch metrics (see Metrics section)
-- [ ] Write launch retrospective (what worked, what didn't, what to change)
-- [ ] Transition from launch pricing to regular pricing
-- [ ] Set up onboarding email sequence for new customers
-- [ ] Plan next content calendar based on launch learnings
-- [ ] Follow up with media contacts and partners with results
-- [ ] Identify top customers for case studies
-- [ ] Begin planning v2 features based on feedback
-- [ ] Set up ongoing marketing engine (content, ads, email nurture)
+Plan backwards from the user's launch date. Phases (full per-week tasks + deliverables in [`references/timeline.md`](references/timeline.md)):
 
-### Step 4: Email Sequence Templates
+| Phase | Weeks | Objective |
+|---|---|---|
+| **Foundation** | 1–2 | Lock in positioning, build assets, set up infrastructure (positioning statement, landing page, email-capture, analytics, asset library). |
+| **Audience Building** | 3–4 | Grow the launch list, warm the audience, line up partners (lead magnet, social cadence, partner outreach, "build-in-public" updates). |
+| **Pre-Launch Intensification** | 5–6 | Open beta / waitlist, build social proof, schedule launch content (early testimonials, case studies, scheduled email sequence, scheduled social posts). |
+| **LAUNCH WEEK** | 7 | Hour-by-hour launch-day plan: launch sequence emails, scheduled social, partner activation, monitoring, real-time response. |
+| **Post-Launch** | 8 | Sustain momentum, capture insights (post-launch emails, retrospective, customer-success follow-up, second-wave activation). |
 
-#### Pre-Launch Sequence (Weeks 5-6)
+Always include a **"minimum viable launch"** option for users with limited resources.
 
-**Email 1: The Teaser (2 weeks before)**
-Subject: Something big is coming...
-Purpose: Build anticipation
-Content: Hint at the product, share the problem it solves, tease the launch date. Don't reveal everything.
-CTA: "Stay tuned" or "Make sure you're on the list"
+### Step 4: Email sequence templates
 
-**Email 2: The Reveal (1 week before)**
-Subject: Here's what we've been building
-Purpose: Show the product, build desire
-Content: Reveal the product with screenshots/video. Share beta tester results. Announce launch date and any early bird offer.
-CTA: "Mark your calendar" or "Get notified on launch day"
+Generate customized versions of the **pre-launch sequence (weeks 5–6)** and the **launch sequence (week 7)** for the user's product. Full templates: [`references/email-templates.md`](references/email-templates.md).
 
-**Email 3: The Social Proof (3 days before)**
-Subject: "[Beta Tester Name] got [Result] in [Timeframe]"
-Purpose: Prove it works
-Content: Feature 2-3 beta tester testimonials with specific results. Address the "does this actually work?" objection.
-CTA: "Be ready for [launch day]"
+### Step 5: Social media launch posts
 
-#### Launch Sequence (Week 7)
+Generate platform-specific posts for the user's chosen channels (pick from Twitter/X thread, LinkedIn post, Instagram/visual). Full templates: [`references/social-templates.md`](references/social-templates.md).
 
-**Email 4: The Launch (Day 1)**
-Subject: It's live -- [Product Name] is here
-Purpose: Drive immediate action
-Content: Announce the launch. State the offer clearly. Include early bird pricing or bonus. Link directly to purchase/signup.
-CTA: "Get [Product] now" with primary button
+### Step 6: Press and media outreach
 
-**Email 5: The Social Proof Follow-Up (Day 3)**
-Subject: People are already seeing results
-Purpose: Convert through social proof
-Content: Share first-customer testimonials, screenshots of reactions, usage stats. Create FOMO.
-CTA: "Join [X] others who already [outcome]"
+Only if the launch warrants press (newsworthy hook, novel product, fundraising tie-in). Generate the pitch email + media list + timing. Full template + media-list patterns: [`references/outreach.md`](references/outreach.md).
 
-**Email 6: The Objection Handler (Day 4)**
-Subject: "But what if [common objection]?"
-Purpose: Address hesitations
-Content: List and answer top 3-5 objections. Include guarantee/risk reversal. Share FAQ.
-CTA: "Try it risk-free"
+### Step 7: Influencer and partner coordination
 
-**Email 7: The Urgency Close (Day 5-7)**
-Subject: [X hours] left for [early bird / bonus / discount]
-Purpose: Drive final conversions with urgency
-Content: Remind of the deadline. Recap the value. Final testimonial. Clear, single CTA.
-CTA: "Last chance to get [offer]"
+Generate the partnership outreach email + coordination timeline (4 weeks out → launch day → post-launch). Full template + cadence: [`references/outreach.md`](references/outreach.md).
 
-### Step 5: Social Media Launch Posts
+### Step 8: Launch metrics dashboard
 
-#### Twitter/X Thread Template:
-```
-Post 1: After [X months/weeks] of building, I'm thrilled to announce [Product Name] is live.
+Build the metrics dashboard the user will track during and after launch. Categories:
 
-[Product] helps [target audience] [achieve outcome] without [pain point].
+- **Acquisition** — landing-page traffic, conversion rate, paid-ad CTR/CPC, organic-vs-paid mix, email signups.
+- **Engagement** — email open / click rates per sequence, social impressions / engagement rate / saves, video watch time, comments.
+- **Revenue** — units sold, gross/net revenue vs goal, AOV, conversion rate by channel, refund/churn rate.
+- **Brand** — share of voice, sentiment, branded search volume, press mentions, partner-driven reach.
 
-Here's the story of why I built it (and what it can do for you):
+Full KPI tables with target benchmarks per launch type: [`references/metrics-and-antipatterns.md`](references/metrics-and-antipatterns.md).
 
-[Thread emoji] 1/
+### Step 9: Common launch mistakes to avoid
 
-Post 2: The problem: [Describe the problem in detail. Make it relatable.]
+Top 5 to call out in every playbook:
 
-Post 3: The solution: [What your product does, in simple terms. Include screenshot or demo GIF.]
+1. Launching to a cold audience (no list / no community warmed up).
+2. Single-day launch with no pre- or post-launch runway.
+3. No social proof — testimonials, case studies, or beta wins.
+4. Vague positioning — generic value props nobody can act on.
+5. No real-time response plan for launch day (questions, refunds, bugs).
 
-Post 4: Early results: [Beta tester results, specific numbers]
+Full catalog (≈12 mistakes with prevention checklist each): [`references/metrics-and-antipatterns.md`](references/metrics-and-antipatterns.md).
 
-Post 5: What's included: [Key features as bullet points]
-
-Post 6: Special launch offer: [Pricing, early bird deal, bonus]
-
-Post 7: Try it now: [Link] [CTA]
-```
-
-#### LinkedIn Post Template:
-```
-I just launched [Product Name], and here's why it matters:
-
-[1-2 sentences about the problem]
-
-After [talking to X customers / spending Y months building / experiencing this problem myself], I realized [insight].
-
-So I built [Product Name] to [specific outcome].
-
-Early users are already seeing:
-- [Result 1]
-- [Result 2]
-- [Result 3]
-
-If you [target audience descriptor], I'd love for you to check it out:
-[Link]
-
-Special launch pricing available for the next [timeframe].
-
-#relevant #hashtags
-```
-
-#### Instagram / Visual Platform Template:
-```
-Image/Carousel: Product screenshots, before/after, or results graphic
-
-Caption:
-[Hook - first line that stops the scroll]
-
-The problem: [1-2 sentences]
-The solution: [1-2 sentences about your product]
-The results: [specific outcomes from beta users]
-
-Launch special: [offer details]
-
-Link in bio to get started.
-
-[Relevant hashtags - 15-20 for Instagram]
-```
-
-### Step 6: Press and Media Outreach
-
-**Press Release Structure:**
-1. Headline: [Company] Launches [Product] to Help [Audience] [Outcome]
-2. Subheadline: [Supporting detail with a key stat or differentiator]
-3. First paragraph: Who, what, when, where, why (the news)
-4. Quote from founder/CEO
-5. Product details and key features
-6. Market context (why now, market size, trend)
-7. Customer quote or early results
-8. Availability and pricing
-9. About the company (boilerplate)
-10. Contact information
-
-**Media Pitch Email Template:**
-```
-Subject: [Angle] -- [Product Name] launches to [outcome]
-
-Hi [Name],
-
-I'm reaching out because you've covered [related topic] and I thought [Product Name] might be interesting for your readers.
-
-[One sentence about what it does and why it's newsworthy]
-
-[One sentence about early traction or results]
-
-[One sentence about what makes it different]
-
-I'd love to offer you [exclusive story / early access / founder interview / demo].
-
-Happy to share more details if you're interested.
-
-Best,
-[Name]
-```
-
-### Step 7: Influencer and Partner Coordination
-
-**Partner Outreach Timeline:**
-- Week 3: Initial outreach with personal message
-- Week 4: Follow up, share product details and demo
-- Week 5: Confirm participation, send swipe copy and affiliate links
-- Week 6: Reminder with launch day schedule
-- Week 7: Day-of coordination, thank you notes
-- Week 8: Share results, pay commissions, plan ongoing partnership
-
-**What to Provide Partners:**
-- Product access (free account or sample)
-- Swipe copy for email, social, and blog
-- Branded graphics and assets
-- Unique affiliate/referral link with tracking
-- Commission structure or reciprocal promotion plan
-- Launch day schedule with specific asks
-
-### Step 8: Launch Metrics Dashboard
-
-Track these metrics in real-time during launch week:
-
-**Awareness Metrics:**
-- Website traffic (total and by source)
-- Social media impressions and reach
-- Press mentions and backlinks
-- Email open rates
-
-**Engagement Metrics:**
-- Time on site
-- Pages per session
-- Social media engagement rate
-- Email click-through rates
-- Demo video completion rate
-
-**Conversion Metrics:**
-- Signup/purchase conversion rate
-- Revenue generated
-- Average order value
-- Cost per acquisition
-- Email-to-conversion rate
-
-**Retention Metrics (Post-Launch):**
-- Day 1 / Day 7 retention
-- Feature adoption rate
-- Support ticket volume
-- NPS score
-
-### Step 9: Common Launch Mistakes to Avoid
-
-1. **Launching to nobody** -- Build the audience BEFORE the product is ready
-2. **No urgency mechanism** -- Without a deadline, people bookmark and forget
-3. **Perfectionism** -- Ship at 80% quality; iterate based on real feedback
-4. **Single-channel launch** -- Coordinate across email, social, communities, and partners
-5. **No follow-up sequence** -- Most conversions happen on days 3-7, not day 1
-6. **Ignoring time zones** -- Schedule launches and emails for your audience's active hours
-7. **No support plan** -- Launch day will generate support requests; be ready
-8. **Pricing confusion** -- Make the offer crystal clear; don't make people calculate
-9. **Forgetting mobile** -- Test every email, page, and checkout on mobile
-10. **No post-launch plan** -- The launch is the beginning, not the end
-
-### Step 10: Budget Allocation Guide
+### Step 10: Budget allocation guide
 
 | Budget Level | Allocation |
 |---|---|
@@ -401,19 +117,19 @@ Track these metrics in real-time during launch week:
 | **Well-Funded ($5,000-25,000)** | 35% paid ads, 25% influencer/partner, 20% PR/media, 10% events, 10% tools |
 | **Enterprise ($25,000+)** | 30% paid ads, 20% events/webinars, 20% PR, 15% influencer, 10% content, 5% tools |
 
-### Step 11: Post-Launch Analysis Framework
+### Step 11: Post-launch analysis framework
 
 After the launch, generate a retrospective covering:
 
-1. **Goal vs Actual**: Did you hit your targets?
-2. **Channel Performance**: Which channels drove the most conversions?
-3. **Email Performance**: Open rates, click rates, conversion rates by email
-4. **Top Converting Content**: Which posts, pages, or ads drove the most action?
-5. **Customer Feedback Themes**: What are people saying?
-6. **What Worked**: Top 3 things that drove results
-7. **What Didn't Work**: Top 3 things to change next time
-8. **Unexpected Insights**: Surprises from the data
-9. **Next Steps**: Immediate actions based on learnings
+1. **Goal vs Actual** — did you hit your targets?
+2. **Channel Performance** — which channels drove the most conversions?
+3. **Email Performance** — open / click / conversion rates by email.
+4. **Top Converting Content** — which posts, pages, or ads drove the most action?
+5. **Customer Feedback Themes** — what are people saying?
+6. **What Worked** — top 3 things that drove results.
+7. **What Didn't Work** — top 3 things to change next time.
+8. **Unexpected Insights** — surprises from the data.
+9. **Next Steps** — immediate actions based on learnings.
 
 ## Output Format
 
@@ -453,9 +169,9 @@ Generate a file called `LAUNCH-PLAYBOOK.md` with:
 ```
 
 ## Key Principles
+
 - Every recommendation should be tied to the user's specific product, audience, and resources. Generic advice is useless.
 - Include specific templates they can copy-paste and customize, not just frameworks.
 - If the user has run previous skills (market audit, market landing, market brand), incorporate those findings into the launch plan.
 - Time the playbook to their stated launch date and work backwards.
 - Always include a "minimum viable launch" option for users with limited resources.
-- Emphasize that launching is an event, not a moment -- the buildup and follow-through matter more than day one.
