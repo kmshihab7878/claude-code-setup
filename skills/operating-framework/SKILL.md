@@ -18,6 +18,15 @@ routing, risk assessment, and completion standards.
 Trivial tasks (single lookups, file reads, quick answers) bypass the full framework
 but still respect framework gates.
 
+## Reference map
+
+| When | Read |
+|---|---|
+| Picking an operating mode (Section 4 — sequences, agents, artifacts per mode) | [`references/operating-modes.md`](references/operating-modes.md) |
+| Convening a council (Section 6 — compositions, decision format, when to convene) | [`references/councils.md`](references/councils.md) |
+| Memory promotion policy + benchmark metrics (Sections 9 & 10) | [`references/memory-and-metrics.md`](references/memory-and-metrics.md) |
+| Running a Golden Workflow (Section 11 — 4 step-by-step playbooks) | [`references/golden-workflows.md`](references/golden-workflows.md) |
+
 ---
 
 ## 1. Session Contract
@@ -83,47 +92,14 @@ Risk tiers determine **how carefully** to proceed.
 
 ## 4. Operating Modes
 
-Modes determine **which tools and sequence** to use.
+Modes determine **which tools and sequence** to use. Full per-mode detail (when-to-use, command sequence, agents, artifacts) in [`references/operating-modes.md`](references/operating-modes.md).
 
-### Mode A: Founder (Idea to Product)
-
-**When**: New product, feature from scratch, greenfield work.
-
-**Sequence**: `/sc:brainstorm` > `/spec` > `/bmad:architecture` > `/plan` > Build > Verify
-
-**Agents**: requirements-analyst, architect, business-panel-experts
-
-**Artifacts**: Brief, spec, architecture doc, implementation plan
-
-### Mode B: Elite Engineering (Code Excellence)
-
-**When**: Approved spec exists, clear implementation task.
-
-**Sequence**: `/plan` > `/sc:test` > `/sc:build` > `/review` > `/sc:document`
-
-**Agents**: python-expert, tester, code-reviewer
-
-**Artifacts**: Implementation plan, tests, code, review findings, docs
-
-### Mode C: Recovery (Fix and Harden)
-
-**When**: Bug report, test failure, incident, regression.
-
-**Sequence**: `/debug` > `/review` > `/sc:test` > `/sc:reflect`
-
-**Agents**: debugger, root-cause-analyst, incident-responder
-
-**Artifacts**: Root cause analysis, fix, regression test, post-mortem
-
-### Mode D: Secure Delivery (Ship Safely)
-
-**When**: Security-sensitive work, deployment, infrastructure changes.
-
-**Sequence**: `/security-audit` > `/review` > `/sc:build`
-
-**Agents**: security-auditor, ci-cd-engineer, docker-specialist
-
-**Artifacts**: Security audit, deployment checklist, rollback plan
+| Mode | When | Sequence |
+|------|------|----------|
+| **A: Founder** | New product, feature from scratch, greenfield | `/sc:brainstorm` → `/spec` → `/bmad:architecture` → `/plan` → Build → Verify |
+| **B: Elite Engineering** | Approved spec exists, clear implementation | `/plan` → `/sc:test` → `/sc:build` → `/review` → `/sc:document` |
+| **C: Recovery** | Bug, test failure, incident, regression | `/debug` → `/review` → `/sc:test` → `/sc:reflect` |
+| **D: Secure Delivery** | Security-sensitive work, deployment, infra | `/security-audit` → `/review` → `/sc:build` |
 
 ---
 
@@ -159,32 +135,13 @@ Does it span multiple domains?
 
 Councils provide **multi-perspective review** for complex decisions.
 
-### Council Compositions
+| Council mode | When |
+|---|---|
+| **Solo** | T0–T1, single domain, clear path |
+| **Lead + Reviewer** | T1–T2, needs a second opinion |
+| **Full Council** | T2–T3, multi-domain, high stakes |
 
-| Council | Agents | When |
-|---------|--------|------|
-| **Product** | requirements-analyst, architect, business-panel-experts | New products, major features, pivots |
-| **Engineering** | python-expert, code-reviewer, quality-engineer | Architecture decisions, major refactors |
-| **Recovery** | debugger, root-cause-analyst, incident-responder | Critical bugs, production incidents |
-| **Delivery** | security-auditor, ci-cd-engineer, devops-architect | Deployments, infrastructure changes |
-
-### Council Decision Format
-
-Each council member provides:
-- **Assessment**: What they see
-- **Recommendation**: One of: Approve / Approve with conditions / Block / Escalate
-- **Rationale**: Why
-
-A **Block** from any member halts progress until resolved.
-An **Escalate** means the decision exceeds the council's authority — ask the user.
-
-### When to Convene
-
-| Council Mode | Trigger |
-|--------------|---------|
-| **Solo** | T0-T1, single domain, clear path |
-| **Lead + Reviewer** | T1-T2, needs a second opinion |
-| **Full Council** | T2-T3, multi-domain, high stakes |
+The four council compositions (Product / Engineering / Recovery / Delivery — each with their named agents) and the council decision format (Assessment / Recommendation / Rationale, with **Block** halts and **Escalate** to user) live in [`references/councils.md`](references/councils.md).
 
 ---
 
@@ -222,93 +179,41 @@ These rules bind the framework to existing framework non-negotiables.
 
 ## 9. Memory-to-Mastery
 
-The framework uses 4 memory domains to learn and improve over time.
+The framework uses 4 memory domains to learn and improve over time:
 
-| Domain | Maps To | What Gets Stored |
-|--------|---------|------------------|
-| **Architecture** | `memory/architecture.md` | System overviews, component maps, integration patterns |
-| **Failure** | `memory/mistakes.md` | What went wrong, root cause, prevention strategy |
-| **Execution** | `memory/patterns.md` | Code patterns, conventions, successful approaches |
-| **Preference** | `memory/preferences.md` | Coding style, doc standards, naming conventions, verification preferences |
+- **Architecture** → `memory/architecture.md` — system overviews, component maps, integration patterns.
+- **Failure** → `memory/mistakes.md` — what went wrong, root cause, prevention strategy.
+- **Execution** → `memory/patterns.md` — code patterns, conventions, successful approaches.
+- **Preference** → `memory/preferences.md` — coding style, doc standards, naming conventions, verification preferences.
 
-### Promotion Policy
+**Promotion policy:** when a pattern succeeds **3 or more times**, promote it (successful code → template in `patterns.md`; successful prevention → checklist in `mistakes.md`; successful workflow → new skill/command candidate; user preference → solidify in `preferences.md`). Note the success count: `(confirmed: N)`.
 
-When a pattern succeeds **3 or more times**:
-- A successful code pattern -> promote to `patterns.md` as a template
-- A successful prevention strategy -> promote to checklist in `mistakes.md`
-- A successful workflow -> candidate for new skill or command
-- A user preference -> solidify in `preferences.md`
-
-When recording, note the success count: `(confirmed: N)`.
+Full domain rules + per-promotion-type guidance: [`references/memory-and-metrics.md`](references/memory-and-metrics.md#memory-to-mastery).
 
 ---
 
 ## 10. Benchmark Metrics
 
-Track these to measure framework effectiveness.
+Track these to measure framework effectiveness:
 
-| # | Metric | Target | How to Measure |
-|---|--------|--------|----------------|
-| 1 | First-pass success rate | > 85% | Tasks completed without rework |
-| 2 | Gate compliance | 100% | No gate violations detected |
-| 3 | Root cause accuracy | > 90% | Fix addresses actual root cause |
-| 4 | Artifact completeness | 100% | All required artifacts produced |
-| 5 | Risk tier accuracy | > 95% | Correct tier assigned initially |
-| 6 | Evidence attached | 100% | Every completion has proof |
-| 7 | Memory promotion rate | Monthly | Patterns promoted per month |
-| 8 | Regression rate | < 5% | Bugs reintroduced after fix |
+- First-pass success rate (> 85%) · Gate compliance (100%) · Root cause accuracy (> 90%) · Artifact completeness (100%) · Risk tier accuracy (> 95%) · Evidence attached (100%) · Memory promotion rate (monthly) · Regression rate (< 5%).
 
-Monthly review: check metrics, update patterns, promote successful approaches.
+Full 8-row metric table with measurement methods + monthly-review rule: [`references/memory-and-metrics.md`](references/memory-and-metrics.md#benchmark-metrics).
 
 ---
 
 ## 11. Golden Workflows
 
-Step-by-step reference for the 4 most common task types.
+Step-by-step playbooks for the 4 most common task types. Full 8-step procedures (with command links and non-negotiable references per step) in [`references/golden-workflows.md`](references/golden-workflows.md):
 
-### Workflow 1: New Feature
+| # | Workflow | Routing | Key gates |
+|---|----------|---------|-----------|
+| 1 | **New Feature** | Lane=Specify, Risk=T1, Mode=B (or A if greenfield) | spec approval (NN#9) → failing tests first (NN#6) → evidence (NN#8) |
+| 2 | **Bug Fix** | Lane=Recover, Risk=T1+, Mode=C | root cause gate (NN#7) → regression test → reflect |
+| 3 | **Major Refactor** | Lane=Specify, Risk=T1–T2, Mode=B | baseline tests → incremental changes (NN#4) → before/after comparison |
+| 4 | **Production Release** | Lane=Ship, Risk=T2–T3, Mode=D | security audit → rollback plan → explicit user approval (T2+) |
 
-1. **Route**: Lane=Specify, Risk=T1, Mode=B (or A if greenfield)
-2. **Specify**: `/spec` — Write acceptance criteria, get user approval (Non-Negotiable #9)
-3. **Plan**: `/plan` — Break into tasks with clear done conditions
-4. **Test**: Write failing tests first (Non-Negotiable #6)
-5. **Build**: `/sc:build` — Implement against the tests
-6. **Review**: `/review` — Self-review, disposition every finding
-7. **Verify**: Run full test suite, show output (Non-Negotiable #8)
-8. **Complete**: `/complete` — Generate completion packet
-
-### Workflow 2: Bug Fix
-
-1. **Route**: Lane=Recover, Risk=T1+, Mode=C
-2. **Investigate**: `/debug` — Root cause gate (Non-Negotiable #7)
-3. **Evidence**: Show logs, traces, or reproduction proving root cause
-4. **Test**: Write failing regression test
-5. **Fix**: Apply minimal fix targeting root cause
-6. **Verify**: All tests pass, regression test specifically passes
-7. **Reflect**: `/sc:reflect` — What caused this? How to prevent?
-8. **Complete**: `/complete` — Include root cause in packet
-
-### Workflow 3: Major Refactor
-
-1. **Route**: Lane=Specify, Risk=T1-T2, Mode=B
-2. **Baseline**: Run existing tests, record current behavior
-3. **Plan**: `/plan` — Define refactor scope, what changes vs. what doesn't
-4. **Specify**: Document before/after architecture
-5. **Build**: Incremental changes (Non-Negotiable #4), test after each step
-6. **Verify**: Full test suite, compare with baseline
-7. **Review**: `/review` — Ensure no behavior changes leaked in
-8. **Complete**: `/complete` — Include before/after comparison
-
-### Workflow 4: Production Release
-
-1. **Route**: Lane=Ship, Risk=T2-T3, Mode=D
-2. **Audit**: `/security-audit` — Full security review
-3. **Checklist**: Generate deployment checklist
-4. **Rollback**: Document rollback procedure
-5. **Checkpoint**: Explicit user approval (T2+ required)
-6. **Deploy**: Execute deployment steps
-7. **Verify**: Post-deploy verification, smoke tests
-8. **Complete**: `/complete` — Include deploy evidence and rollback path
+Each workflow ends with `/complete` to generate the Completion Packet (Section 12).
 
 ---
 
@@ -449,4 +354,3 @@ This framework does NOT replace existing tools. It wraps them:
 | Session handoff | `/handoff` command |
 | Setup validation | `~/.claude/scripts/validate_setup.sh` |
 | Templates | `~/.claude/templates/*.md` |
-| Quickstart | `~/.claude/docs/QUICKSTART.md` |
