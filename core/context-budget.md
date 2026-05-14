@@ -55,6 +55,7 @@ This is enforced by convention (skills follow `skill-creator` conventions) rathe
 
 - **`scripts/analyze-usage.sh`** — after 14+ days of `~/.claude/usage.jsonl` data, identifies zero-invocation skills for pruning consideration.
 - **`context-budget-audit` skill** — on-demand token-cost measurement of agents/skills/MCP servers/CLAUDE.md.
+- **`scripts/context-budget-report.sh`** — per-surface token estimate plus risk-classified ranking (see "Risk classifications" in [`docs/CONTEXT_BUDGET.md`](../docs/CONTEXT_BUDGET.md#risk-classifications)).
 - **`docs/OVERHEAD.md`** — the honest framing: measured / estimated / unknown.
 
 What is **not** measurable from this side:
