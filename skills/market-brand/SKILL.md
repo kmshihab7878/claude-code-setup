@@ -6,333 +6,140 @@ description: Brand voice analysis and guidelines generation examining communicat
 # Brand Voice Analysis and Guidelines Generation
 
 ## Skill Purpose
+
 Analyze a brand's voice, tone, and messaging across all available channels and generate a comprehensive brand voice guidelines document. This skill examines how a brand communicates, identifies patterns and inconsistencies, and produces actionable guidelines that any writer or marketer can follow to maintain brand consistency.
 
 ## When to Use
-- User wants to understand or document a brand's voice
-- User needs brand voice guidelines for a team, freelancers, or agency
-- User wants to ensure consistency across marketing channels
-- User is rebranding or refining their brand identity
-- User wants to compare their brand voice to competitors
-- Triggered by `/market brand <url>` or `/market brand`
+
+- User wants to understand or document a brand's voice.
+- User needs brand voice guidelines for a team, freelancers, or agency.
+- User wants to ensure consistency across marketing channels.
+- User is rebranding or refining their brand identity.
+- User wants to compare their brand voice to competitors.
+- Triggered by `/market brand <url>` or `/market brand`.
+
+## Reference map
+
+| When | Read |
+|---|---|
+| Scoring voice dimensions (Step 2) + tone-by-context mapping (Step 3) | [`references/voice-dimensions.md`](references/voice-dimensions.md) |
+| Selecting brand archetypes (Step 4) | [`references/archetypes.md`](references/archetypes.md) |
+| Vocabulary analysis (Step 5) + consistency audit framework (Step 7) | [`references/vocabulary-and-audit.md`](references/vocabulary-and-audit.md) |
+| Voice chart, Do's/Don'ts, and copy-sample templates (Steps 9 & 10) | [`references/voice-docs-templates.md`](references/voice-docs-templates.md) |
+
+## Claims and source-quality constraints
+
+- Every dimension score, archetype assessment, and consistency rating must be **evidence-backed** with 3–5 quoted examples from the source material. No invented quotes.
+- Don't fabricate a tagline, boilerplate, or brand story — if missing, flag as "Missing" or "Partial" in the messaging hierarchy and recommend creation.
+- Don't extrapolate brand voice from a single page. If sources are insufficient (homepage only, no blog/social/email), state that limitation explicitly in the output.
+- Voice and tone are different — voice is the consistent personality; tone shifts by context. Don't conflate them.
+- Frame consistency issues as opportunities, not failures. Consistency drift is common and fixable.
 
 ## How to Execute
 
-### Step 1: Gather Source Material
-To analyze a brand's voice, examine content from multiple sources. Prioritize in this order:
+### Step 1: Gather source material
 
-**Primary Sources (must analyze):**
-1. **Homepage** -- The most curated representation of the brand
-2. **About page** -- How the brand describes itself
-3. **Product/service pages** -- How they present their offerings
+Examine content from multiple sources. Prioritize:
 
-**Secondary Sources (analyze if available):**
-4. **Blog posts** (at least 3-5 recent posts)
-5. **Social media profiles** (bio, recent posts, engagement style)
-6. **Email newsletters** (welcome email, recent sends)
-7. **Customer-facing copy** (error messages, onboarding flows, help docs)
+**Primary (must analyze):** Homepage, About page, Product/service pages.
 
-**Tertiary Sources:**
-8. **Job postings** -- Reveals internal culture and values
-9. **Press releases** -- Formal communication style
-10. **Ad copy** -- Paid messaging approach
-11. **Video scripts or podcast transcripts** -- Spoken brand voice
+**Secondary (analyze if available):** Blog posts (3–5 recent), social media profiles (bio + recent posts + engagement), email newsletters (welcome + recent sends), customer-facing copy (errors, onboarding, help docs).
 
-Use browser tools or the analyze_page.py script to access web content. For social media, check the website for social links and analyze the linked profiles.
+**Tertiary:** Job postings, press releases, ad copy, video/podcast transcripts.
 
-### Step 2: Voice Dimension Analysis
-Map the brand's voice along four primary dimensions. Each dimension is a spectrum, not a binary.
+Use browser tools or `analyze_page.py` for web content. For social, check the website for social links and analyze those profiles.
 
-#### Dimension 1: Formal <-----> Casual
-Where does the brand fall on the formality spectrum?
+### Step 2: Voice dimension analysis
 
-| Signal | Formal | Casual |
-|---|---|---|
-| Contractions | Avoids them ("do not", "cannot") | Uses them freely ("don't", "can't") |
-| Sentence structure | Complex, longer sentences | Short, punchy sentences |
-| Vocabulary | Professional, industry-standard | Conversational, everyday words |
-| Greetings | "Dear valued customer" | "Hey there!" |
-| Pronouns | Third person ("the company", "one") | First/second person ("we", "you") |
-| Humor | Rare or absent | Frequent, natural |
-| Slang/colloquialisms | Never | Occasionally or frequently |
+Map the brand's voice along four primary dimensions. Each dimension is a **spectrum, not a binary** — score 1–10:
 
-**Score: 1 (extremely formal) to 10 (extremely casual)**
+| # | Dimension | 1 ←————→ 10 |
+|---|-----------|--------------|
+| 1 | **Formality** | Formal ←————→ Casual |
+| 2 | **Levity** | Serious ←————→ Playful |
+| 3 | **Complexity** | Technical ←————→ Simple |
+| 4 | **Personality** | Reserved ←————→ Bold |
 
-**Evidence required:** Quote 3-5 specific examples from the source material that support your rating.
+**Evidence required:** quote 3–5 specific examples per dimension from the source material. Full signal-detection tables (contractions, sentence structure, vocabulary, greetings, humor, slang for Formality; tone, metaphors, exclamation marks, emoji, wordplay, error-message style for Levity; jargon, acronyms, detail-level, audience assumption, statistics for Complexity; claim hedging, opinion strength, competitive references, promises, controversy for Personality) — see [`references/voice-dimensions.md`](references/voice-dimensions.md).
 
-#### Dimension 2: Serious <-----> Playful
-How much levity does the brand inject into its communication?
+### Step 3: Tone spectrum mapping
 
-| Signal | Serious | Playful |
-|---|---|---|
-| Tone | Authoritative, measured | Light-hearted, fun |
-| Metaphors | Rare, conservative | Creative, unexpected |
-| Exclamation marks | Rare | Frequent |
-| Emoji use | Never | Sometimes or often |
-| Wordplay/puns | Never | Enjoys them |
-| Error messages | "An error has occurred" | "Oops! Something went sideways" |
-| Self-deprecation | Never | Occasionally |
+Beyond the four dimensions, map how the brand's tone shifts across **8 contexts**: Homepage, Product description, Blog post, Social media, Error/404 page, Email subject lines, CTA buttons, Customer support. Full per-context template with example quotes: [`references/voice-dimensions.md`](references/voice-dimensions.md#step-3-tone-spectrum-mapping).
 
-**Score: 1 (extremely serious) to 10 (extremely playful)**
+### Step 4: Brand personality framework
 
-#### Dimension 3: Technical <-----> Simple
-How much domain expertise does the brand assume in its audience?
+Map the brand to **one of five core archetypes** (brands may blend 1–2):
 
-| Signal | Technical | Simple |
-|---|---|---|
-| Jargon | Uses industry terms freely | Avoids or explains all jargon |
-| Acronyms | Uses without definition | Spells out on first use |
-| Detail level | In-depth explanations | High-level overviews |
-| Audience assumption | Expert audience | General audience |
-| Data/statistics | Frequent, detailed | Occasional, simplified |
-| Examples | Complex, domain-specific | Simple, relatable analogies |
+1. **The Authority** — expert, trustworthy, data-driven (McKinsey, IBM, Mayo Clinic).
+2. **The Innovator** — forward-thinking, disruptive, visionary (Tesla, Stripe, Notion).
+3. **The Friend** — warm, approachable, helpful (Mailchimp, Slack, Duolingo).
+4. **The Rebel** — bold, challenging conventions, irreverent (Nike, Oatly, Cards Against Humanity).
+5. **The Guide** — wise, patient, methodical (HubSpot, Khan Academy, Ahrefs).
 
-**Score: 1 (extremely technical) to 10 (extremely simple)**
+For each archetype, full characteristics + voice + fit industries + key phrases: [`references/archetypes.md`](references/archetypes.md).
 
-#### Dimension 4: Reserved <-----> Bold
-How much personality and confidence does the brand project?
+**Assessment output:** Primary archetype, Secondary archetype (if applicable), Archetype fit (Strong / Moderate / Weak).
 
-| Signal | Reserved | Bold |
-|---|---|---|
-| Claims | Hedged ("we believe", "may help") | Direct ("we guarantee", "the best") |
-| Opinions | Neutral, balanced | Strong, opinionated |
-| Competitive references | Avoids mentioning competitors | Directly compares |
-| Personality | Professional, understated | Distinctive, memorable |
-| Promises | Conservative | Ambitious |
-| Controversy | Avoids | Embraces when aligned with values |
+### Step 5: Vocabulary analysis
 
-**Score: 1 (extremely reserved) to 10 (extremely bold)**
+Identify 15–20 most characteristic words/phrases in four categories: **action** verbs, **descriptive** adjectives, **value** words, **industry-specific** terms. Plus **words they avoid** (too casual / too technical / competitor terminology / industry clichés sidestepped). Plus **signature phrases** (tagline, recurring phrases, linguistic patterns). Full template: [`references/vocabulary-and-audit.md`](references/vocabulary-and-audit.md#step-5-vocabulary-analysis).
 
-### Step 3: Tone Spectrum Mapping
+### Step 6: Competitor voice comparison
 
-Beyond the four dimensions, map how the brand's tone shifts across different contexts:
+Compare the brand's voice to 2–3 key competitors using the same four dimensions + archetype scoring:
 
-| Context | Typical Tone | Example |
-|---|---|---|
-| Homepage | [Confident/Welcoming/Urgent/etc.] | "[quote from homepage]" |
-| Product description | [Informative/Persuasive/Technical/etc.] | "[quote]" |
-| Blog post | [Educational/Conversational/Authoritative/etc.] | "[quote]" |
-| Social media | [Casual/Engaging/Promotional/etc.] | "[quote]" |
-| Error/404 page | [Apologetic/Humorous/Helpful/etc.] | "[quote]" |
-| Email subject lines | [Direct/Curious/Urgent/etc.] | "[quote]" |
-| CTA buttons | [Action-oriented/Benefit-driven/Urgent/etc.] | "[quote]" |
-| Customer support | [Empathetic/Professional/Friendly/etc.] | "[quote]" |
-
-### Step 4: Brand Personality Framework
-
-Map the brand to one of five core personality archetypes (brands may blend 1-2):
-
-#### The 5 Archetypes
-
-**1. The Authority**
-- Characteristics: Expert, trustworthy, data-driven, established
-- Voice: Confident but not arrogant, educational, precise
-- Industries: Finance, healthcare, B2B enterprise, legal, consulting
-- Example brands: McKinsey, IBM, Mayo Clinic
-- Key phrases: "Research shows...", "Our experts...", "Industry-leading..."
-
-**2. The Innovator**
-- Characteristics: Forward-thinking, disruptive, visionary, tech-savvy
-- Voice: Exciting, future-focused, sometimes provocative
-- Industries: Tech, SaaS, startups, renewable energy
-- Example brands: Tesla, Stripe, Notion
-- Key phrases: "Reimagine...", "The future of...", "We're building..."
-
-**3. The Friend**
-- Characteristics: Warm, approachable, helpful, relatable
-- Voice: Conversational, empathetic, inclusive, encouraging
-- Industries: Consumer products, education, community platforms
-- Example brands: Mailchimp, Slack, Duolingo
-- Key phrases: "We get it...", "You've got this...", "Here to help..."
-
-**4. The Rebel**
-- Characteristics: Bold, challenging conventions, irreverent, passionate
-- Voice: Direct, opinionated, sometimes confrontational, memorable
-- Industries: Lifestyle, fitness, creative industries, direct-to-consumer
-- Example brands: Nike, Oatly, Cards Against Humanity
-- Key phrases: "Stop settling for...", "The truth is...", "We're done with..."
-
-**5. The Guide**
-- Characteristics: Wise, patient, methodical, trustworthy
-- Voice: Clear, instructional, supportive, knowledgeable
-- Industries: Education, professional development, tools, platforms
-- Example brands: HubSpot, Khan Academy, Ahrefs
-- Key phrases: "Here's how to...", "Step by step...", "The complete guide to..."
-
-**Assessment:**
-- Primary archetype: [which one and why]
-- Secondary archetype: [if applicable]
-- Archetype fit: [Strong/Moderate/Weak -- how well does the brand embody this archetype?]
-
-### Step 5: Vocabulary Analysis
-
-Identify patterns in the brand's word choices:
-
-#### Words They Use Frequently
-Analyze all source material and identify the 15-20 most characteristic words or phrases. Organize by category:
-
-**Action words:** (verbs they favor)
-- e.g., "build", "scale", "transform", "streamline"
-
-**Descriptive words:** (adjectives they use)
-- e.g., "powerful", "simple", "enterprise-grade", "effortless"
-
-**Value words:** (words that reflect their values)
-- e.g., "transparent", "sustainable", "inclusive", "innovative"
-
-**Industry-specific terms:**
-- e.g., "workflow", "pipeline", "conversion", "engagement"
-
-#### Words They Avoid
-Identify words that are notably absent or that would feel out of character:
-
-- Words that are too casual for the brand (if formal)
-- Words that are too technical for the brand (if simple)
-- Competitor terminology they deliberately avoid
-- Industry cliches they seem to sidestep
-
-#### Signature Phrases
-Does the brand have any recurring phrases, taglines, or linguistic patterns?
-
-- Tagline: [if they have one]
-- Recurring phrases: [patterns you notice]
-- Linguistic patterns: [e.g., always starts sentences with verbs, uses dashes frequently, favors short paragraphs]
-
-### Step 6: Competitor Voice Comparison
-
-Compare the brand's voice to 2-3 key competitors:
-
-**Voice Comparison Matrix:**
-| Dimension | [Brand] | Competitor 1 | Competitor 2 | Competitor 3 |
+| Dimension | [Brand] | Comp 1 | Comp 2 | Comp 3 |
 |---|---|---|---|---|
-| Formal <> Casual | X/10 | X/10 | X/10 | X/10 |
-| Serious <> Playful | X/10 | X/10 | X/10 | X/10 |
-| Technical <> Simple | X/10 | X/10 | X/10 | X/10 |
-| Reserved <> Bold | X/10 | X/10 | X/10 | X/10 |
-| Primary Archetype | [type] | [type] | [type] | [type] |
+| Formal ↔ Casual | X/10 | X/10 | X/10 | X/10 |
+| Serious ↔ Playful | X/10 | X/10 | X/10 | X/10 |
+| Technical ↔ Simple | X/10 | X/10 | X/10 | X/10 |
+| Reserved ↔ Bold | X/10 | X/10 | X/10 | X/10 |
+| Primary archetype | [type] | [type] | [type] | [type] |
 
-**Differentiation Assessment:**
-- How distinct is the brand's voice from competitors?
-- Where do voices overlap? (potential differentiation opportunity)
-- What voice territory is unoccupied in the competitive landscape?
-- Specific recommendations for vocal differentiation
+Then assess: how distinct from competitors, where voices overlap (differentiation opportunity), what voice territory is unoccupied, specific differentiation recommendations.
 
-### Step 7: Consistency Audit
+If the user previously ran `/market competitors`, reuse that data.
 
-Assess voice consistency across all analyzed channels:
+### Step 7: Consistency audit
 
-| Channel | Voice Consistency | Notes |
-|---|---|---|
-| Homepage | Consistent/Mostly/Inconsistent | [specific observations] |
-| About page | Consistent/Mostly/Inconsistent | [notes] |
-| Blog | Consistent/Mostly/Inconsistent | [notes] |
-| Social media | Consistent/Mostly/Inconsistent | [notes] |
-| Email | Consistent/Mostly/Inconsistent | [notes] |
-| Product pages | Consistent/Mostly/Inconsistent | [notes] |
+Score voice consistency across all analyzed channels: Homepage, About page, Blog, Social media, Email, Product pages — `Consistent / Mostly / Inconsistent` per channel with specific observations. **Overall Consistency Score: X/10.** Common-issue catalog + full audit table: [`references/vocabulary-and-audit.md`](references/vocabulary-and-audit.md#step-7-consistency-audit).
 
-**Common Consistency Issues:**
-- Different writers creating noticeably different tones
-- Social media voice drastically different from website
-- Formal website copy but casual email newsletters
-- Blog content written in a completely different voice than product pages
-- Error messages or microcopy that feels off-brand
-- Old pages that haven't been updated to match current brand voice
+### Step 8: Brand messaging hierarchy
 
-**Overall Consistency Score:** X/10
+Document messaging from most distilled to most expanded:
 
-### Step 8: Brand Messaging Hierarchy
+1. **Tagline** — under 10 words. Most compressed brand message.
+2. **Value Propositions** — 3–5 core props, one sentence each.
+3. **Elevator Pitch** — 30 seconds / ~75 words.
+4. **Boilerplate** — 100–150 words. Standard "about us" paragraph.
+5. **Full Brand Story** — 300–500 words. Complete narrative.
 
-Document the brand's messaging from most distilled to most expanded:
+For each: current status (Exists / Partial / Missing) + improvement recommendations.
 
-#### Level 1: Tagline (under 10 words)
-The most compressed form of the brand message.
-- Current: "[existing tagline or suggested one]"
-- Assessment: Does it capture the core value proposition?
+### Step 9: Generate brand voice documentation
 
-#### Level 2: Value Propositions (1 sentence each)
-3-5 core value propositions that support the brand promise.
-1. "[Value prop 1]"
-2. "[Value prop 2]"
-3. "[Value prop 3]"
+Create the comprehensive **Do's and Don'ts guide** including:
 
-#### Level 3: Elevator Pitch (30 seconds / 75 words)
-A conversational explanation of what the brand does and why it matters.
-"[Draft elevator pitch based on analyzed content]"
+- **Voice Chart** — `OUR VOICE IS` ↔ `OUR VOICE IS NOT` paired columns (e.g., "Confident" / "Arrogant"; "Helpful" / "Condescending"; "Clear" / "Dumbed down"; "Bold" / "Aggressive").
+- **Writing Do's** — specific instructions backed by the analysis ("use contractions", "lead with the benefit", "active voice in CTAs", etc.).
+- **Writing Don'ts** — specific anti-patterns ("don't use jargon without explaining", "don't use passive in CTAs", etc.).
 
-#### Level 4: Boilerplate (100-150 words)
-The standard "about us" paragraph used in press releases, email signatures, and speaker bios.
-"[Draft boilerplate based on analyzed content]"
+Full chart and example Do's/Don'ts: [`references/voice-docs-templates.md`](references/voice-docs-templates.md).
 
-#### Level 5: Full Brand Story (300-500 words)
-The complete narrative of who the brand is, what they stand for, and why they exist.
-- Current status: [Exists/Partial/Missing]
-- Recommendations for improvement
+### Step 10: Copy samples in identified voice
 
-### Step 9: Generate Brand Voice Documentation
+Provide **5–8 sample copy pieces** so the team has concrete references. Required types:
 
-Create the comprehensive Do's and Don'ts guide:
+1. Homepage Headline
+2. Product Description Paragraph
+3. Blog Post Opening
+4. Social Media Post
+5. Email Subject Line
+6. CTA Button Text
+7. Error Message
+8. Customer Thank You Message
 
-#### Voice Chart
-
-```
-OUR VOICE IS:                    OUR VOICE IS NOT:
---------------------------------------------------
-[Characteristic 1]              [Anti-characteristic 1]
-e.g., "Confident"               e.g., "Arrogant"
-
-[Characteristic 2]              [Anti-characteristic 2]
-e.g., "Helpful"                 e.g., "Condescending"
-
-[Characteristic 3]              [Anti-characteristic 3]
-e.g., "Clear"                   e.g., "Dumbed down"
-
-[Characteristic 4]              [Anti-characteristic 4]
-e.g., "Bold"                    e.g., "Aggressive"
-```
-
-#### Writing Do's and Don'ts
-
-**DO:**
-- [Specific writing instruction based on analysis]
-- [Example: "Use contractions to sound natural (we're, you'll, it's)"]
-- [Example: "Lead with the benefit, not the feature"]
-- [Example: "Use active voice in all headlines and CTAs"]
-- [Example: "Address the reader directly with 'you' and 'your'"]
-
-**DON'T:**
-- [Specific anti-patterns based on analysis]
-- [Example: "Don't use jargon without explaining it"]
-- [Example: "Don't use passive voice in calls-to-action"]
-- [Example: "Don't use exclamation marks more than once per paragraph"]
-- [Example: "Don't start sentences with 'We' -- focus on the customer"]
-
-### Step 10: Copy Samples in Identified Voice
-
-Provide 5-8 sample copy pieces written in the identified brand voice so the team has concrete examples to reference:
-
-**1. Homepage Headline:**
-"[Sample headline in the brand voice]"
-
-**2. Product Description Paragraph:**
-"[Sample product description in the brand voice]"
-
-**3. Blog Post Opening:**
-"[Sample blog intro in the brand voice]"
-
-**4. Social Media Post:**
-"[Sample social post in the brand voice]"
-
-**5. Email Subject Line:**
-"[Sample subject line in the brand voice]"
-
-**6. CTA Button Text:**
-"[Sample CTA text in the brand voice]"
-
-**7. Error Message:**
-"[Sample error message in the brand voice]"
-
-**8. Customer Thank You Message:**
-"[Sample thank you message in the brand voice]"
+Full template with placeholder slots: [`references/voice-docs-templates.md`](references/voice-docs-templates.md#step-10-copy-samples-in-identified-voice).
 
 ## Output Format
 
@@ -466,11 +273,11 @@ Reserved                                  Bold
 ```
 
 ## Key Principles
+
 - Brand voice analysis requires reading like a detective. Every word choice, punctuation decision, and sentence structure reveals something about how the brand wants to be perceived.
-- Always provide EVIDENCE for every assessment. Don't just say "the brand is casual" -- quote specific examples that prove it.
+- Always provide EVIDENCE for every assessment. Don't just say "the brand is casual" — quote specific examples that prove it.
 - The brand voice guide should be usable by someone who has never worked with the brand before. A new copywriter should be able to read this document and write on-brand content.
 - Copy samples are the most valuable part of the deliverable. People learn voice by example, not by description. Make the samples diverse (headlines, body copy, social, email, error messages) so writers have references for every context.
 - Voice and tone are different. Voice is the consistent personality. Tone shifts based on context (a customer complaint response is different from a product launch announcement, but both should be in the same voice).
 - If the brand's voice is inconsistent across channels, frame it as an opportunity to strengthen their brand, not as a failure. Consistency issues are common and fixable.
 - If the user has run `/market competitors` previously, use that data for the competitor voice comparison section.
-- The voice dimensions should be plotted visually (text-based spectrum) so stakeholders can quickly understand the positioning at a glance.
