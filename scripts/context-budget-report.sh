@@ -308,6 +308,8 @@ content_has() {
 
 classify_file() {
   path="$1"
+
+  # 1. Pin always-loaded surfaces first — these cost every turn.
   case "$path" in
     CLAUDE.md|AGENTS.md|WARP.md|settings.json)
       printf "ALWAYS_LOAD_RISK\n"; return ;;
@@ -326,8 +328,35 @@ classify_file() {
       printf "ROUTING_INDEX_RISK\n"; return ;;
   esac
 
+  # 2. Docs-only / reference-only / examples / build-output subtrees are
+  # ACCEPTABLE_LARGE — they only enter context when explicitly read.
+  # Match anywhere in the path (handles skills/<x>/references/..., docs/<x>/...,
+  # skills/<x>/examples/..., skills/<x>/output/..., commands/references/...).
   case "$path" in
-    commands/*.md)
+    docs/*) printf "ACCEPTABLE_LARGE\n"; return ;;
+  esac
+  case "$path" in
+    */references/*|references/*|*/reference/*|reference/*)
+      printf "ACCEPTABLE_LARGE\n"; return ;;
+  esac
+  case "$path" in
+    */examples/*|examples/*|*/example/*|example/*)
+      printf "ACCEPTABLE_LARGE\n"; return ;;
+  esac
+  case "$path" in
+    */output/*|output/*|*/outputs/*|outputs/*)
+      printf "ACCEPTABLE_LARGE\n"; return ;;
+  esac
+  # Nested docs/ inside skills or other subtrees (e.g. skills/<x>/docs/...).
+  case "$path" in
+    */docs/*) printf "ACCEPTABLE_LARGE\n"; return ;;
+  esac
+
+  # 3. Commands — operating contracts unless body is purely reference.
+  # Match commands at any depth so commands/sc/*.md and commands/bmad/*.md are
+  # classified as commands rather than falling through.
+  case "$path" in
+    commands/*.md|commands/*/*.md|commands/*/*/*.md)
       if content_has "$path" '(stage [0-9]|policy gate|approval|risk[ -]tier|execution loop|final report|hard rules?)'; then
         printf "LAZY_OPERATING_CONTRACT\n"; return
       fi
@@ -337,7 +366,11 @@ classify_file() {
         printf "LAZY_OPERATING_CONTRACT\n"; return
       fi
       printf "LAZY_REFERENCE_HEAVY\n"; return ;;
-    skills/*/SKILL.md|skills/*/*/SKILL.md|skills/*/*/*/SKILL.md|skills/*/*/*/*/SKILL.md)
+  esac
+
+  # 4. Skills — SKILL.md at any depth.
+  case "$path" in
+    */SKILL.md)
       # Skills with heavy API / reference content are extraction candidates.
       if content_has "$path" '(endpoint|schema|request/response|reference|examples?|troubleshooting|api|model table|cli reference|```[a-z]+)' ; then
         # Already split? If a sibling references/ dir holds files, less urgent.
@@ -350,13 +383,14 @@ classify_file() {
         return
       fi
       printf "LAZY_OPERATING_CONTRACT\n"; return ;;
-    docs/*|*/references/*|commands/references/*|skills/*/references/*|agents/references/*)
-      printf "ACCEPTABLE_LARGE\n"; return ;;
+  esac
+
+  case "$path" in
     hooks/*)
       printf "STARTUP_INJECTED_RISK\n"; return ;;
   esac
 
-  # Unknown / unmatched lazy file — treat as reference heavy by default.
+  # 5. Unknown / unmatched lazy file — treat as reference heavy by default.
   printf "LAZY_REFERENCE_HEAVY\n"
 }
 
