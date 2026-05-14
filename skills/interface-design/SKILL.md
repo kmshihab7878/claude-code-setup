@@ -116,47 +116,13 @@ If any check fails, iterate before showing.
 
 # Craft foundations
 
-## Subtle layering
+Three foundational craft rules that apply regardless of direction, product type, or visual style. Full prose with key decisions, worked examples, and the squint test: [`references/craft-foundations.md`](references/craft-foundations.md).
 
-The backbone. Regardless of direction, product type, or style — applies to everything. You should barely notice the system working. Vercel's dashboard: you don't think "nice borders", you just understand structure. Craft is invisible — that's how you know it's working.
-
-### Surface elevation
-
-Surfaces stack. Dropdown sits above a card sits above the page. Numbered system — base, then increasing elevation levels. Dark mode: higher = slightly lighter. Light mode: higher = slightly lighter or uses shadow. Each jump = a few percentage points of lightness. Barely visible in isolation, but the hierarchy emerges when surfaces stack.
-
-Key decisions:
-- **Sidebars:** same background as canvas, not different. Different colors fragment the visual space. A subtle border is enough separation.
-- **Dropdowns:** one level above their parent. Same level = dropdown blends into the card.
-- **Inputs:** slightly darker than surroundings, not lighter. Inputs are "inset" — they receive content.
-
-### Borders
-
-Borders should disappear when you're not looking but be findable when you need structure. Low-opacity rgba blends with background; solid hex looks harsh.
-
-Build a progression — standard borders, softer separation, emphasis borders, max for focus rings. Match intensity to importance.
-
-**Squint test:** still perceive hierarchy, nothing jumping out, no harsh lines, no jarring color shifts. Just quiet structure. This separates professional from amateur. Get it wrong and nothing else matters.
-
-## Infinite expression
-
-Every pattern has infinite expressions. **No interface should look the same.**
-
-A metric display can be a hero number, inline stat, sparkline, gauge, progress bar, comparison delta, trend badge, or something new. Dashboards can emphasize density, whitespace, hierarchy, or flow differently. Even sidebar + cards has infinite variations.
-
-Before building: what's the ONE thing users do most here? What products solve similar problems brilliantly — study them. Why would this interface feel designed for its purpose, not templated?
-
-**NEVER produce identical output.** Same sidebar width, same card grid, same icon-left-number-big-label-small metric box every time signals AI-generated. Forgettable.
-
-The architecture and components emerge from task and data, executed freshly. Linear's cards don't look like Notion's. Vercel's metrics don't look like Stripe's. Same concepts, infinite expressions.
-
-## Color lives somewhere
-
-Every product exists in a world with colors. Before reaching for a palette, spend time in the product's world. What would you see in its physical version? What materials? What light? What objects?
-
-Your palette should feel like it came FROM somewhere — not applied TO something.
-
-- **Beyond warm and cold.** Temperature is one axis. Is this quiet or loud? Dense or spacious? Serious or playful? Geometric or organic? A trading terminal and meditation app are both "focused" — different kinds of focus.
-- **Color carries meaning.** Gray builds structure; color communicates — status, action, emphasis, identity. Unmotivated color is noise. One accent used with intention beats five used without thought.
+- **Subtle layering** — surfaces stack with whisper-quiet lightness shifts (a few percentage points per level). Sidebars share the canvas background; dropdowns sit one level above parent; inputs are inset (slightly darker, not lighter).
+- **Borders** — should disappear when you're not looking, be findable when you need structure. Use low-opacity rgba, not solid hex. Build a 4-step progression: standard / softer separation / emphasis / focus ring.
+- **Squint test** — blur your eyes; still perceive hierarchy, no harsh lines, no jarring color shifts. Separates professional from amateur.
+- **Infinite expression** — no interface should look the same. Every pattern has infinite expressions; architecture and components emerge from THIS task and data, not a template.
+- **Color lives somewhere** — palette should feel like it came FROM the product's world. Temperature is one axis among many (quiet/loud, dense/spacious, serious/playful, geometric/organic). Gray builds structure; color communicates meaning.
 
 ---
 
@@ -181,75 +147,26 @@ If you can't explain WHY for each choice, you're defaulting. Stop and think.
 
 # Design principles
 
-## Token architecture
+13 design-principle topics. The compact reference is below — load [`references/design-principles.md`](references/design-principles.md) for the full per-topic rules with examples.
 
-Every color traces back to a small set of primitives: foreground (text hierarchy), background (surface elevation), border (separation hierarchy), brand, semantic (destructive, warning, success). No random hex — everything maps to primitives.
-
-### Text hierarchy
-
-Four levels — primary, secondary, tertiary, muted. Each serves a role: default text, supporting text, metadata, disabled/placeholder. Use all four consistently. Two levels = flat hierarchy.
-
-### Border progression
-
-Borders aren't binary. Build a scale matching intensity to importance — standard separation, softer separation, emphasis, max emphasis. Not every boundary deserves the same weight.
-
-### Control tokens
-
-Form controls have specific needs. Don't reuse surface tokens — create dedicated control backgrounds, control borders, focus states. Tune interactive elements independently from layout surfaces.
-
-## Spacing
-
-Base unit + multiples. Build scale per context — micro (icon gaps), component (inside buttons/cards), section (between groups), major (between distinct areas). Random values = no system.
-
-## Padding
-
-Symmetrical. If one side has a value, others match unless content naturally requires asymmetry.
-
-## Depth
-
-Choose ONE approach and commit:
-- **Borders-only** — clean, technical. Dense tools.
-- **Subtle shadows** — soft lift. Approachable products.
-- **Layered shadows** — premium, dimensional. Cards needing presence.
-- **Surface color shifts** — background tints establish hierarchy without shadows.
-
-Don't mix.
-
-## Border radius
-
-Sharper = technical. Rounder = friendly. Build a scale — small for inputs/buttons, medium for cards, large for modals. Don't mix sharp + soft randomly.
-
-## Typography
-
-Distinct levels distinguishable at a glance. Headlines: weight + tight tracking for presence. Body: comfortable weight for readability. Labels: medium weight that works at small sizes. Data: monospace + tabular numbers for alignment. Don't rely on size alone — combine size, weight, letter-spacing.
-
-## Card layouts
-
-Metric ≠ plan ≠ settings card internally. Design each card's structure for its content — but keep surface treatment consistent: same border weight, shadow depth, corner radius, padding scale.
-
-## Controls
-
-Native `<select>` and `<input type="date">` render OS-native elements that can't be styled. Build custom — trigger buttons with positioned dropdowns, calendar popovers, styled state management.
-
-## Iconography
-
-Icons clarify, not decorate — if removing loses no meaning, remove it. One icon set, stick with it. Give standalone icons presence with subtle background containers.
-
-## Animation
-
-Fast micro-interactions, smooth easing. Larger transitions can be slightly longer. Deceleration easing. Avoid spring/bounce in professional interfaces.
-
-## States
-
-Every interactive element: default, hover, active, focus, disabled. Data: loading, empty, error. Missing states feel broken.
-
-## Navigation context
-
-Screens need grounding. A data table floating in space feels like a component demo. Include navigation showing where you are, location indicators, user context. Sidebars: same background as main content with border separation, not different colors.
-
-## Dark mode
-
-Different needs. Shadows are less visible — lean on borders for definition. Semantic colors often need slight desaturation. The hierarchy system still applies, just with inverted values.
+| # | Topic | Essentials |
+|---|-------|-----------|
+| 1 | **Token architecture** | Every color traces back to primitives (foreground, background, border, brand, semantic). No random hex. |
+| 2 | **Text hierarchy** | 4 levels: primary, secondary, tertiary, muted. Two levels = flat hierarchy. |
+| 3 | **Border progression** | Build a 4-step scale (standard / softer / emphasis / max). Match intensity to importance. |
+| 4 | **Control tokens** | Dedicated tokens for form-control backgrounds, borders, focus — don't reuse surface tokens. |
+| 5 | **Spacing** | Base unit + multiples. Scale per context (micro / component / section / major). Random values = no system. |
+| 6 | **Padding** | Symmetrical unless content naturally requires asymmetry. |
+| 7 | **Depth** | Pick ONE: borders-only / subtle shadows / layered shadows / surface-color shifts. **Don't mix.** |
+| 8 | **Border radius** | Sharper = technical. Rounder = friendly. Build a scale; don't mix sharp + soft randomly. |
+| 9 | **Typography** | Distinct levels at a glance. Headlines tight-tracked; body comfortable; data monospace + tabular numbers. Combine size + weight + letter-spacing — don't rely on size alone. |
+| 10 | **Card layouts** | Different internal structure per content type; **consistent surface treatment** (border weight, shadow depth, radius, padding). |
+| 11 | **Controls** | Native `<select>` and `<input type="date">` can't be styled — build custom (trigger button + positioned dropdown / calendar popover) with explicit state management. |
+| 12 | **Iconography** | Icons clarify, not decorate — remove if removing loses no meaning. One icon set. Subtle background containers for standalone icons. |
+| 13 | **Animation** | Fast micro-interactions, deceleration easing. Avoid spring/bounce in professional interfaces. |
+| 14 | **States** | Every interactive: default / hover / active / focus / disabled. Data: loading / empty / error. Missing states feel broken. |
+| 15 | **Navigation context** | Screens need grounding — where am I, where can I go, who am I as. Sidebars share canvas background with border separation, not different colors. |
+| 16 | **Dark mode** | Different needs — shadows less visible (lean on borders), semantic colors often need desaturation. Hierarchy system applies with inverted values. |
 
 ---
 
@@ -328,9 +245,12 @@ This compounds — each save makes future work faster and more consistent.
 
 # Deep dives
 
-- `references/principles.md` — code examples, specific values, dark mode.
-- `references/validation.md` — memory management, when to update system.md.
-- `references/critique.md` — post-build craft critique protocol.
+- [`references/craft-foundations.md`](references/craft-foundations.md) — full prose for subtle layering, borders, infinite expression, color-lives-somewhere.
+- [`references/design-principles.md`](references/design-principles.md) — full per-topic detail for the 16-topic design-principles catalog.
+- [`references/principles.md`](references/principles.md) — code examples, specific values, dark mode.
+- [`references/validation.md`](references/validation.md) — memory management, when to update `system.md`.
+- [`references/critique.md`](references/critique.md) — post-build craft critique protocol.
+- [`references/example.md`](references/example.md) — worked example.
 
 # Commands
 
