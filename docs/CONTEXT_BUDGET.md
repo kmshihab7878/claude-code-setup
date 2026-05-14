@@ -56,6 +56,46 @@ Use the report to find likely heavy surfaces, not to claim exact token counts.
 - Heavy docs are ranked for awareness only. Docs can be large when they are not
   injected into startup context.
 
+## Risk classifications
+
+Raw token size does not say which large files actually hurt context. A 6k-token
+always-loaded kernel costs every turn; a 6k-token lazy skill only costs when
+that skill is invoked. The report adds a deterministic risk label so the next
+optimization pick is informed, not arbitrary.
+
+| Label | Loaded when | Why it matters |
+|---|---|---|
+| `ALWAYS_LOAD_RISK` | Every session — `CLAUDE.md`, `AGENTS.md`, `WARP.md`, `settings.json` | Every byte taxes every turn. Fix these first. |
+| `STARTUP_INJECTED_RISK` | Session start — `evolution/stable/global.md`, `memory/MEMORY.md`, hooks referenced by SessionStart | Pulled in before the user can opt out. Cap and summarize. |
+| `ROUTING_INDEX_RISK` | When routing logic loads an index — `agents/REGISTRY.md`, `domains/**/DOMAIN.md`, `core/*.md` | Pulled into many planning flows. Keep concise; favor pointers over duplicated tables. |
+| `LAZY_REFERENCE_HEAVY` | Only when the skill/command is invoked. Body holds API catalogs, schemas, endpoint lists, long reference tables. | Less urgent than always-loaded surfaces. Move extra material behind `references/` when feasible. |
+| `EXTRACTION_CANDIDATE` | Same as above, but the skill has no `references/` directory yet. | Top priority among lazy files — splitting earns the most token relief per change. |
+| `LAZY_OPERATING_CONTRACT` | When a command or agent is invoked. Body carries executable rules — stages, policy gates, authority. | Stays large on purpose. Compress only when safety, validation, or routing semantics survive intact. |
+| `ACCEPTABLE_LARGE` | Reader-facing docs and `references/` files; not pulled into startup. | Leave alone unless they migrate into a startup path. |
+
+### Priority order when picking an optimization target
+
+1. `ALWAYS_LOAD_RISK`
+2. `STARTUP_INJECTED_RISK`
+3. `ROUTING_INDEX_RISK`
+4. `LAZY_REFERENCE_HEAVY` / `EXTRACTION_CANDIDATE`
+5. `LAZY_OPERATING_CONTRACT`
+6. `ACCEPTABLE_LARGE`
+
+### When to leave a large file alone
+
+- The body is an operating contract (`LAZY_OPERATING_CONTRACT`) and compressing
+  would break stage flow, approval gates, or safety language.
+- A reference file already exists and the remaining body is the public
+  procedure callers depend on.
+- The "large" surface is `ACCEPTABLE_LARGE` and is never injected into the
+  startup path — large is fine for human-readable docs.
+- Removing content would erase domain knowledge that the skill needs at
+  runtime, even though it looks like prose.
+
+The report still exits 0 in all of these cases — risk labels are advisory, not
+gates. Treat them as priority guidance for the next PR, not as failures.
+
 ## Reduce Token Bloat Safely
 
 1. Preserve safety rules, validation, secret scanning, MCP governance, hooks, and

@@ -255,6 +255,161 @@ print_header
 combined=("${skill_files[@]}" "${command_files[@]}" "${agent_files[@]}" "${hook_files_all[@]}")
 largest_files 10 "${combined[@]}"
 
+# ----------------------------------------------------------------------
+# Risk classification (read-only, advisory)
+#
+# Token size alone does not say which large files are dangerous. A 6k-token
+# always-loaded kernel costs every turn; a 6k-token lazy skill costs only when
+# invoked. This block sorts large surfaces into operational-risk buckets so
+# the next optimization pick is informed, not arbitrary.
+#
+# Labels:
+#   ALWAYS_LOAD_RISK       — CLAUDE.md / AGENTS.md / WARP.md / settings.json
+#   STARTUP_INJECTED_RISK  — evolution/stable/global.md, memory/MEMORY.md,
+#                            hook scripts referenced by SessionStart
+#   ROUTING_INDEX_RISK     — agents/REGISTRY.md, domains/**/DOMAIN.md, core/*.md
+#   LAZY_OPERATING_CONTRACT — commands/*.md and agents/*.md whose body carries
+#                              executable rules (stages, policy gates, authority)
+#   LAZY_REFERENCE_HEAVY   — skills/commands carrying API catalogs, schemas,
+#                              endpoint lists, long reference tables
+#   EXTRACTION_CANDIDATE   — LAZY_REFERENCE_HEAVY that has not yet had its bulk
+#                              moved behind a references/ pointer
+#   ACCEPTABLE_LARGE       — docs/ or references/ not pulled into startup
+#
+# Heuristics are deterministic, transparent, and easy to edit in this block.
+# ----------------------------------------------------------------------
+
+CLASSIFY_THRESHOLD_TOKENS=2000
+
+# Startup hook scripts (best-effort, derived from settings.json above).
+startup_hook_paths=""
+if [ -n "${hook_files:-}" ]; then
+  startup_hook_paths="$hook_files"
+fi
+
+is_startup_hook_path() {
+  case "$1" in
+    hooks/*) ;;
+    *) return 1 ;;
+  esac
+  while IFS= read -r candidate; do
+    [ -n "$candidate" ] || continue
+    [ "$candidate" = "$1" ] && return 0
+  done <<EOF
+$startup_hook_paths
+EOF
+  return 1
+}
+
+content_has() {
+  # grep -E -q with a deterministic pattern set; case-insensitive.
+  grep -E -qi "$2" "$1" 2>/dev/null
+}
+
+classify_file() {
+  path="$1"
+  case "$path" in
+    CLAUDE.md|AGENTS.md|WARP.md|settings.json)
+      printf "ALWAYS_LOAD_RISK\n"; return ;;
+    evolution/stable/global.md|memory/MEMORY.md)
+      printf "STARTUP_INJECTED_RISK\n"; return ;;
+    agents/REGISTRY.md)
+      printf "ROUTING_INDEX_RISK\n"; return ;;
+  esac
+
+  if is_startup_hook_path "$path"; then
+    printf "STARTUP_INJECTED_RISK\n"; return
+  fi
+
+  case "$path" in
+    domains/*/DOMAIN.md|core/*.md)
+      printf "ROUTING_INDEX_RISK\n"; return ;;
+  esac
+
+  case "$path" in
+    commands/*.md)
+      if content_has "$path" '(stage [0-9]|policy gate|approval|risk[ -]tier|execution loop|final report|hard rules?)'; then
+        printf "LAZY_OPERATING_CONTRACT\n"; return
+      fi
+      printf "LAZY_REFERENCE_HEAVY\n"; return ;;
+    agents/*.md)
+      if content_has "$path" '(authority[ -]level|mcp-servers|risk-tier|delegation|workflow|persona|trigger)'; then
+        printf "LAZY_OPERATING_CONTRACT\n"; return
+      fi
+      printf "LAZY_REFERENCE_HEAVY\n"; return ;;
+    skills/*/SKILL.md|skills/*/*/SKILL.md|skills/*/*/*/SKILL.md|skills/*/*/*/*/SKILL.md)
+      # Skills with heavy API / reference content are extraction candidates.
+      if content_has "$path" '(endpoint|schema|request/response|reference|examples?|troubleshooting|api|model table|cli reference|```[a-z]+)' ; then
+        # Already split? If a sibling references/ dir holds files, less urgent.
+        skill_dir="${path%/SKILL.md}"
+        if [ -d "$skill_dir/references" ] && [ -n "$(ls -A "$skill_dir/references" 2>/dev/null)" ]; then
+          printf "LAZY_REFERENCE_HEAVY\n"
+        else
+          printf "EXTRACTION_CANDIDATE\n"
+        fi
+        return
+      fi
+      printf "LAZY_OPERATING_CONTRACT\n"; return ;;
+    docs/*|*/references/*|commands/references/*|skills/*/references/*|agents/references/*)
+      printf "ACCEPTABLE_LARGE\n"; return ;;
+    hooks/*)
+      printf "STARTUP_INJECTED_RISK\n"; return ;;
+  esac
+
+  # Unknown / unmatched lazy file — treat as reference heavy by default.
+  printf "LAZY_REFERENCE_HEAVY\n"
+}
+
+# Collect every tracked file over the classification threshold.
+classified_lines=""
+while IFS= read -r path; do
+  [ -n "$path" ] || continue
+  [ -f "$path" ] || continue
+  case "$path" in
+    *.md|*.json|*.sh) ;;
+    *) continue ;;
+  esac
+  chars="$(chars_for "$path")"
+  tokens="$(tokens_for_chars "$chars")"
+  if [ "$tokens" -gt "$CLASSIFY_THRESHOLD_TOKENS" ]; then
+    label="$(classify_file "$path")"
+    classified_lines="${classified_lines}${label} ${tokens} ${path}
+"
+  fi
+done < <(git ls-files --cached --others --exclude-standard)
+
+section "Risk classification summary"
+note "files counted are tracked .md/.json/.sh over ${CLASSIFY_THRESHOLD_TOKENS} est tokens"
+for label in ALWAYS_LOAD_RISK STARTUP_INJECTED_RISK ROUTING_INDEX_RISK LAZY_REFERENCE_HEAVY EXTRACTION_CANDIDATE LAZY_OPERATING_CONTRACT ACCEPTABLE_LARGE; do
+  count=$(printf "%s" "$classified_lines" | awk -v l="$label" '$1==l {n++} END {print n+0}')
+  printf "%-26s %d\n" "$label:" "$count"
+done
+
+section "Highest-priority context risks"
+note "ranked by operational risk (startup cost first), then est tokens descending"
+priority_order() {
+  case "$1" in
+    ALWAYS_LOAD_RISK)        printf "1\n" ;;
+    STARTUP_INJECTED_RISK)   printf "2\n" ;;
+    ROUTING_INDEX_RISK)      printf "3\n" ;;
+    LAZY_REFERENCE_HEAVY)    printf "4\n" ;;
+    EXTRACTION_CANDIDATE)    printf "4\n" ;;
+    LAZY_OPERATING_CONTRACT) printf "5\n" ;;
+    ACCEPTABLE_LARGE)        printf "6\n" ;;
+    *)                       printf "9\n" ;;
+  esac
+}
+
+printf "%s" "$classified_lines" | while IFS=' ' read -r label tokens path; do
+  [ -n "$label" ] || continue
+  prio="$(priority_order "$label")"
+  printf "%s %010d %-26s %s\n" "$prio" "$tokens" "$label" "$path"
+done | sort -k1,1n -k2,2nr | head -15 | while read -r prio tokens label path; do
+  # Strip leading zeros from tokens for display without using arithmetic on octal-shaped strings.
+  tdisplay="$(printf "%d" "$((10#$tokens))")"
+  printf "P%s %-26s %6s tok  %s\n" "$prio" "$label" "$tdisplay" "$path"
+done
+
 section "Summary"
 printf "pass=%d warn=%d fail=%d\n" "$PASS" "$WARN" "$FAIL"
 exit 0
