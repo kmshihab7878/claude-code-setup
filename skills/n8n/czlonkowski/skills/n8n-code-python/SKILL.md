@@ -231,7 +231,7 @@ return [{
 }]
 ```
 
-**See**: [DATA_ACCESS.md](DATA_ACCESS.md) for comprehensive guide
+**See**: [references/data-access.md](references/data-access.md) for comprehensive guide
 
 ---
 
@@ -255,7 +255,7 @@ name = webhook_data.get("name")
 
 **Why**: Webhook node wraps all request data under `body` property. This includes POST data, query parameters, and JSON payloads.
 
-**See**: [DATA_ACCESS.md](DATA_ACCESS.md) for full webhook structure details
+**See**: [references/data-access.md](references/data-access.md) for full webhook structure details
 
 ---
 
@@ -318,7 +318,7 @@ return [{"data": value}]  # Should be {"json": value}
 
 **Why it matters**: Next nodes expect list format. Incorrect format causes workflow execution to fail.
 
-**See**: [ERROR_PATTERNS.md](ERROR_PATTERNS.md) #2 for detailed error solutions
+**See**: [references/error-patterns.md](references/error-patterns.md) #2 for detailed error solutions
 
 ---
 
@@ -368,7 +368,7 @@ import statistics  # ✅ Statistical functions
 - ✅ Use **HTTP Request node** + **HTML Extract node**
 - ✅ Or switch to **JavaScript** with regex/string methods
 
-**See**: [STANDARD_LIBRARY.md](STANDARD_LIBRARY.md) for complete reference
+**See**: [references/standard-library.md](references/standard-library.md) for complete reference
 
 ---
 
@@ -488,7 +488,7 @@ else:
     return [{"json": {"error": "No values found"}}]
 ```
 
-**See**: [COMMON_PATTERNS.md](COMMON_PATTERNS.md) for 10 detailed Python patterns
+**See**: [references/common-patterns.md](references/common-patterns.md) for 10 detailed Python patterns
 
 ---
 
@@ -552,7 +552,7 @@ email = _json["body"]["email"]
 email = _json.get("body", {}).get("email", "no-email")
 ```
 
-**See**: [ERROR_PATTERNS.md](ERROR_PATTERNS.md) for comprehensive error guide
+**See**: [references/error-patterns.md](references/error-patterns.md) for comprehensive error guide
 
 ---
 
@@ -596,7 +596,7 @@ from statistics import mean, median, stdev
 average = mean([1, 2, 3, 4, 5])
 ```
 
-**See**: [STANDARD_LIBRARY.md](STANDARD_LIBRARY.md) for complete reference
+**See**: [references/standard-library.md](references/standard-library.md) for complete reference
 
 ---
 
@@ -734,10 +734,10 @@ Before deploying Python Code nodes, verify:
 ## Additional Resources
 
 ### Related Files
-- [DATA_ACCESS.md](DATA_ACCESS.md) - Comprehensive Python data access patterns
-- [COMMON_PATTERNS.md](COMMON_PATTERNS.md) - 10 Python patterns for n8n
-- [ERROR_PATTERNS.md](ERROR_PATTERNS.md) - Top 5 errors and solutions
-- [STANDARD_LIBRARY.md](STANDARD_LIBRARY.md) - Complete standard library reference
+- [references/data-access.md](references/data-access.md) - Comprehensive Python data access patterns
+- [references/common-patterns.md](references/common-patterns.md) - 10 Python patterns for n8n
+- [references/error-patterns.md](references/error-patterns.md) - Top 5 errors and solutions
+- [references/standard-library.md](references/standard-library.md) - Complete standard library reference
 
 ### n8n Documentation
 - Code Node Guide: https://docs.n8n.io/code/code-node/

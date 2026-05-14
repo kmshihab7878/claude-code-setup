@@ -596,6 +596,6 @@ return all_items if all_items else [{"json": {"message": "No data"}}]
 
 **See Also**:
 - [SKILL.md](SKILL.md) - Python Code overview
-- [DATA_ACCESS.md](DATA_ACCESS.md) - Data access patterns
-- [STANDARD_LIBRARY.md](STANDARD_LIBRARY.md) - Available modules
-- [COMMON_PATTERNS.md](COMMON_PATTERNS.md) - Production patterns
+- [data-access.md](data-access.md) - Data access patterns
+- [standard-library.md](standard-library.md) - Available modules
+- [common-patterns.md](common-patterns.md) - Production patterns

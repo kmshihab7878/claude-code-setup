@@ -778,5 +778,5 @@ return allData.map(item => ({json: item}));
 
 **See Also**:
 - [SKILL.md](SKILL.md) - Overview and quick start
-- [COMMON_PATTERNS.md](COMMON_PATTERNS.md) - Production patterns
-- [ERROR_PATTERNS.md](ERROR_PATTERNS.md) - Avoid common mistakes
+- [common-patterns.md](common-patterns.md) - Production patterns
+- [error-patterns.md](error-patterns.md) - Avoid common mistakes

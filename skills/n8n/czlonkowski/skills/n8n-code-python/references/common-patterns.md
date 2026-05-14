@@ -789,6 +789,6 @@ import numpy as np  # ModuleNotFoundError!
 
 **See Also**:
 - [SKILL.md](SKILL.md) - Python Code overview
-- [DATA_ACCESS.md](DATA_ACCESS.md) - Data access patterns
-- [STANDARD_LIBRARY.md](STANDARD_LIBRARY.md) - Available modules
-- [ERROR_PATTERNS.md](ERROR_PATTERNS.md) - Avoid common mistakes
+- [data-access.md](data-access.md) - Data access patterns
+- [standard-library.md](standard-library.md) - Available modules
+- [error-patterns.md](error-patterns.md) - Avoid common mistakes

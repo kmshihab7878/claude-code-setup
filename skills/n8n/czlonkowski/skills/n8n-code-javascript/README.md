@@ -93,7 +93,7 @@ n8n-code-javascript/
 │   - Error prevention overview
 │   - Quick reference checklist
 │
-├── DATA_ACCESS.md (400 lines)
+├── references/data-access.md (400 lines)
 │   Complete data access patterns
 │   - $input.all() - Most common (26% usage)
 │   - $input.first() - Very common (25% usage)
@@ -103,7 +103,7 @@ n8n-code-javascript/
 │   - Choosing the right pattern
 │   - Common mistakes to avoid
 │
-├── COMMON_PATTERNS.md (600 lines)
+├── references/common-patterns.md (600 lines)
 │   10 production-tested patterns
 │   - Pattern 1: Multi-source Aggregation
 │   - Pattern 2: Regex Filtering
@@ -117,7 +117,7 @@ n8n-code-javascript/
 │   - Pattern 10: String Aggregation
 │   - Pattern selection guide
 │
-├── ERROR_PATTERNS.md (450 lines)
+├── references/error-patterns.md (450 lines)
 │   Top 5 errors with solutions
 │   - Error #1: Empty Code / Missing Return (38%)
 │   - Error #2: Expression Syntax Confusion (8%)
@@ -128,7 +128,7 @@ n8n-code-javascript/
 │   - Quick error reference
 │   - Debugging tips
 │
-├── BUILTIN_FUNCTIONS.md (450 lines)
+├── references/builtin-functions.md (450 lines)
 │   Complete built-in function reference
 │   - $helpers.httpRequest() API reference
 │   - DateTime (Luxon) complete guide
@@ -335,10 +335,10 @@ Each evaluation tests skill activation, correct guidance, and reference to appro
 
 - **v1.0** (2025-01-20): Initial implementation
   - SKILL.md with comprehensive overview
-  - DATA_ACCESS.md covering all access patterns
-  - COMMON_PATTERNS.md with 10 production patterns
-  - ERROR_PATTERNS.md covering top 5 errors
-  - BUILTIN_FUNCTIONS.md complete reference
+  - references/data-access.md covering all access patterns
+  - references/common-patterns.md with 10 production patterns
+  - references/error-patterns.md covering top 5 errors
+  - references/builtin-functions.md complete reference
   - 5 evaluation scenarios
 
 ---
