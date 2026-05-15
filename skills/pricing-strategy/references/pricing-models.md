@@ -58,7 +58,7 @@ Three tiers is the standard. Not because of tradition — because it anchors per
 |----------------|-------|--------|------|
 | Core product | ✅ (limited) | ✅ (full) | ✅ (full) |
 | Usage limits | Low | Medium | High / unlimited |
-| Users/seats | 1-3 | 5-unlimited | Unlimited |
+| Seats and users | 1-3 | 5-unlimited | Unlimited |
 | Integrations | Basic | Full | Full + custom |
 | Reporting | Basic | Advanced | Custom |
 | Support | Email | Priority | Dedicated CSM |
