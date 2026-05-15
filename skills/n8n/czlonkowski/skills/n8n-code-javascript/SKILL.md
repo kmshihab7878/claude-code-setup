@@ -5,226 +5,192 @@ description: Write JavaScript code in n8n Code nodes. Use when writing JavaScrip
 
 # JavaScript Code Node
 
-Expert guidance for writing JavaScript code in n8n Code nodes. **JavaScript is recommended for 95% of n8n Code use cases** — full `$helpers`, Luxon DateTime, no library limitations.
+Expert guidance for writing JavaScript code in n8n Code nodes.
+**JavaScript is recommended for 95% of n8n Code use cases** — full
+`$helpers`, Luxon DateTime, no library limitations.
 
-## Reference map
+## When to use
 
-Reference material lives in `references/`. Load only what the current task needs.
+- Writing or reviewing a JavaScript Code node in n8n.
+- Using `$input` / `$json` / `$node` syntax.
+- Making HTTP requests with `$helpers.httpRequest`.
+- Date/time work with `DateTime` (Luxon).
+- Querying JSON with `$jmespath`.
+- Choosing between Code node modes (All Items vs Each Item).
+- Debugging Code node errors (return shape, webhook nesting, undefined fields).
 
-| When | Read |
-|---|---|
-| Mode Selection full examples, Data Access Patterns 1–4 full code, Webhook body walkthrough | [`references/runtime-and-data-model.md`](references/runtime-and-data-model.md) · base detail: [`references/data-access.md`](references/data-access.md) |
-| Production patterns (multi-source aggregate / regex filter / transform / top-N / aggregate-report) full code | [`references/javascript-patterns.md`](references/javascript-patterns.md) · base detail: [`references/common-patterns.md`](references/common-patterns.md) |
-| `$helpers.httpRequest`, DateTime / Luxon, `$jmespath` full examples (POST, timezones, nested projections, error handling) | [`references/helpers-and-http.md`](references/helpers-and-http.md) · base detail: [`references/builtin-functions.md`](references/builtin-functions.md) |
-| Return-format right/wrong, Top 5 mistakes, Best Practices full examples | [`references/validation-and-debugging.md`](references/validation-and-debugging.md) · base detail: [`references/error-patterns.md`](references/error-patterns.md) |
-| End-to-end examples (webhook, API fetch + merge, group-by, multi-node combine, regex extract, per-item conditional, date-range filter) | [`references/examples.md`](references/examples.md) |
+## Required input contract
 
----
+Before writing or reviewing a JavaScript Code node, identify:
 
-## Quick Start
+- **Mode** — "Run Once for All Items" (default, 95% of cases) vs "Run Once for Each Item".
+- **Upstream node(s)** — which provides the input (webhook, HTTP, manual, prior Code node).
+- **Required output cardinality** — single, list, empty, or filtered.
+- **External calls** — does this node need `$helpers.httpRequest`?
+- **Reason for Code node** — not solvable by Set / Filter / IF / HTTP Request nodes alone.
+
+## n8n JavaScript Code node constraints
+
+These constraints apply to every JavaScript Code node and must always be respected.
+
+1. **Return shape**: every code path returns an array of objects each with
+   a `json` key. Single returns wrapped in array. Empty result is `return []`.
+2. **Webhook data nests under `.body`**. Use `$json.body?.<field>` or
+   `$input.first().json.body`.
+3. **Optional chaining + nullish coalescing** for nullable fields:
+   `$json.body?.name ?? ""`.
+4. **No `{{ }}` expression syntax inside the Code node body.** Code nodes
+   execute pure JavaScript — use template literals or direct access.
+5. **`$helpers.httpRequest` always inside `try`/`catch`.** Awaitable; throws on failure.
+6. **`DateTime` time zones pinned explicitly** when crossing zones — never
+   rely on the server default.
+7. **Do not mutate `item.json` in place** — construct new objects
+   (`{ json: { ...item.json, extra: v } }`).
+8. **Do not return `$input.all()` raw** — map first to produce a fresh
+   `{ json }` shape.
+9. **Credentials live in n8n credential storage**, never in source.
+
+## Workflow (compact)
+
+1. **Mode**: All Items (default) vs Each Item.
+2. **Read**: `$input.all()` / `.first()` / `.item` / `$node["..."].json`.
+3. **Transform**: array methods (`map` / `filter` / `reduce`).
+4. **Return**: `[{ json: {...} }, ...]` on every code path.
+5. **Validate**: walk the gates (below).
+
+Full workflow + mode examples + return-format matrix:
+`references/javascript-code-workflow.md`.
+
+## Decision logic
+
+### Mode selection
+
+| Mode | When | Data access |
+|------|------|-------------|
+| Run Once for All Items (default, 95%) | Aggregation, filtering, batch, API calls with all data | `$input.all()` / `items` |
+| Run Once for Each Item | Item-specific logic, independent operations | `$input.item` / `$item` |
+
+### Data access
+
+| Accessor | When |
+|----------|------|
+| `$input.all()` | Arrays, batches, aggregations |
+| `$input.first()` | Single objects, API responses |
+| `$input.item` | Each-Item mode only |
+| `$node["Name"].json` | Reference a non-immediate upstream node |
+
+### When to use the Code node vs another node
+
+| Situation | Use |
+|-----------|-----|
+| Complex multi-step transformations | Code node |
+| Custom calculations / business logic | Code node |
+| API response parsing with complex structure | Code node |
+| Simple field mapping | **Set** node |
+| Basic filtering | **Filter** node |
+| Conditional routing | **IF** / **Switch** node |
+| HTTP only, no transform | **HTTP Request** node |
+| Need HTTP + custom logic in one node | Code node (JavaScript, with `$helpers.httpRequest`) |
+
+## Minimal critical examples
+
+### Quick Start
 
 ```javascript
-// Basic template for Code nodes
 const items = $input.all();
-
-// Process data
-const processed = items.map(item => ({
+return items.map(item => ({
   json: {
     ...item.json,
     processed: true,
-    timestamp: new Date().toISOString()
-  }
+    timestamp: new Date().toISOString(),
+  },
 }));
-
-return processed;
 ```
 
-### Essential rules
-
-1. **Choose "Run Once for All Items" mode** — default and recommended for most use cases.
-2. **Access data**: `$input.all()`, `$input.first()`, or `$input.item`.
-3. **CRITICAL**: must return `[{json: {...}}]` format (array of objects with `json` key).
-4. **CRITICAL**: webhook data is under `$json.body`, not `$json` directly.
-5. **Built-ins available**: `$helpers.httpRequest()`, `DateTime` (Luxon), `$jmespath()`.
-
----
-
-## Mode Selection
-
-| Mode | When | Data access | Performance |
-|---|---|---|---|
-| **Run Once for All Items** (default — 95% of cases) | Aggregation, filtering, batch processing, transformations, API calls with all data | `$input.all()` or `items` | Faster — single execution |
-| **Run Once for Each Item** | Item-specific logic, independent operations, per-item validation | `$input.item` or `$item` | Slower for large datasets |
-
-**Decision shortcut:** look at multiple items → All Items; each item completely independent → Each Item; not sure → All Items (you can always loop inside).
-
-Full mode examples: [`references/runtime-and-data-model.md`](references/runtime-and-data-model.md#mode-selection--full-examples).
-
----
-
-## Data Access Patterns
-
-| Pattern | When |
-|---|---|
-| `$input.all()` | Processing arrays, batch operations, aggregations (most common) |
-| `$input.first()` | Single objects, API responses, first-in-first-out |
-| `$input.item` | Each-Item mode only |
-| `$node["NodeName"].json` | Reference output of a specific upstream node |
-
-Full per-pattern examples + comprehensive guide: [`references/runtime-and-data-model.md`](references/runtime-and-data-model.md#data-access-patterns--full-examples) and [`references/data-access.md`](references/data-access.md).
-
----
-
-## Critical: Webhook Data Structure
-
-**Most common JavaScript mistake.** Webhook data is nested under `.body`.
+### Webhook field access
 
 ```javascript
-// ❌ WRONG — returns undefined
-const name = $json.name;
-
-// ✅ CORRECT — webhook data is under .body
-const name = $json.body.name;
-
-// Or via $input
-const webhookData = $input.first().json.body;
+const name = $json.body?.name ?? "";
+return [{ json: { name: name.trim() } }];
 ```
 
-The Webhook node wraps POST data, query parameters, and JSON payloads under `body`. Full walkthrough: [`references/runtime-and-data-model.md`](references/runtime-and-data-model.md#webhook-data-structure--full-explanation).
-
----
-
-## Return Format Requirements
-
-**Critical rule**: always return an array of objects with a `json` property.
+### HTTP from inside the Code node
 
 ```javascript
-// ✅ Single
-return [{json: {field: value}}];
-
-// ✅ Multiple
-return [{json: {id: 1}}, {json: {id: 2}}];
-
-// ✅ Empty
-return [];
-
-// ❌ Object not wrapped in array
-return {json: {...}};
-
-// ❌ Array without "json" key
-return [{field: value}];
-
-// ❌ Raw $input.all() without mapping
-return $input.all();
+try {
+  const res = await $helpers.httpRequest({
+    method: "GET",
+    url: "https://api.example.com/items",
+  });
+  return res.data.map(it => ({ json: { id: it.id, name: it.name } }));
+} catch (err) {
+  return [{ json: { ok: false, error: err.message } }];
+}
 ```
 
-Full right/wrong matrix: [`references/validation-and-debugging.md`](references/validation-and-debugging.md#return-format--full-examples). Detailed error solutions: [`references/error-patterns.md`](references/error-patterns.md).
+### Return-format right/wrong
 
----
+```javascript
+return [{ json: { id: 1 } }];                            // RIGHT — single
+return [{ json: { id: 1 } }, { json: { id: 2 } }];       // RIGHT — multiple
+return [];                                               // RIGHT — empty
+return { json: { id: 1 } };                              // WRONG — not wrapped
+return [{ id: 1 }];                                      // WRONG — missing "json" key
+return $input.all();                                     // WRONG — raw input
+```
 
-## Common Patterns Overview
+Worked end-to-end examples (webhook, API fetch + merge, group-by,
+multi-node combine, regex extract, per-item conditional, date-range filter):
+`references/examples.md`.
 
-Production-tested patterns (full code in [`references/javascript-patterns.md`](references/javascript-patterns.md) and [`references/common-patterns.md`](references/common-patterns.md)):
+## Validation gates
 
-1. **Multi-Source Data Aggregation** — combine data from multiple APIs / webhooks / nodes.
-2. **Filtering with Regex** — extract patterns / mentions / keywords from text.
-3. **Data Transformation & Enrichment** — map fields, normalize formats, add computed fields.
-4. **Top N Filtering & Ranking** — `sort()` + `slice()` for ranked subsets.
-5. **Aggregation & Reporting** — `reduce()` for sums / counts / averages.
+Before deploying a JavaScript Code node:
 
----
+- [ ] Code is not empty.
+- [ ] Final `return` statement exists.
+- [ ] Return shape is `[{ json: {...} }, ...]` on every code path.
+- [ ] Data access uses only `$input.all()` / `$input.first()` / `$input.item` /
+      `$node["..."].json`.
+- [ ] No `{{ }}` expression syntax inside the Code node body.
+- [ ] `?.` and `??` used for nullable fields.
+- [ ] Webhook data accessed via `$json.body?.<field>`.
+- [ ] `try`/`catch` wraps every `$helpers.httpRequest`.
+- [ ] Mode is "All Items" unless per-item independence is required.
+- [ ] Output consistent across every branch and exception path.
+- [ ] `DateTime` time zones pinned explicitly when crossing zones.
 
-## Error Prevention — Top 5 Mistakes
+Full top-5 mistakes, best practices, debugging playbook, anti-patterns:
+`references/validation-troubleshooting-and-antipatterns.md`.
 
-1. **Empty code or missing `return`** — always end with `return [...]`.
-2. **Expression-syntax confusion** — don't use `{{ }}` inside Code nodes; use template literals `` `${...}` `` or direct `$input.first().json.field`.
-3. **Incorrect return wrapper** — must be `[{json: ...}]`, not `{json: ...}`.
-4. **Missing null checks** — use optional chaining (`?.`) or guard clauses.
-5. **Webhook body nesting** — access via `$json.body.field`.
+## Output expectations
 
-Full right/wrong examples for each: [`references/validation-and-debugging.md`](references/validation-and-debugging.md#top-5-mistakes--full-examples) and [`references/error-patterns.md`](references/error-patterns.md).
+When delivering a JavaScript Code node:
 
----
+- Provide the full code block, ready to paste into the Code node.
+- State the mode (All Items / Each Item).
+- Note any required upstream nodes.
+- Flag any branch that returns `[]` and what that means downstream.
+- List required credentials if `$helpers.httpRequest` is used.
 
-## Built-in Functions & Helpers
+## Integration with other skills
 
-| Helper | Use |
-|---|---|
-| `$helpers.httpRequest(options)` | Make HTTP requests from inside the Code node (await). Always wrap in try/catch. |
-| `DateTime` (Luxon) | Date/time operations — `DateTime.now()`, `.toFormat()`, `.toISO()`, `.plus({days})`, `.minus({weeks})`, `.setZone()`, `.fromISO()`. |
-| `$jmespath(data, expr)` | Query JSON with JMESPath — filters, projections, expressions. |
+- **n8n Expression Syntax** — expressions use `{{ }}` in other nodes; Code nodes use JavaScript directly.
+- **n8n MCP Tools Expert** — find Code node via `search_nodes({query: "code"})`;
+  configure via `get_node({nodeType: "nodes-base.code"})`; validate via
+  `validate_node({nodeType: "nodes-base.code", config: {...}})`.
+- **n8n Node Configuration** — mode and language selection are node properties.
+- **n8n Workflow Patterns** — Code nodes in transformation steps; Webhook → Code → API; error handling.
+- **n8n Validation Expert** — interpret validation errors, auto-fix.
+- **n8n Code Python** — when to switch (rare); feature comparison.
 
-Full examples (POST with JSON body, error handling, timezones, parsing, nested projections): [`references/helpers-and-http.md`](references/helpers-and-http.md) and [`references/builtin-functions.md`](references/builtin-functions.md).
+## Reference map
 
----
-
-## Best Practices
-
-1. Always validate input data (`!items`, `items.length === 0`, structure check).
-2. Use try/catch for `$helpers.httpRequest` and other error-prone operations.
-3. Prefer array methods (`filter`/`map`/`reduce`) over manual loops.
-4. Filter early, process late — reduce dataset before expensive transforms.
-5. Use descriptive variable names — `activeUsers`, not `a`.
-6. Debug with `console.log()` — output appears in the browser console.
-
-Full examples for each: [`references/validation-and-debugging.md`](references/validation-and-debugging.md#best-practices--full-examples).
-
----
-
-## When to Use Code Node
-
-**Use Code node when:** complex transformations needing multiple steps, custom calculations or business logic, recursive operations, API response parsing with complex structure, multi-step conditionals, cross-item data aggregation.
-
-**Consider other nodes when:** simple field mapping → **Set**; basic filtering → **Filter**; conditionals → **IF** / **Switch**; HTTP only → **HTTP Request**.
-
-Code node excels at complex logic that would require chaining many simple nodes.
-
----
-
-## Integration with Other Skills
-
-- **n8n Expression Syntax** — expressions use `{{ }}` in other nodes; Code nodes use JavaScript directly (no `{{ }}`).
-- **n8n MCP Tools Expert** — find Code node via `search_nodes({query: "code"})`; configure via `get_node({nodeType: "nodes-base.code"})`; validate via `validate_node({...})`.
-- **n8n Node Configuration** — mode selection (All Items vs Each Item), language selection (JavaScript vs Python), property dependencies.
-- **n8n Workflow Patterns** — Code nodes in transformation steps; Webhook → Code → API pattern; error handling.
-- **n8n Validation Expert** — validate Code node configuration, handle validation errors, auto-fix.
-- **n8n Code Python** — when to use Python instead; feature comparison.
-
----
-
-## Quick Reference Checklist
-
-Before deploying Code nodes, verify:
-
-- [ ] **Code is not empty** — has meaningful logic.
-- [ ] **Return statement exists** — must return array of objects.
-- [ ] **Proper return format** — each item: `{json: {...}}`.
-- [ ] **Data access correct** — `$input.all()`, `$input.first()`, or `$input.item`.
-- [ ] **No n8n expressions** — use JavaScript template literals: `` `${value}` ``.
-- [ ] **Error handling** — guard clauses for null/undefined inputs; try/catch around `$helpers`.
-- [ ] **Webhook data** — accessed via `.body` if from webhook.
-- [ ] **Mode selection** — "All Items" for most cases.
-- [ ] **Performance** — prefer `map`/`filter` over manual loops.
-- [ ] **Output consistent** — all code paths return the same structure.
-
----
-
-## Additional Resources
-
-### Reference files
-
-- [`references/runtime-and-data-model.md`](references/runtime-and-data-model.md) — modes, data access, webhook body
-- [`references/javascript-patterns.md`](references/javascript-patterns.md) — production patterns
-- [`references/helpers-and-http.md`](references/helpers-and-http.md) — `$helpers`, DateTime, `$jmespath`
-- [`references/validation-and-debugging.md`](references/validation-and-debugging.md) — return format, top mistakes, best practices
-- [`references/examples.md`](references/examples.md) — end-to-end recipes
-- [`references/data-access.md`](references/data-access.md) — comprehensive data-access guide
-- [`references/common-patterns.md`](references/common-patterns.md) — 10 production-tested patterns
-- [`references/error-patterns.md`](references/error-patterns.md) — comprehensive error guide
-- [`references/builtin-functions.md`](references/builtin-functions.md) — complete built-in reference
-
-### n8n documentation
-
-- Code Node Guide: https://docs.n8n.io/code/code-node/
-- Built-in Methods: https://docs.n8n.io/code-examples/methods-variables-reference/
-- Luxon Documentation: https://moment.github.io/luxon/
+| Need | Read |
+|------|------|
+| Mode selection + runtime + return-format full examples; workflow steps | `references/javascript-code-workflow.md` |
+| 4 data access patterns, webhook body, 5 production patterns (aggregate / regex / transform / top-N / reduce) | `references/item-and-data-patterns.md` |
+| `$helpers.httpRequest` (auth, retry, multi-request), DateTime / Luxon, `$jmespath`, integration decision table | `references/helpers-and-integrations.md` |
+| Top 5 mistakes, best practices, validation gates, debugging playbook, anti-patterns | `references/validation-troubleshooting-and-antipatterns.md` |
+| End-to-end worked examples | `references/examples.md` |
+| Upstream comprehensive depth | `references/common-patterns.md`, `references/data-access.md`, `references/error-patterns.md`, `references/builtin-functions.md` |
