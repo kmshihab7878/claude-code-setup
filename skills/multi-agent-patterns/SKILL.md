@@ -12,243 +12,130 @@ updated: 2026-05-15
 
 # Multi-Agent Patterns
 
-Design patterns and orchestration infrastructure for building robust multi-agent AI systems.
+Use this skill to select and apply multi-agent collaboration patterns: supervisor, pipeline, router, critic-executor, debate, hierarchical delegation, peer mesh, swarm, and related coordination workflows.
 
-## Reference map
+Keep this file as the operating contract. Load references only for detailed catalogs, implementation sketches, handoff templates, failure modes, and worked examples.
 
-Reference material lives in `references/`. Load only what the current task needs.
+## When To Use
 
-| When | Read |
-|---|---|
-| Full Python implementations for all 10 orchestration patterns (GroupChat, ReAct, CriticExecutor, Router, Plan-and-Execute, Debate, Supervisor, P2P, Hierarchical, Swarm) | [`references/orchestration-patterns.md`](references/orchestration-patterns.md) |
-| Capability-based / round-robin / auction delegation code, ConversationPolicy guardrails, conflict-resolution strategy detail, handoff discipline | [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md) |
-| Message Passing / Shared State / Event Bus Python, AgentHealth dataclass + state machine, AgentMemoryStore code, Real-time agent latency budget | [`references/coordination-examples.md`](references/coordination-examples.md) |
-| Anti-pattern rationale + detection, error-handling implementations (retry / circuit breaker / fallback / degradation / DLQ), debugging recipes | [`references/validation-and-troubleshooting.md`](references/validation-and-troubleshooting.md) |
-| End-to-end scenarios (research pipeline, real-time voice agent, debate + arbitration, hierarchical with PolicyGate, swarm with shared memory) + pattern composition cheatsheet | [`references/examples.md`](references/examples.md) |
+- Designing a new agent architecture.
+- Adding agents to an existing system.
+- Coordinating multiple agents across parallel, sequential, review, or escalation work.
+- Choosing communication, delegation, conflict-resolution, memory, lifecycle, or health-monitoring rules.
+- Auditing a multi-agent workflow for deadlocks, authority gaps, hidden state, or poor observability.
 
-## How to use
+## When Not To Use
 
-- `/multi-agent-patterns`
-  Apply multi-agent design patterns to the current system.
-- `/multi-agent-patterns <scenario>`
-  Recommend patterns for a specific coordination scenario.
+- Single-agent work with no coordination problem.
+- Claude Code subagent authoring; use the relevant subagent-development guidance.
+- MCP server development; use `mcp-builder`.
 
-## When to use
+## Required Inputs
 
-Reference these guidelines when:
+Ask for or infer:
 
-- designing new agent architectures
-- adding agents to an existing system
-- solving coordination problems between agents
-- implementing memory sharing across agents
-- resolving conflicts in multi-agent decisions
-- building real-time agent systems
-- designing agent communication protocols
-- building task delegation logic
-- implementing agent lifecycle management
-- designing CoreMind GAOS workflows
+- Goal, task type, stakes, and expected deliverable.
+- Agent roles, capabilities, authority boundaries, and escalation path.
+- Work shape: independent, sequential, iterative review, classification, debate, hierarchy, search, or real-time interaction.
+- Constraints: latency, cost, tool access, approvals, safety tier, auditability, and state-sharing limits.
+- Validation plan: success criteria, review loops, timeouts, failure handling, and evidence required.
+- Existing environment constraints such as PolicyGate, coordinator, memory, MCP, or repository rules.
 
-## When NOT to use
+Do not invent agent capabilities, authority, tool access, safety approvals, or validation results.
 
-Do NOT apply this skill when:
+## Pattern Selection Workflow
 
-- building a single-agent system with no coordination needs
-- the task is about Claude Code subagent spawning (use `subagent-development` skill)
-- the task is about MCP server development (use `mcp-builder` skill)
+1. Classify the work shape and risk tier.
+2. Pick the smallest coordination pattern that satisfies the goal.
+3. Define agent roles, authority, inputs, outputs, and stop conditions.
+4. Choose communication: message passing, shared state, or event bus.
+5. Choose delegation: capability-based by default; use round-robin, auction, priority, or affinity only when justified.
+6. Choose conflict resolution: voting, priority, consensus, arbitration, or evidence-weighted.
+7. Add lifecycle rules: timeouts, heartbeat, retry, fallback, dead-letter handling, and recovery.
+8. Add traceability: `trace_id`, structured logs, handoff summaries, and final evidence.
+9. Validate for anti-patterns before recommending or implementing the design.
 
----
+## Decision-Critical Pattern Routing
 
-## Pattern Selection Guide
-
-**Start here.** Pick the pattern by scenario, then load the implementation from [`references/orchestration-patterns.md`](references/orchestration-patterns.md).
-
-| Scenario | Recommended Pattern |
+| Scenario | Default Pattern |
 |---|---|
 | Independent subtasks | Orchestrator-Workers or Supervisor |
-| Sequential processing | Pipeline (Plan-and-Execute with linear DAG) |
+| Sequential processing | Pipeline / Plan-and-Execute |
 | Quality-critical output | Critic-Executor |
 | Request classification | Router |
 | Complex multi-step goals | Plan-and-Execute |
-| Controversial decisions | Debate |
-| Exploration / search | Swarm |
-| Real-time interaction | Real-time Agent |
+| Controversial decisions | Debate with judge or arbitration |
+| Exploration or search | Swarm |
+| Real-time interaction | Real-time agent pattern |
 | Organization hierarchy | Hierarchical Delegation |
 | Collaborative reasoning | Peer-to-Peer |
 
----
+Use composition when needed, but avoid stacking patterns without a concrete coordination need.
 
-## Pattern Catalog (one-line summary)
+## Coordination And Authority Constraints
 
-Full implementations in [`references/orchestration-patterns.md`](references/orchestration-patterns.md).
+- Every handoff must include `trace_id`, context summary, explicit authority (`consulted`, `delegated`, or `escalated`), timeout, and rejection path.
+- Capability-based delegation is the default. If no capable agent is available, escalate instead of silently routing to a weak fit.
+- Shared state requires locks or another explicit concurrency control. Prefer message passing when loose coupling is enough.
+- Private agent memory stays private; shared memory writes must record source agent and reason.
+- Conversation policies must define max turns, allowed topics, blocked patterns, escalation triggers, and tone.
+- Authority-gated actions must preserve PolicyGate or equivalent approval rules. Agents must not expand their own authority.
+- Fallbacks must surface reduced quality or changed capability; never hide degradation.
 
-1. **Orchestrator-Workers (AG2/AutoGen)** — central orchestrator manages conversation between specialists.
-2. **Tool-Use Agent (ReAct)** — Thought → Action → Observation loop.
-3. **Critic-Executor (Reflection)** — execute → critique → revise until quality threshold.
-4. **Router (Agent-Squad)** — classify request, dispatch to specialist.
-5. **Plan-and-Execute** — generate plan with deps, execute via topological sort, replan on failure.
-6. **Debate** — N positions argue, judge evaluates.
-7. **Supervisor (Hub-and-Spoke)** — fan-out tasks, aggregate results.
-8. **Peer-to-Peer (Mesh)** — direct agent-to-agent communication.
-9. **Hierarchical Delegation** — multi-level authority cascade.
-10. **Swarm Intelligence** — simple agents, emergent behavior, environment-mediated.
+## Safety Rules
 
----
+- Do not bypass approval gates, MCP governance, validation, public-safety checks, or destructive-action protections.
+- Do not let agents execute production, credential, financial, security-sensitive, or irreversible actions without the required approval.
+- Do not use multi-agent structure to launder unsafe instructions through another agent.
+- Do not store secrets, private context, session records, credentials, local paths, or personal identifiers in shared memory or tracked files.
+- Do not claim an agent result is verified without evidence from the agent output, checks, tests, or review loop.
 
-## Communication Protocols
+## Validation Gates
 
-| Mechanism | When | Key invariant |
-|---|---|---|
-| **Message Passing** | Loosely coupled agents, async workflows | Every message carries `trace_id` propagated end-to-end |
-| **Shared State** | Tightly coordinated agents in same process | Lock around every read/write — no exceptions |
-| **Event Bus** | Fan-out notifications, decoupled pub/sub | Include `trace_id` in event payload for chain tracing |
-
-Full Python implementations in [`references/coordination-examples.md`](references/coordination-examples.md#communication-protocols).
-
----
-
-## Task Delegation Strategies
-
-| Strategy | Description | Best For |
-|---|---|---|
-| Round-robin | Distribute evenly across agents | Homogeneous agents |
-| Capability-based | Match task requirements to agent skills | Heterogeneous agents (default) |
-| Auction | Agents bid on tasks | Dynamic load balancing |
-| Priority queue | High-priority tasks first | Critical path workflows |
-| Affinity | Route related tasks to same agent | Context-dependent work |
-
-**Default**: capability-based with load filtering. Never silently route to an over-loaded or under-skilled agent — return `None` and escalate instead. Code: [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md#capability-based-delegation).
-
----
-
-## Handoff Discipline
-
-When one agent hands work to another, **every** handoff must:
-
-1. Propagate the originating `trace_id`.
-2. Include a one-paragraph context summary (no requiring the receiver to re-read full history).
-3. Declare authority explicitly: `consulted` / `delegated` / `escalated`.
-4. Surface rejection — no silent fail-back loops.
-5. Have a timeout; expired handoffs go to a dead-letter queue, not a stall.
-
-Full discipline detail: [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md#handoff-discipline).
-
----
-
-## Agent Lifecycle
-
-```
-CREATED → INITIALIZING → READY → RUNNING → COMPLETED
-                                    ↓           ↓
-                                  ERROR    TERMINATED
-                                    ↓
-                                 RETRYING
-```
-
-**Health rule**: heartbeat interval ≤ ⅓ of timeout window; 3 consecutive misses → ERROR → recovery. Full `AgentHealth` dataclass and operational detail in [`references/coordination-examples.md`](references/coordination-examples.md#agent-lifecycle--health-monitoring).
-
----
-
-## Conversation Control — Guardrails
-
-Every multi-agent conversation runs under a `ConversationPolicy` with `max_turns`, `allowed_topics`, `blocked_patterns`, `escalation_triggers`, `tone`. Blocked patterns short-circuit messages before downstream agents see them. Escalation triggers route up the hierarchy rather than continuing the current loop.
-
-Implementation: [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md#conversation-control--behavioral-guardrails).
-
----
-
-## Conflict Resolution
-
-| Strategy | When | How |
-|---|---|---|
-| Voting | Equal-authority agents | Majority wins |
-| Priority | Hierarchical authority | Higher-rank agent wins |
-| Consensus | Collaborative critical decisions | All must agree or escalate |
-| Arbitration | Deadlocked agents | Third-party agent decides |
-| Evidence-weighted | Data-driven decisions | Agent with best evidence wins |
-
-Pick by stakes / authority distribution / time pressure / auditability. Full guidance in [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md#conflict-resolution--strategy-detail).
-
----
-
-## Error Handling Patterns
-
-| Pattern | When | Implementation |
-|---|---|---|
-| Retry with backoff | Transient failures | Exponential backoff, max 3 retries |
-| Circuit breaker | Repeated failures | Open after N failures, half-open after 30s |
-| Fallback agent | Primary unavailable | Route to backup with same capabilities |
-| Graceful degradation | Partial system failure | Return `PartialResult` with explicit `quality` flag |
-| Dead letter queue | Unprocessable tasks | Log + store for manual review |
-
-**Critical rules**: retries only for *transient* failures (never auth, validation, schema); fallback agent must have same capabilities (else quality silently degrades — always log fallback rate); graceful degradation must surface `quality: "partial"` — never paper over failure; DLQ catches what would otherwise be silently dropped.
-
-Full implementation sketches: [`references/validation-and-troubleshooting.md`](references/validation-and-troubleshooting.md#error-handling-patterns--implementation).
-
----
-
-## Memory Sharing
-
-**In-process** (single run): `AgentMemoryStore` with global vs private namespaces. Always log `written_by` on global writes. Never read another agent's private namespace.
-
-**Cross-session** (operator's environment): use the Memory MCP server.
-
-```
-mcp__memory__create_entities    → Store shared knowledge
-mcp__memory__create_relations   → Link agent findings
-mcp__memory__search_nodes       → Query across agent outputs
-mcp__memory__add_observations   → Append agent discoveries
-```
-
-In-process store code: [`references/coordination-examples.md`](references/coordination-examples.md#memory-sharing).
-
----
-
-## Anti-Patterns
-
-| Anti-Pattern | Problem | Solution |
-|---|---|---|
-| **God Agent** | One agent doing everything | Decompose into specialists + Router |
-| **Chatty Agents** | Excessive inter-agent traffic | Batch messages; introduce aggregator; pass summaries |
-| **Circular Dependencies** | A waits for B, B waits for A → deadlock | DAG-based task ordering; reject cycles at planning |
-| **No Timeout** | Agent hangs indefinitely | Timeouts at every level (agent, tool, network, round) |
-| **Shared Mutable State** | Race conditions | Use locks (`SharedState`) or message passing |
-| **No Observability** | Can't debug agent interactions | Propagate `trace_id`; structured logging per agent |
-
-Detection criteria + remediation detail for each: [`references/validation-and-troubleshooting.md`](references/validation-and-troubleshooting.md#anti-pattern-rationale).
-
----
+- Pattern fit: chosen pattern matches the work shape and risk.
+- Authority check: each agent has explicit scope, permissions, escalation path, and stop condition.
+- Handoff check: summaries, `trace_id`, timeout, and rejection path exist.
+- Failure check: retry, fallback, partial-result, and dead-letter behavior are explicit.
+- Observability check: trace logs or comparable evidence can reconstruct the chain.
+- Anti-pattern check: no god agent, chatty loop, circular dependency, no-timeout path, unsafe shared state, or invisible failure.
+- Review check: quality-critical work has critic, reviewer, arbiter, or independent validation.
 
 ## Output Expectations
 
-When invoked, this skill produces:
+Return:
 
-- A recommended pattern (or composition) from the Pattern Selection Guide.
-- Concrete coordination choices: communication mechanism, delegation strategy, conflict-resolution strategy, error-handling pattern.
-- Lifecycle and health-monitoring spec (timeouts, heartbeat intervals, recovery actions).
-- `trace_id` propagation plan across the agent chain.
-- Anti-pattern audit: which anti-patterns the proposed design risks and how it mitigates them.
-- For authority-gated actions in the operator's environment: explicit PolicyGate tier classification.
+- Recommended pattern or pattern composition.
+- Roles, responsibilities, authority boundaries, and handoff rules.
+- Communication, delegation, conflict-resolution, memory, lifecycle, and error-handling choices.
+- Validation plan and evidence requirements.
+- Anti-pattern risks and mitigations.
+- PolicyGate or equivalent approval tier when authority-gated actions are involved.
+- Open risks and follow-up checks.
 
----
+## Minimal Examples
 
-## Integration with the Operator's Environment
+```text
+Independent research subtasks -> Supervisor with capability-based workers, shared trace_id, aggregator, critic review.
+```
 
-| Component | Role |
-|---|---|
-| CoreMind AgentCoordinator | SEC-001 guard: all agent execution flows through coordinator |
-| CoreMind GAOS PolicyGate | 4-tier authorization: ALLOW / REVIEW / ESCALATE / BLOCK |
-| CoreMind DelegationContract | Immutable contracts: agents cannot modify their own authority |
-| `/sc:spawn` command | Task orchestration with status protocol |
-| `subagent-development` skill | Subagent-driven development patterns |
-| `memory` MCP server | Persistent state across agent sessions |
+```text
+High-stakes decision -> Debate with evidence-weighted arbitration, explicit escalation path, and final reviewer.
+```
 
-End-to-end scenarios showing how these compose: [`references/examples.md`](references/examples.md).
+```text
+Sequential build workflow -> Plan-and-Execute DAG with cycle rejection, per-step validation, and dead-letter handling.
+```
 
----
+## Reference Map
 
-## Cross-references
+- Pattern catalog and implementation sketches: [orchestration-patterns.md](references/orchestration-patterns.md)
+- Delegation, guardrails, conflict resolution, and handoffs: [delegation-and-handoffs.md](references/delegation-and-handoffs.md)
+- Communication, lifecycle, memory, and real-time coordination: [coordination-examples.md](references/coordination-examples.md)
+- Validation, failure modes, anti-patterns, and troubleshooting: [validation-and-troubleshooting.md](references/validation-and-troubleshooting.md)
+- Worked scenarios and pattern composition: [examples.md](references/examples.md)
 
-- **subagent-development** skill — Claude Code subagent lifecycle.
-- **AI_AGENT_LANDSCAPE.md** — framework comparison (AG2, Parlant, LiveKit, etc.).
-- **CoreMind GAOS** — governed agent execution patterns.
-- **SECURITY_PLAYBOOK.md** Rules 15–20 — agent security controls.
+## Cross-References
+
+- **subagent-development** skill: Claude Code subagent lifecycle.
+- **docs/AI_AGENT_LANDSCAPE.md**: framework comparison.
+- **docs/SECURITY_PLAYBOOK.md**: agent security controls.
