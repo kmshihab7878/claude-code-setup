@@ -60,7 +60,7 @@ For email, issue trackers, CRMs, task managers, inboxes. A list of records on th
 
 **Structure.** Top bar (brand + primary actions + search) → Left list (scrollable record list with unread/status indicators) → Main detail (the selected record fully expanded: header, body, metadata, action buttons, activity log).
 
-**Good for.** Linear-style issue trackers, Gmail-adjacent mail clients, any CRM or inbox.
+**Good for.** Linear-style issue trackers, mail-adjacent clients, any CRM or inbox.
 
 ### 4. `feed` — scrolling timeline of items
 
