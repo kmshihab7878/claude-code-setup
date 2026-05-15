@@ -7,406 +7,178 @@ description: Proven workflow architectural patterns from real n8n workflows. Use
 
 Proven architectural patterns for building n8n workflows.
 
----
+## When to use
 
-## The 5 Core Patterns
+- Building a new n8n workflow from scratch.
+- Designing or reviewing workflow structure.
+- Choosing among the five core patterns.
+- Planning error handling, retries, or async strategies.
+- Asking about webhook, HTTP API, database, AI agent, or scheduled patterns.
+- Resolving pattern-related gotchas (data nesting, branch loss, timeouts).
 
-Based on analysis of real workflow usage:
+## Required input contract
 
-1. **[Webhook Processing](webhook_processing.md)** (Most Common)
-   - Receive HTTP requests → Process → Output
-   - Pattern: Webhook → Validate → Transform → Respond/Notify
+Before designing or recommending a workflow, identify:
 
-2. **[HTTP API Integration](http_api_integration.md)**
-   - Fetch from REST APIs → Transform → Store/Use
-   - Pattern: Trigger → HTTP Request → Transform → Action → Error Handler
+- **Trigger** — webhook, schedule, manual, or service trigger.
+- **Primary data flow** — what enters, what leaves, what is transformed.
+- **External systems** — APIs, databases, message brokers, AI models.
+- **Latency budget** — does the upstream caller need a synchronous response?
+- **Failure tolerance** — silent retry, dead-letter queue, alerting, or human review.
+- **Cadence / volume** — items per execution and executions per hour.
 
-3. **[Database Operations](database_operations.md)**
-   - Read/Write/Sync database data
-   - Pattern: Schedule → Query → Transform → Write → Verify
+If a strategic decision is missing, ask one sharp question before drafting
+the workflow.
 
-4. **[AI Agent Workflow](ai_agent_workflow.md)**
-   - AI agents with tools and memory
-   - Pattern: Trigger → AI Agent (Model + Tools + Memory) → Output
+## The 5 core patterns
 
-5. **[Scheduled Tasks](scheduled_tasks.md)**
-   - Recurring automation workflows
-   - Pattern: Schedule → Fetch → Process → Deliver → Log
+| # | Pattern | Trigger | Shape |
+|---|---------|---------|-------|
+| 1 | Webhook Processing | Webhook (HTTP) | Webhook → Validate → Transform → Respond / Notify |
+| 2 | HTTP API Integration | Manual / Schedule | Trigger → HTTP Request → Transform → Action → Error Handler |
+| 3 | Database Operations | Schedule | Schedule → Query → Transform → Write → Verify |
+| 4 | AI Agent Workflow | Webhook / Manual | Trigger → AI Agent (Model + Tools + Memory) → Output |
+| 5 | Scheduled Tasks | Schedule (cron) | Schedule → Fetch → Process → Deliver → Log |
 
----
+Detailed catalog with use cases per pattern: `references/workflow-pattern-catalog.md`.
+Upstream depth: `webhook_processing.md`, `http_api_integration.md`,
+`database_operations.md`, `ai_agent_workflow.md`, `scheduled_tasks.md`.
 
-## Pattern Selection Guide
+## Pattern selection (decision logic)
 
-### When to use each pattern:
+Decide in this order:
 
-**Webhook Processing** - Use when:
-- Receiving data from external systems
-- Building integrations (Slack commands, form submissions, GitHub webhooks)
-- Need instant response to events
-- Example: "Receive Stripe payment webhook → Update database → Send confirmation"
+1. **External HTTP call starts the workflow?** → Webhook Processing.
+2. **Workflow runs on a clock?** → Scheduled Tasks.
+3. **Primary action is fetching from an external API on demand?** → HTTP API Integration.
+4. **Workflow moves rows between data stores?** → Database Operations.
+5. **Requires multi-step reasoning or tool use?** → AI Agent Workflow.
 
-**HTTP API Integration** - Use when:
-- Fetching data from external APIs
-- Synchronizing with third-party services
-- Building data pipelines
-- Example: "Fetch GitHub issues → Transform → Create Jira tickets"
+A workflow may blend patterns — the **trigger** names the primary pattern.
 
-**Database Operations** - Use when:
-- Syncing between databases
-- Running database queries on schedule
-- ETL workflows
-- Example: "Read Postgres records → Transform → Write to MySQL"
+Full pattern-selection guide + workflow creation checklist:
+`references/pattern-selection-workflow.md`.
 
-**AI Agent Workflow** - Use when:
-- Building conversational AI
-- Need AI with tool access
-- Multi-step reasoning tasks
-- Example: "Chat with AI that can search docs, query database, send emails"
+## Node orchestration constraints
 
-**Scheduled Tasks** - Use when:
-- Recurring reports or summaries
-- Periodic data fetching
-- Maintenance tasks
-- Example: "Daily: Fetch analytics → Generate report → Email team"
+These rules apply to every workflow.
 
----
+1. **Sequential by default.** Parallelism is opt-in via branching + Merge.
+2. **Merge after IF / Switch.** Each branch must merge or terminate
+   independently — without Merge, only one branch reaches downstream.
+3. **Split In Batches when N > ~500.** Caps load on downstream services.
+4. **Error Trigger is workflow-level.** It connects to nothing in the main
+   flow; it fires when any node fails.
+5. **Continue On Fail is per-node.** Use only where downstream tolerates
+   silent failure.
+6. **Webhook response must be fast.** Long work goes into a follow-on
+   workflow with a `202 Accepted` handoff.
+7. **Credentials live in n8n credential storage**, never in node parameters
+   or code.
+8. **Execution Order = v1 (connection-based)**. v0 (top-to-bottom) only for
+   documented legacy reasons.
+9. **AI agents can only use connected tools.** Tools that are not wired
+   cannot be discovered or invoked by the agent.
 
-## Common Workflow Components
+## Common building blocks (compact)
 
-All patterns share these building blocks:
+| Role | Nodes |
+|------|-------|
+| Triggers | Webhook, Schedule, Manual, Polling |
+| Data sources | HTTP Request, Postgres / MySQL / MongoDB, Service nodes, Code |
+| Transformation | Set, Code, IF / Switch, Merge |
+| Outputs | HTTP Request, Database, Communication (Email / Slack / Discord), Storage |
+| Error handling | Error Trigger, IF (error condition), Stop and Error, Continue On Fail |
 
-### 1. Triggers
-- **Webhook** - HTTP endpoint (instant)
-- **Schedule** - Cron-based timing (periodic)
-- **Manual** - Click to execute (testing)
-- **Polling** - Check for changes (intervals)
+Full per-component detail, data flow shapes (linear / branching / parallel /
+loop / error-handler), and quick-start templates:
+`references/node-orchestration-and-templates.md`.
 
-### 2. Data Sources
-- **HTTP Request** - REST APIs
-- **Database nodes** - Postgres, MySQL, MongoDB
-- **Service nodes** - Slack, Google Sheets, etc.
-- **Code** - Custom JavaScript/Python
+## Validation gates
 
-### 3. Transformation
-- **Set** - Map/transform fields
-- **Code** - Complex logic
-- **IF/Switch** - Conditional routing
-- **Merge** - Combine data streams
+Before activating a workflow:
 
-### 4. Outputs
-- **HTTP Request** - Call APIs
-- **Database** - Write data
-- **Communication** - Email, Slack, Discord
-- **Storage** - Files, cloud storage
+- [ ] Each node validated via `validate_node({nodeType, config})`.
+- [ ] Full workflow validated via `validate_workflow`.
+- [ ] Credentials configured at the node level, not in parameters.
+- [ ] Webhook response strategy chosen; long work split off.
+- [ ] Error Trigger workflow exists for production workflows.
+- [ ] `Continue On Fail` only where silent failure is acceptable.
+- [ ] Sample-data run executed; empty-data path tested.
+- [ ] Execution Order = v1.
+- [ ] Workflow name + notes describe purpose and data flow.
 
-### 5. Error Handling
-- **Error Trigger** - Catch workflow errors
-- **IF** - Check for error conditions
-- **Stop and Error** - Explicit failure
-- **Continue On Fail** - Per-node setting
+Run `n8n_autofix_workflow` after `validate_workflow` reports issues, then
+re-validate. Full gotcha catalog, anti-patterns, QA playbook:
+`references/error-handling-and-validation.md`.
 
----
+## Output expectations
 
-## Workflow Creation Checklist
+When delivering a workflow design or recommendation:
 
-When building ANY workflow, follow this checklist:
+- Name the primary pattern.
+- List the trigger and all nodes in order.
+- Mark each branch boundary (IF / Switch / Merge).
+- Note any Split In Batches and the batch size.
+- State the error-handling strategy (Error Trigger, Continue On Fail, retries).
+- Specify the response strategy for webhook patterns.
+- Flag any pattern blend explicitly (e.g., "Scheduled Task with HTTP API secondary").
 
-### Planning Phase
-- [ ] Identify the pattern (webhook, API, database, AI, scheduled)
-- [ ] List required nodes (use search_nodes)
-- [ ] Understand data flow (input → transform → output)
-- [ ] Plan error handling strategy
+## Minimal critical examples
 
-### Implementation Phase
-- [ ] Create workflow with appropriate trigger
-- [ ] Add data source nodes
-- [ ] Configure authentication/credentials
-- [ ] Add transformation nodes (Set, Code, IF)
-- [ ] Add output/action nodes
-- [ ] Configure error handling
+### Webhook → Slack
 
-### Validation Phase
-- [ ] Validate each node configuration (validate_node)
-- [ ] Validate complete workflow (validate_workflow)
-- [ ] Test with sample data
-- [ ] Handle edge cases (empty data, errors)
-
-### Deployment Phase
-- [ ] Review workflow settings (execution order, timeout, error handling)
-- [ ] Activate workflow using `activateWorkflow` operation
-- [ ] Monitor first executions
-- [ ] Document workflow purpose and data flow
-
----
-
-## Data Flow Patterns
-
-### Linear Flow
 ```
-Trigger → Transform → Action → End
-```
-**Use when**: Simple workflows with single path
-
-### Branching Flow
-```
-Trigger → IF → [True Path]
-             └→ [False Path]
-```
-**Use when**: Different actions based on conditions
-
-### Parallel Processing
-```
-Trigger → [Branch 1] → Merge
-       └→ [Branch 2] ↗
-```
-**Use when**: Independent operations that can run simultaneously
-
-### Loop Pattern
-```
-Trigger → Split in Batches → Process → Loop (until done)
-```
-**Use when**: Processing large datasets in chunks
-
-### Error Handler Pattern
-```
-Main Flow → [Success Path]
-         └→ [Error Trigger → Error Handler]
-```
-**Use when**: Need separate error handling workflow
-
----
-
-## Common Gotchas
-
-### 1. Webhook Data Structure
-**Problem**: Can't access webhook payload data
-
-**Solution**: Data is nested under `$json.body`
-```javascript
-❌ {{$json.email}}
-✅ {{$json.body.email}}
-```
-See: n8n Expression Syntax skill
-
-### 2. Multiple Input Items
-**Problem**: Node processes all input items, but I only want one
-
-**Solution**: Use "Execute Once" mode or process first item only
-```javascript
-{{$json[0].field}}  // First item only
-```
-
-### 3. Authentication Issues
-**Problem**: API calls failing with 401/403
-
-**Solution**:
-- Configure credentials properly
-- Use the "Credentials" section, not parameters
-- Test credentials before workflow activation
-
-### 4. Node Execution Order
-**Problem**: Nodes executing in unexpected order
-
-**Solution**: Check workflow settings → Execution Order
-- v0: Top-to-bottom (legacy)
-- v1: Connection-based (recommended)
-
-### 5. Expression Errors
-**Problem**: Expressions showing as literal text
-
-**Solution**: Use {{}} around expressions
-- See n8n Expression Syntax skill for details
-
----
-
-## Integration with Other Skills
-
-These skills work together with Workflow Patterns:
-
-**n8n MCP Tools Expert** - Use to:
-- Find nodes for your pattern (search_nodes)
-- Understand node operations (get_node)
-- Create workflows (n8n_create_workflow)
-- Deploy templates (n8n_deploy_template)
-- Use `ai_agents_guide()` for AI pattern guidance
-- Manage data tables with `n8n_manage_datatable`
-
-**n8n Expression Syntax** - Use to:
-- Write expressions in transformation nodes
-- Access webhook data correctly ({{$json.body.field}})
-- Reference previous nodes ({{$node["Node Name"].json.field}})
-
-**n8n Node Configuration** - Use to:
-- Configure specific operations for pattern nodes
-- Understand node-specific requirements
-
-**n8n Validation Expert** - Use to:
-- Validate workflow structure
-- Fix validation errors
-- Ensure workflow correctness before deployment
-
----
-
-## Pattern Statistics
-
-Common workflow patterns:
-
-**Most Common Triggers**:
-1. Webhook - 35%
-2. Schedule (periodic tasks) - 28%
-3. Manual (testing/admin) - 22%
-4. Service triggers (Slack, email, etc.) - 15%
-
-**Most Common Transformations**:
-1. Set (field mapping) - 68%
-2. Code (custom logic) - 42%
-3. IF (conditional routing) - 38%
-4. Switch (multi-condition) - 18%
-
-**Most Common Outputs**:
-1. HTTP Request (APIs) - 45%
-2. Slack - 32%
-3. Database writes - 28%
-4. Email - 24%
-
-**Average Workflow Complexity**:
-- Simple (3-5 nodes): 42%
-- Medium (6-10 nodes): 38%
-- Complex (11+ nodes): 20%
-
----
-
-## Quick Start Examples
-
-### Example 1: Simple Webhook → Slack
-```
-1. Webhook (path: "form-submit", POST)
+1. Webhook (path: /form-submit, POST)
 2. Set (map form fields)
-3. Slack (post message to #notifications)
+3. Slack (post to #notifications)
 ```
 
-### Example 2: Scheduled Report
+### Scheduled report
+
 ```
-1. Schedule (daily at 9 AM)
+1. Schedule (daily 09:00)
 2. HTTP Request (fetch analytics)
-3. Code (aggregate data)
-4. Email (send formatted report)
-5. Error Trigger → Slack (notify on failure)
+3. Code (aggregate)
+4. Email (send report)
+5. Error Trigger → Slack (failure)
 ```
 
-### Example 3: Database Sync
-```
-1. Schedule (every 15 minutes)
-2. Postgres (query new records)
-3. IF (check if records exist)
-4. MySQL (insert records)
-5. Postgres (update sync timestamp)
-```
+### AI assistant
 
-### Example 4: AI Assistant
 ```
-1. Webhook (receive chat message)
+1. Webhook (/chat)
 2. AI Agent
-   ├─ OpenAI Chat Model (ai_languageModel)
-   ├─ HTTP Request Tool (ai_tool)
-   ├─ Database Tool (ai_tool)
-   └─ Window Buffer Memory (ai_memory)
-3. Webhook Response (send AI reply)
+   ├─ ai_languageModel: OpenAI Chat Model
+   ├─ ai_tool: HTTP Request Tool
+   ├─ ai_tool: Database Tool
+   └─ ai_memory: Window Buffer Memory
+3. Webhook Response
 ```
 
-### Example 5: API Integration
-```
-1. Manual Trigger (for testing)
-2. HTTP Request (GET /api/users)
-3. Split In Batches (process 100 at a time)
-4. Set (transform user data)
-5. Postgres (upsert users)
-6. Loop (back to step 3 until done)
-```
+End-to-end worked examples (Stripe ingest, GitHub→Jira, DB sync, AI bot,
+analytics report, 202-async, branching+merge, cursor loop):
+`references/examples.md`.
 
----
+## Integration with other skills
 
-## Detailed Pattern Files
+| Phase | Skill |
+|-------|-------|
+| Find nodes for the pattern | `n8n-mcp-tools-expert` (`search_nodes`) |
+| Understand node operations | `n8n-mcp-tools-expert` (`get_node`) |
+| Write expressions | `n8n-expression-syntax` (`{{ }}`, webhook nesting) |
+| Configure operations | `n8n-node-configuration` |
+| Custom logic | `n8n-code-javascript` or `n8n-code-python` |
+| Validate and auto-fix | `n8n-validation-expert` (`validate_workflow`, `n8n_autofix_workflow`) |
+| Create and deploy | `n8n-mcp-tools-expert` (`n8n_create_workflow`, `activateWorkflow`) |
 
-For comprehensive guidance on each pattern:
+## Reference map
 
-- **[webhook_processing.md](webhook_processing.md)** - Webhook patterns, data structure, response handling
-- **[http_api_integration.md](http_api_integration.md)** - REST APIs, authentication, pagination, retries
-- **[database_operations.md](database_operations.md)** - Queries, sync, transactions, batch processing
-- **[ai_agent_workflow.md](ai_agent_workflow.md)** - AI agents, tools, memory, langchain nodes
-- **[scheduled_tasks.md](scheduled_tasks.md)** - Cron schedules, reports, maintenance tasks
-
----
-
-## Real Template Examples
-
-From n8n template library:
-
-**Template #2947**: Weather to Slack
-- Pattern: Scheduled Task
-- Nodes: Schedule → HTTP Request (weather API) → Set → Slack
-- Complexity: Simple (4 nodes)
-
-**Webhook Processing**: Most common pattern
-- Most common: Form submissions, payment webhooks, chat integrations
-
-**HTTP API**: Common pattern
-- Most common: Data fetching, third-party integrations
-
-**Database Operations**: Common pattern
-- Most common: ETL, data sync, backup workflows
-
-**AI Agents**: Growing in usage
-- Most common: Chatbots, content generation, data analysis
-
-Use `search_templates` and `get_template` from n8n-mcp tools to find examples!
-
----
-
-## Best Practices
-
-### ✅ Do
-
-- Start with the simplest pattern that solves your problem
-- Plan your workflow structure before building
-- Use error handling on all workflows
-- Test with sample data before activation
-- Follow the workflow creation checklist
-- Use descriptive node names
-- Document complex workflows (notes field)
-- Monitor workflow executions after deployment
-
-### ❌ Don't
-
-- Build workflows in one shot (iterate! avg 56s between edits)
-- Skip validation before activation
-- Ignore error scenarios
-- Use complex patterns when simple ones suffice
-- Hardcode credentials in parameters
-- Forget to handle empty data cases
-- Mix multiple patterns without clear boundaries
-- Deploy without testing
-
----
-
-## Summary
-
-**Key Points**:
-1. **5 core patterns** cover 90%+ of workflow use cases
-2. **Webhook processing** is the most common pattern
-3. Use the **workflow creation checklist** for every workflow
-4. **Plan pattern** → **Select nodes** → **Build** → **Validate** → **Deploy**
-5. Integrate with other skills for complete workflow development
-
-**Next Steps**:
-1. Identify your use case pattern
-2. Read the detailed pattern file
-3. Use n8n MCP Tools Expert to find nodes
-4. Follow the workflow creation checklist
-5. Use n8n Validation Expert to validate
-
-**Related Skills**:
-- n8n MCP Tools Expert - Find and configure nodes
-- n8n Expression Syntax - Write expressions correctly
-- n8n Validation Expert - Validate and fix errors
-- n8n Node Configuration - Configure specific operations
+| Need | Read |
+|------|------|
+| Pattern selection guide + workflow creation checklist + pattern statistics | `references/pattern-selection-workflow.md` |
+| Five-pattern catalog + blend decision rules + anti-blend cases | `references/workflow-pattern-catalog.md` |
+| Common components, data-flow shapes, orchestration rules, quick-start templates | `references/node-orchestration-and-templates.md` |
+| Validation gates, common gotchas, anti-patterns, QA playbook | `references/error-handling-and-validation.md` |
+| End-to-end worked examples (all 5 patterns + 3 blends) | `references/examples.md` |
+| Upstream depth (per pattern) | `webhook_processing.md`, `http_api_integration.md`, `database_operations.md`, `ai_agent_workflow.md`, `scheduled_tasks.md` |
