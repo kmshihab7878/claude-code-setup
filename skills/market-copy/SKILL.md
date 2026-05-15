@@ -5,242 +5,112 @@ description: Copywriting analysis and generation engine scoring existing copy an
 
 # Copywriting Analysis & Generation
 
-You are the copywriting engine for `/market copy <url>`. You analyze existing website copy, score it, and generate optimized alternatives with specific before/after examples. Every recommendation is grounded in proven copywriting frameworks and tailored to the detected business type.
+Use this skill for `/market copy <url>` style work: analyze existing website or campaign copy, score it, and produce evidence-backed alternatives with before/after recommendations.
 
-## When This Skill Is Invoked
+The main file is the operating contract. Load references only when deeper frameworks, channel templates, examples, or troubleshooting detail are needed.
 
-The user runs `/market copy <url>`. Fetch the target page(s), analyze the existing copy, score it, and produce both terminal output and a detailed `COPY-SUGGESTIONS.md` file.
+## When To Use
 
-## Reference map
+- The user asks to analyze, rewrite, score, or improve marketing copy.
+- The user provides a URL, page copy, landing page draft, ad copy, email copy, CTA set, meta description, or positioning text.
+- The task needs headline alternatives, section rewrites, CTA optimization, a swipe file, or a `COPY-SUGGESTIONS.md` report.
 
-| When | Read |
-|---|---|
-| Generating headline alternatives (Phase 2.2 — full framework templates) | [`references/headline-formulas.md`](references/headline-formulas.md) |
-| Writing page-specific copy (Phase 3.1 — 6 page-type structures) | [`references/page-copy-guidance.md`](references/page-copy-guidance.md) |
-| CTA optimization + before/after examples + swipe file (Phases 3.2 / 3.3 / 3.4) | [`references/cta-and-examples.md`](references/cta-and-examples.md) |
+## Required Inputs
 
-## Claims, evidence, and ethical persuasion constraints
+Ask for or infer the smallest safe set of inputs:
 
-These rules apply to **every** headline, body line, CTA, testimonial, and swipe-file entry generated.
+- Source: target URL, pasted copy, page file, or draft.
+- Business type, offer, audience, market, and conversion goal.
+- Page or channel type: homepage, landing page, pricing, about, product, feature, blog, contact/demo, email, ad, or meta copy.
+- Brand voice constraints and any existing `BRAND-VOICE.md`.
+- Proof available: metrics, testimonials, customer logos, awards, guarantee terms, case studies, or product facts.
+- Constraints: regulated category, compliance limits, forbidden claims, required CTA, length, tone, and output format.
 
-- **Specificity must be evidence-backed.** A specific claim ("cut tickets 40%") requires a real data point or it's fabrication. If no data exists, use a placeholder slot (`[specific result]`) and flag it for the user to fill.
-- **No fabricated testimonials, statistics, customer names, logos, awards, press mentions, or partnership claims.** Use real data or clearly-marked placeholders only.
-- **No fake urgency.** "Only 3 spots left" / "Sale ends midnight" / "12 people viewing" must be true. Fake urgency violates FTC guidance and erodes trust.
-- **No comparative claims about competitors** without verifiable evidence. "Faster than X" / "10× cheaper than Y" needs published data.
-- **Substantiation for outcome claims.** "Increase X by Y%" must reference the source — internal data, public case study, or marked as illustrative example.
-- **Risk reversal must be real.** "Money-back guarantee" / "Free trial" / "Cancel anytime" — only state if the business actually offers these terms.
-- **Don't write copy that targets protected classes, exploits fear of harm, or makes health/financial outcome guarantees.** These are regulated categories (FTC, FDA, FINRA) and require legal review.
-- **Voice match.** Generated copy must match the analyzed brand voice unless the voice itself is clearly ineffective (and even then, flag the divergence explicitly).
-- **CTA promises must be honest.** "Start My Free Trial" must lead to a free trial, not a paywall. "Download the Guide" must download the guide, not require sign-up. Misaligned CTAs damage conversion and brand.
-- **Cite frameworks when used.** When generating with PAS / AIDA / BAB / 4U, label the framework on the swipe-file entry so the user can validate fit.
+Do not invent business facts, customer names, results, testimonials, awards, guarantees, pricing, urgency, or validation evidence.
 
----
+## Core Workflow
 
-## Phase 1: Copy Discovery
+1. Collect the copy and context from the URL, pasted text, or local files.
+2. Identify page or channel type and the primary conversion action.
+3. Extract headline, subheadline, section headings, body copy, CTAs, navigation labels, meta copy, and social proof.
+4. Analyze voice, value proposition, proof, clarity, persuasion, specificity, emotion, and action.
+5. Select copy frameworks based on the problem: PAS for pain-led offers, AIDA for attention-led pages, Before-After-Bridge for transformation, 4U for concise headlines.
+6. Generate alternatives that preserve brand voice unless the current voice is ineffective; flag any intentional divergence.
+7. Validate every claim against available evidence and mark missing proof as a placeholder.
+8. Produce terminal summary and a full `COPY-SUGGESTIONS.md` report when requested.
 
-### 1.1 Fetch and parse
+## Decision-Critical Copy Logic
 
-Use `WebFetch` to retrieve the target URL. Extract:
+- If the reader cannot understand the offer in 5 seconds, prioritize headline clarity before style.
+- If proof is weak, reduce specificity or use placeholder slots such as `[specific result]`.
+- If the page is conversion-focused, align headline, subheadline, CTA, and objection handling around one action.
+- If the page is trust-focused, prioritize proof, story, credibility, and risk reversal.
+- If the channel is short-form, prefer one clear promise over multiple benefits.
+- If the category is health, finance, legal, employment, housing, credit, or trading, tighten claims and recommend review.
+- If a CTA promises a trial, download, demo, or quote, the destination must match that promise.
 
-- Primary headline (H1).
-- Subheadline / supporting headline.
-- Hero section copy.
-- All section headlines (H2, H3).
-- Body copy paragraphs.
-- CTA button text (every instance).
-- Navigation labels.
-- Footer copy.
-- Meta title and meta description.
-- Social proof elements (testimonials, stats, logos).
+## Claims, Evidence, And Compliance Constraints
 
-### 1.2 Detect page type
+- Specific claims require real data or clearly marked placeholders.
+- Never fabricate testimonials, statistics, customer names, logos, awards, press mentions, partnerships, guarantees, or urgency.
+- Do not make unsupported competitor comparisons.
+- Do not write copy that targets protected classes, exploits fear of harm, or guarantees regulated outcomes.
+- Risk reversal must be real: only mention trials, refunds, cancellation, or guarantees if the business offers them.
+- Label frameworks used in swipe-file entries.
+- Cite the evidence source or mark evidence gaps in the report.
 
-Each page type has different copy priorities:
+## Validation Gates
 
-| Page Type | Primary Goal | Copy Priority |
-|-----------|-------------|---------------|
-| **Homepage** | Communicate value prop, route visitors | Headline clarity, navigation clarity, CTA hierarchy |
-| **Landing Page** | Single conversion action | Headline-CTA alignment, objection handling, urgency |
-| **Pricing Page** | Drive plan selection | Plan naming, feature framing, anchoring, FAQ |
-| **About Page** | Build trust and connection | Story, mission, team credibility, values |
-| **Product Page** | Demonstrate value of specific product | Feature-to-benefit translation, social proof, specs |
-| **Feature Page** | Explain a specific capability | Problem-solution framing, use cases, comparison |
-| **Blog Post** | Educate and capture leads | Headline hook, intro engagement, CTA placement |
-| **Contact/Demo Page** | Capture lead information | Form headline, friction reduction, trust signals |
+- 5-second clarity test: what it is, who it is for, and why it matters.
+- Offer-to-CTA alignment: the CTA action matches the promise.
+- Evidence check: all numbers, outcomes, testimonials, and social proof are real or placeholders.
+- Voice check: recommendations match documented or observed brand voice.
+- Compliance check: regulated claims are softened or flagged for review.
+- Specificity check: vague copy is replaced with concrete but supportable language.
+- Action check: primary CTA appears above the fold, after major sections, and near the end when appropriate.
 
-### 1.3 Voice and tone analysis
+## Output Expectations
 
-Document a voice profile so all generated copy matches the brand's existing tone (unless ineffective — see constraints).
+Return:
 
-- **Formality:** casual ↔ formal (1–5).
-- **Emotion:** neutral ↔ passionate (1–5).
-- **Complexity:** simple ↔ technical (1–5).
-- **Humor:** serious ↔ playful (1–5).
-- **Authority:** peer ↔ expert (1–5).
+- Page or channel type and voice profile.
+- Copy score with brief rationale.
+- Value proposition gaps.
+- Top fixes with before/after examples.
+- Headline, subheadline, CTA, meta, and social-proof alternatives as requested.
+- Evidence gaps, compliance risks, and assumptions.
+- Full report path when writing `COPY-SUGGESTIONS.md`.
 
----
+For full reports, use this structure: executive summary, voice profile, score breakdown, value proposition analysis, headline recommendations, section-by-section suggestions, CTA optimization, before/after examples, swipe file, and implementation priority.
 
-## Phase 2: Copy Analysis
+## Minimal Examples
 
-### 2.1 Headline analysis
+Headline rewrite:
 
-**The 5-Second Test:** would a new visitor understand what this company does and who it serves within 5 seconds of reading the headline?
-
-**Headline scoring (0–10 each):**
-
-- **Clarity** — meaning immediately obvious; no jargon, no ambiguity.
-- **Specificity** — concrete details (numbers, outcomes, timeframes).
-- **Relevance** — speaks to the target audience's primary pain or desire.
-- **Differentiation** — sets this business apart from competitors.
-- **Emotion** — triggers curiosity, desire, recognition, or fear of missing out.
-
-### 2.2 Headline formulas
-
-Generate **5–10 headline alternatives** using these four proven frameworks. Full templates with placeholder slots: [`references/headline-formulas.md`](references/headline-formulas.md).
-
-- **PAS** (Problem-Agitate-Solve) — direct response, pain-led.
-- **AIDA** (Attention-Interest-Desire-Action) — bold-claim opener for high-traffic pages.
-- **Before-After-Bridge** — transformation framing, ideal for outcome-led products.
-- **4U** (Useful / Ultra-specific / Unique / Urgent) — best for ad headlines and email subject lines.
-
-Label each generated headline with the framework used in the swipe file.
-
-### 2.3 Full copy scoring rubric
-
-Score the entire page across 5 dimensions:
-
-| Dimension | Score | What it measures |
-|-----------|-------|------------------|
-| **Clarity** | 0–10 | Can a 12-year-old understand what you do? No jargon, no fluff. |
-| **Persuasion** | 0–10 | Does the copy move the reader toward action? Handles objections? |
-| **Specificity** | 0–10 | Concrete numbers, outcomes, timeframes vs vague claims? |
-| **Emotion** | 0–10 | Connects with the reader's pain, desires, identity, or aspirations? |
-| **Action** | 0–10 | CTAs clear, compelling, strategically placed? Low friction? |
-
-**Total Copy Score: X/50** (multiply × 2 for 0–100 scale).
-
-### 2.4 Value proposition canvas
-
-Document the value proposition:
-
-```
-TARGET CUSTOMER: [Who specifically is this for?]
-PROBLEM:         [What painful problem do they have?]
-SOLUTION:        [How does this product solve it?]
-UNIQUE MECHANISM:[What is the unique approach/technology/method?]
-KEY BENEFIT:     [What is the #1 outcome the customer gets?]
-PROOF:           [What evidence supports the claims?]
+```text
+Before: "Software for growing teams"
+After: "Turn scattered customer messages into one prioritized support queue"
+Why: clearer audience, concrete task, and specific operational outcome.
 ```
 
-Flag any element that's missing or weak in the current copy.
+CTA rewrite:
 
----
-
-## Phase 3: Copy Generation
-
-### 3.1 Page-specific copy guidance
-
-Six page-type structures with required section ordering: **Homepage** (hero → social proof bar → problem → solution → how-it-works → features → testimonials → final CTA), **Landing Page** (headline → subhead → hero CTA → problem → solution → benefits → social proof → objection handling → final CTA), **Pricing Page** (investment-framed headline → aspirational plan names → highlighted recommended plan → benefit-oriented features → anchoring → FAQ → guarantee), **About Page** (mission → origin → values → team → social proof → mission-to-reader CTA), **Product Page (E-commerce)** (descriptive title → price → key benefit → description → specs → reviews → cross-sells), **Feature Page (SaaS)** (feature name → problem-it-solves → how-it-works → use cases → comparison → CTA).
-
-Full per-page section-by-section structures: [`references/page-copy-guidance.md`](references/page-copy-guidance.md).
-
-### 3.2 CTA optimization
-
-Analyze every CTA on the page. Key levers:
-
-- **Button text** — first person, value-inclusive, risk-reducing, specific, urgency where honest.
-- **Placement** — above the fold required, after each major section recommended, sticky/floating on long pages, repeat at the bottom required.
-- **Color** — contrast with the page background; green = growth/positive action, orange = urgency, blue = trust, red sparingly.
-
-Full button-text best practices, placement audit checklist, and color psychology: [`references/cta-and-examples.md`](references/cta-and-examples.md#32-cta-optimization).
-
-### 3.3 Before/after examples
-
-Provide **at least 5 before/after pairs** covering: primary headline, subheadline, primary CTA, one body-copy paragraph, meta description. Each pair must include a **WHY** line (what specifically improved — specificity, outcome, proof point, etc.). Pair format + worked example: [`references/cta-and-examples.md`](references/cta-and-examples.md#33-beforeafter-examples).
-
-### 3.4 Swipe file generation
-
-Create a swipe file with these counts:
-
-- 10 headline alternatives (ranked by estimated effectiveness, framework-labeled).
-- 5 subheadline alternatives.
-- 5 CTA button text alternatives.
-- 3 meta description alternatives.
-- 3 social proof framing alternatives.
-- 3 pricing page headline alternatives (if applicable).
-
----
-
-## Output Format
-
-### Terminal Output
-
-```
-=== COPY ANALYSIS: [URL] ===
-
-Page Type: [type]
-Voice Profile: [casual/formal], [neutral/passionate], [simple/technical]
-
-Copy Score: X/50 (X/100)
-  Clarity:     X/10 ████████░░
-  Persuasion:  X/10 ██████░░░░
-  Specificity: X/10 ███████░░░
-  Emotion:     X/10 █████░░░░░
-  Action:      X/10 ████████░░
-
-Top 3 Copy Fixes:
-  1. [fix with before/after]
-  2. [fix with before/after]
-  3. [fix with before/after]
-
-Full report saved to: COPY-SUGGESTIONS.md
+```text
+Before: "Submit"
+After: "Get My Demo Plan"
+Why: specific value and matches a demo-request flow.
 ```
 
-### COPY-SUGGESTIONS.md
+## Reference Map
 
-Write the full report to `COPY-SUGGESTIONS.md` with this structure:
-
-```markdown
-# Copy Analysis & Suggestions: [URL]
-**Date:** [current date]
-**Page Type:** [type]
-**Copy Score:** X/100
-
-## Executive Summary
-[2-3 paragraphs summarizing the copy quality, key strengths, and priority fixes]
-
-## Voice & Tone Profile
-[Voice analysis results with recommendations]
-
-## Score Breakdown
-[Full scoring rubric with justifications]
-
-## Value Proposition Analysis
-[Value proposition canvas with gaps identified]
-
-## Headline Recommendations
-[Current headline, 10 alternatives with framework used, ranked]
-
-## Section-by-Section Copy Suggestions
-[For each major section: current copy, issues, recommended copy, rationale]
-
-## CTA Optimization
-[Every CTA analyzed with recommendations]
-
-## Before/After Examples
-[At least 5 before/after pairs]
-
-## Swipe File
-[All headline, subheadline, CTA, and meta alternatives]
-
-## Implementation Priority
-[Ranked list of changes by impact]
-```
-
----
+- [Copy workflow and report structure](references/copy-workflow.md)
+- [Frameworks and positioning](references/frameworks-and-positioning.md)
+- [Channel templates](references/channel-templates.md)
+- [Claims validation and compliance](references/claims-validation-and-compliance.md)
+- [Examples and troubleshooting](references/examples-and-troubleshooting.md)
 
 ## Cross-Skill Integration
 
-- If `BRAND-VOICE.md` exists, use its voice guidelines to calibrate generated copy.
+- If `BRAND-VOICE.md` exists, use its voice guidelines.
 - If `MARKETING-AUDIT.md` exists, reference the Content & Messaging score.
-- If `COMPETITOR-REPORT.md` exists, use competitor messaging to inform differentiation.
+- If `COMPETITOR-REPORT.md` exists, use competitor messaging to shape differentiation.
