@@ -5,255 +5,137 @@ description: This skill is for interface design — dashboards, admin panels, ap
 
 # Interface Design
 
-Build interfaces with craft and consistency.
+Operating contract for crafted product interfaces: dashboards, admin panels, SaaS apps, tools, settings pages, data interfaces, and interactive products. This skill is not for marketing pages or campaigns; route those to `/frontend-design`.
 
-## Scope
+## Invocation Triggers
 
-- **Use for:** dashboards, admin panels, SaaS apps, tools, settings pages, data interfaces.
-- **Not for:** landing pages, marketing sites, campaigns — redirect to `/frontend-design`.
+Use this skill when the user asks to design, build, critique, improve, or systematize:
 
----
+- Dashboards, admin panels, SaaS apps, internal tools, settings pages, data-heavy screens, and product workflows.
+- Navigation, data surfaces, forms, tables, cards, panels, filters, charts, controls, and reusable interface systems.
+- Interface craft: visual hierarchy, product-domain expression, typography, spacing, depth, surfaces, tokens, states, and consistency.
+- `.interface-design/system.md` creation, use, audit, extraction, or update.
 
-# The problem
+## When Not to Use
 
-You will generate generic output. Training has seen thousands of dashboards; the patterns are strong.
+- Landing pages, marketing sites, campaigns, ads, or brand-only work with no product interface.
+- Pure backend, API, data, DevOps, or CLI tasks with no screen or interaction surface.
+- Generic frontend implementation when the user only wants mechanical code changes and no interface design judgment.
+- Tasks better handled by a more specific skill, unless interface craft is central.
 
-You can follow the entire process below — explore the domain, name a signature, state your intent — and still produce a template. Warm colors on cold structures. Friendly fonts on generic layouts. "Kitchen feel" that looks like every other app. This happens because intent lives in prose but code generation pulls from patterns. The gap is where defaults win. Process helps but doesn't guarantee craft — you have to catch yourself.
+## Required Input Contract
 
----
+Collect or infer:
 
-# Where defaults hide
+- Human context: who uses the interface, when, and what they must accomplish.
+- Product domain: concepts, vocabulary, materials, data, and operational realities.
+- Interface scope: screens, flows, components, states, data density, and constraints.
+- Existing design system, `.interface-design/system.md`, screenshots, code, or component library.
+- Desired feel and product-specific direction, avoiding generic labels like "clean" without specifics.
+- Stack and implementation constraints when code will be changed.
+- Accessibility and usability requirements.
 
-Defaults disguise themselves as infrastructure — parts that feel like they just need to work, not be designed.
+If intent, user, or task context is too vague to make non-generic choices, ask a focused question or propose a direction with explicit assumptions.
 
-- **Typography feels like a container.** But typography isn't holding your design — it IS the design. The weight of a headline, personality of a label, texture of a paragraph shape how the product feels before anyone reads. A bakery tool and a trading terminal both want "clean, readable type" — but the warm/handmade type isn't the cold/precise type. Reaching for your usual font = not designing.
-- **Navigation feels like scaffolding.** It isn't around the product — it IS the product. Where you are, where you can go, what matters most. A page floating in space is a component demo, not software.
-- **Data feels like presentation.** A number on screen isn't design. The question is what it means to the viewer and what they'll do with it. Progress ring vs stacked label both show "3 of 10" — one tells a story, one fills space.
-- **Token names feel like implementation detail.** Your CSS variables are design decisions. `--ink` / `--parchment` evoke a world; `--gray-700` / `--surface-2` evoke a template. Someone reading only your tokens should guess what product this is.
+## Core Interface Design Workflow
 
-There are no structural decisions. Everything is design. The moment you stop asking "why this?" is the moment defaults take over.
+1. Inspect existing interface code, screenshots, or `.interface-design/system.md` when present.
+2. Define intent: who the human is, what they must do, and how the product should feel.
+3. Explore the product domain before choosing visuals.
+4. Produce the four direction inputs: domain concepts, color world, signature element, and defaults to reject.
+5. Propose a direction that ties structure and expression back to those inputs.
+6. Build or critique using a consistent token, spacing, typography, depth, surface, state, and navigation system.
+7. Validate craft and usability before showing: swap test, squint test, signature test, token test, responsive check, and state check.
+8. Offer to save durable interface patterns to `.interface-design/system.md` when useful.
 
----
+See [design-workflow.md](references/design-workflow.md) for the full workflow, communication rules, system file behavior, and save criteria.
 
-# Intent first
+## Interface Quality Constraints
 
-Before touching code, answer these — out loud, to yourself or the user.
+- Every visible choice must have a product-specific reason. "Common", "clean", or "modern" is not enough.
+- Typography, navigation, data presentation, token names, colors, and spacing are design decisions, not neutral containers.
+- Intent must be systemic: surfaces, text, borders, accents, motion, semantic colors, and component structure should reinforce the same direction.
+- Avoid generic dashboard defaults unless the domain, user, and task justify them.
+- Use one coherent depth strategy: borders-only, subtle shadows, layered shadows, or surface-color shifts.
+- Use systematic tokens and spacing; avoid random hex values, random spacing, and mixed depth strategies.
+- Design every state: default, hover, active, focus, disabled, loading, empty, and error.
+- Navigation must ground the screen: where am I, where can I go, and what matters most.
 
-- **Who is this human?** Not "users". The actual person — where are they when they open this? What's on their mind? What did they do 5 minutes ago? A teacher at 7am ≠ a developer at midnight ≠ a founder between meetings.
-- **What must they accomplish?** Not "use the dashboard". The verb. Grade submissions. Find the broken deployment. Approve the payment. Determines what leads, follows, hides.
-- **What should this feel like?** Specific words. "Clean and modern" means nothing — every AI says that. Warm like a notebook? Cold like a terminal? Dense like a trading floor? Calm like a reading app?
+See [layout-and-components.md](references/layout-and-components.md) for component, token, layout, state, and navigation guidance.
 
-If you can't answer with specifics, stop. Ask. Don't guess. Don't default.
+## Accessibility and Usability Constraints
 
-## Every choice must be a choice
+- Keep text readable and hierarchy clear at a glance.
+- Preserve keyboard focus visibility and logical interaction order.
+- Do not rely on color alone to convey meaning.
+- Keep controls usable in all relevant states.
+- Ensure responsive layouts do not hide content, overlap controls, or create mobile horizontal scroll.
+- Use data presentation that clarifies meaning and action, not decorative metrics.
+- Respect existing accessibility, validation, and public-safety requirements in the repository.
 
-For every decision, explain WHY. Why this layout? Color temperature? Typeface? Spacing scale? Hierarchy?
+See [accessibility-and-validation.md](references/accessibility-and-validation.md) for validation checks and delivery criteria.
 
-If your answer is "it's common" or "it's clean" or "it works" — you defaulted, not chose. Defaults are invisible. Invisible choices compound into generic output.
+## Validation Rules
 
-**The test:** swap your choices for the most common alternatives. If the design didn't feel meaningfully different, you never made real choices.
+Before presenting work:
 
-## Sameness is failure
+- Run the swap test: replacing typeface, layout, palette, or component treatment with common defaults should change the product feel.
+- Run the squint test: hierarchy should remain visible without harsh lines or jarring color jumps.
+- Run the signature test: identify concrete components where the product-specific signature appears.
+- Run the token test: token names and values should sound like they belong to this product's world.
+- Check state coverage, responsive behavior, spacing consistency, and `.interface-design/system.md` consistency where applicable.
+- If validation fails, iterate before showing the user.
 
-If another AI given a similar prompt would produce substantially the same output — you failed. Not "different for its own sake" — the interface must emerge from the specific problem, user, and context.
+See [critique-and-troubleshooting.md](references/critique-and-troubleshooting.md) for critique protocol and failure modes.
 
-## Intent must be systemic
+## Output Expectations
 
-"Warm" + cold colors = not following through. Intent is a constraint that shapes every decision: warm → all surfaces, text, borders, accents, semantic colors, typography warm. Dense → all spacing, type size, IA dense. Calm → all motion, contrast, saturation calm.
+When proposing direction, include:
 
-Check your output against your stated intent. Does every token reinforce it?
-
----
-
-# Product domain exploration
-
-This is where defaults get caught — or don't.
-
-- **Generic output:** task type → visual template → theme.
-- **Crafted output:** task type → product domain → signature → structure + expression.
-
-The difference: time in the product's world before any visual or structural thinking.
-
-## Required outputs
-
-Don't propose any direction until you produce all four:
-
-- **Domain:** concepts, metaphors, vocabulary from the product's world. Not features — territory. Minimum 5.
-- **Color world:** colors that exist naturally in this product's domain. If this product were a physical space, what would you see? What materials, what light, what objects? List 5+.
-- **Signature:** one element — visual, structural, interaction — that could only exist for THIS product. If you can't name one, keep exploring.
-- **Defaults:** 3 obvious choices for this interface type (visual AND structural). You can't avoid patterns you haven't named.
-
-## Proposal requirements
-
-Your direction must explicitly reference:
-- Domain concepts you explored.
-- Colors from your color-world exploration.
-- Your signature element.
-- What replaces each default.
-
-**The test:** read your proposal with the product name removed. Could someone identify what this is for? If not, explore deeper.
-
----
-
-# The mandate
-
-**Before showing the user, look at what you made.**
-
-Ask: "If they said this lacks craft, what would they mean?" That thing you just thought of — fix it first. Your first output is probably generic; catching it is the work.
-
-## The checks
-
-Run before presenting:
-
-- **Swap test:** swap typeface for your usual one — would anyone notice? Swap layout for a standard dashboard template — would it feel different? Where swapping wouldn't matter is where you defaulted.
-- **Squint test:** blur your eyes. Can you still perceive hierarchy? Is anything jumping out harshly? Craft whispers.
-- **Signature test:** can you point to five specific elements where your signature appears? Not "the overall feel" — actual components. A signature you can't locate doesn't exist.
-- **Token test:** read your CSS variables out loud. Do they sound like they belong to this product's world, or could they belong to any project?
-
-If any check fails, iterate before showing.
-
----
-
-# Craft foundations
-
-Three foundational craft rules that apply regardless of direction, product type, or visual style. Full prose with key decisions, worked examples, and the squint test: [`references/craft-foundations.md`](references/craft-foundations.md).
-
-- **Subtle layering** — surfaces stack with whisper-quiet lightness shifts (a few percentage points per level). Sidebars share the canvas background; dropdowns sit one level above parent; inputs are inset (slightly darker, not lighter).
-- **Borders** — should disappear when you're not looking, be findable when you need structure. Use low-opacity rgba, not solid hex. Build a 4-step progression: standard / softer separation / emphasis / focus ring.
-- **Squint test** — blur your eyes; still perceive hierarchy, no harsh lines, no jarring color shifts. Separates professional from amateur.
-- **Infinite expression** — no interface should look the same. Every pattern has infinite expressions; architecture and components emerge from THIS task and data, not a template.
-- **Color lives somewhere** — palette should feel like it came FROM the product's world. Temperature is one axis among many (quiet/loud, dense/spacious, serious/playful, geometric/organic). Gray builds structure; color communicates meaning.
-
----
-
-# Before writing each component
-
-**Every time** you write UI code — even small additions — state:
-
-```
-Intent:    [who is this human, what must they do, how should it feel]
-Palette:   [colors from your exploration — WHY they fit this product's world]
-Depth:     [borders / shadows / layered — WHY this fits the intent]
-Surfaces:  [your elevation scale — WHY this color temperature]
-Typography:[your typeface — WHY it fits the intent]
-Spacing:   [your base unit]
+```text
+Domain: [5+ product-world concepts]
+Color world: [5+ domain-grounded colors/materials/light sources]
+Signature: [one element unique to this product]
+Rejecting: [default] -> [replacement], [default] -> [replacement], [default] -> [replacement]
+Direction: [approach tied to the above]
 ```
 
-This checkpoint is mandatory. Forces you to connect every technical choice back to intent.
+When completing implementation or critique, report:
 
-If you can't explain WHY for each choice, you're defaulting. Stop and think.
+- Design intent and rationale.
+- Files or components changed.
+- Validation performed.
+- Accessibility/usability risks.
+- Whether durable patterns should be saved to `.interface-design/system.md`.
 
----
+## Minimal Examples
 
-# Design principles
-
-13 design-principle topics. The compact reference is below — load [`references/design-principles.md`](references/design-principles.md) for the full per-topic rules with examples.
-
-| # | Topic | Essentials |
-|---|-------|-----------|
-| 1 | **Token architecture** | Every color traces back to primitives (foreground, background, border, brand, semantic). No random hex. |
-| 2 | **Text hierarchy** | 4 levels: primary, secondary, tertiary, muted. Two levels = flat hierarchy. |
-| 3 | **Border progression** | Build a 4-step scale (standard / softer / emphasis / max). Match intensity to importance. |
-| 4 | **Control tokens** | Dedicated tokens for form-control backgrounds, borders, focus — don't reuse surface tokens. |
-| 5 | **Spacing** | Base unit + multiples. Scale per context (micro / component / section / major). Random values = no system. |
-| 6 | **Padding** | Symmetrical unless content naturally requires asymmetry. |
-| 7 | **Depth** | Pick ONE: borders-only / subtle shadows / layered shadows / surface-color shifts. **Don't mix.** |
-| 8 | **Border radius** | Sharper = technical. Rounder = friendly. Build a scale; don't mix sharp + soft randomly. |
-| 9 | **Typography** | Distinct levels at a glance. Headlines tight-tracked; body comfortable; data monospace + tabular numbers. Combine size + weight + letter-spacing — don't rely on size alone. |
-| 10 | **Card layouts** | Different internal structure per content type; **consistent surface treatment** (border weight, shadow depth, radius, padding). |
-| 11 | **Controls** | Native `<select>` and `<input type="date">` can't be styled — build custom (trigger button + positioned dropdown / calendar popover) with explicit state management. |
-| 12 | **Iconography** | Icons clarify, not decorate — remove if removing loses no meaning. One icon set. Subtle background containers for standalone icons. |
-| 13 | **Animation** | Fast micro-interactions, deceleration easing. Avoid spring/bounce in professional interfaces. |
-| 14 | **States** | Every interactive: default / hover / active / focus / disabled. Data: loading / empty / error. Missing states feel broken. |
-| 15 | **Navigation context** | Screens need grounding — where am I, where can I go, who am I as. Sidebars share canvas background with border separation, not different colors. |
-| 16 | **Dark mode** | Different needs — shadows less visible (lean on borders), semantic colors often need desaturation. Hierarchy system applies with inverted values. |
-
----
-
-# Avoid
-
-- **Harsh borders** — if borders are the first thing you see, too strong.
-- **Dramatic surface jumps** — elevation changes should whisper.
-- **Inconsistent spacing** — clearest sign of no system.
-- **Mixed depth strategies** — pick one and commit.
-- **Missing interaction states** — hover, focus, disabled, loading, error.
-- **Dramatic drop shadows** — subtle, not attention-grabbing.
-- **Large radius on small elements.**
-- **Pure white cards on colored backgrounds.**
-- **Thick decorative borders.**
-- **Gradients and color for decoration** — color should mean something.
-- **Multiple accent colors** — dilutes focus.
-- **Different hues for different surfaces** — keep the same hue, shift only lightness.
-
----
-
-# Workflow
-
-## Communication
-
-Be invisible. Don't announce modes or narrate process.
-- **Never:** "I'm in ESTABLISH MODE", "Let me check system.md..."
-- **Instead:** jump into work. State suggestions with reasoning.
-
-## Suggest + ask
-
-Lead with exploration and recommendation, then confirm:
-
-```
-Domain:     [5+ concepts from the product's world]
-Color world:[5+ colors that exist in this domain]
-Signature:  [one element unique to this product]
-Rejecting:  [default 1] → [alternative], [default 2] → [alternative], [default 3] → [alternative]
-
-Direction:  [approach that connects to the above]
+```text
+Design a dense operations dashboard for an incident commander.
+Improve this settings page so hierarchy, states, and spacing feel intentional.
+Audit this admin table against the current .interface-design/system.md.
+Extract reusable interface patterns from these components.
 ```
 
-Ask: "Does that direction feel right?"
+## Reference Map
 
-## If project has system.md
+- Full workflow, product-domain exploration, communication, `system.md`, and saving rules: [design-workflow.md](references/design-workflow.md)
+- Layout, component, token, surface, state, navigation, typography, icon, animation, and chart guidance: [layout-and-components.md](references/layout-and-components.md)
+- Accessibility, usability, responsive validation, and pre-delivery checks: [accessibility-and-validation.md](references/accessibility-and-validation.md)
+- Critique protocol, troubleshooting, generic-output failure modes, and repair patterns: [critique-and-troubleshooting.md](references/critique-and-troubleshooting.md)
+- Worked public-safe examples and final report patterns: [examples.md](references/examples.md)
 
-Read `.interface-design/system.md` and apply. Decisions are made.
+## Existing Deep Dives
 
-## If no system.md
+- [craft-foundations.md](references/craft-foundations.md)
+- [design-principles.md](references/design-principles.md)
+- [principles.md](references/principles.md)
+- [validation.md](references/validation.md)
+- [critique.md](references/critique.md)
+- [example.md](references/example.md)
 
-1. Explore domain — produce all four required outputs.
-2. Propose — direction must reference all four.
-3. Confirm — get user buy-in.
-4. Build — apply principles.
-5. **Evaluate** — run the mandate checks before showing.
-6. Offer to save.
+## Commands
 
----
-
-# After completing a task
-
-Always offer to save: *"Want me to save these patterns for future sessions?"*
-
-If yes, write to `.interface-design/system.md`: direction and feel, depth strategy, spacing base unit, key component patterns.
-
-### What to save
-
-Add when a component is used 2+ times, is reusable across the project, or has specific measurements worth remembering. Don't save one-off components, temporary experiments, or variations better handled with props.
-
-### Consistency checks
-
-If system.md defines values, check against them: spacing on the defined grid, depth using the declared strategy throughout, colors from the defined palette, documented patterns reused instead of reinvented.
-
-This compounds — each save makes future work faster and more consistent.
-
----
-
-# Deep dives
-
-- [`references/craft-foundations.md`](references/craft-foundations.md) — full prose for subtle layering, borders, infinite expression, color-lives-somewhere.
-- [`references/design-principles.md`](references/design-principles.md) — full per-topic detail for the 16-topic design-principles catalog.
-- [`references/principles.md`](references/principles.md) — code examples, specific values, dark mode.
-- [`references/validation.md`](references/validation.md) — memory management, when to update `system.md`.
-- [`references/critique.md`](references/critique.md) — post-build craft critique protocol.
-- [`references/example.md`](references/example.md) — worked example.
-
-# Commands
-
-- `/interface-design:status` — current system state.
-- `/interface-design:audit` — check code against system.
-- `/interface-design:extract` — extract patterns from code.
+- `/interface-design:status` - current system state.
+- `/interface-design:audit` - check code against system.
+- `/interface-design:extract` - extract patterns from code.
