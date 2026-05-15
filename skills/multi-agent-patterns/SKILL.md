@@ -7,24 +7,36 @@ description: >
 risk: medium
 tags: [agents, architecture]
 created: 2026-03-07
-updated: 2026-03-17
+updated: 2026-05-15
 ---
 
 # Multi-Agent Patterns
 
 Design patterns and orchestration infrastructure for building robust multi-agent AI systems.
 
+## Reference map
+
+Reference material lives in `references/`. Load only what the current task needs.
+
+| When | Read |
+|---|---|
+| Full Python implementations for all 10 orchestration patterns (GroupChat, ReAct, CriticExecutor, Router, Plan-and-Execute, Debate, Supervisor, P2P, Hierarchical, Swarm) | [`references/orchestration-patterns.md`](references/orchestration-patterns.md) |
+| Capability-based / round-robin / auction delegation code, ConversationPolicy guardrails, conflict-resolution strategy detail, handoff discipline | [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md) |
+| Message Passing / Shared State / Event Bus Python, AgentHealth dataclass + state machine, AgentMemoryStore code, Real-time agent latency budget | [`references/coordination-examples.md`](references/coordination-examples.md) |
+| Anti-pattern rationale + detection, error-handling implementations (retry / circuit breaker / fallback / degradation / DLQ), debugging recipes | [`references/validation-and-troubleshooting.md`](references/validation-and-troubleshooting.md) |
+| End-to-end scenarios (research pipeline, real-time voice agent, debate + arbitration, hierarchical with PolicyGate, swarm with shared memory) + pattern composition cheatsheet | [`references/examples.md`](references/examples.md) |
+
 ## How to use
 
 - `/multi-agent-patterns`
   Apply multi-agent design patterns to the current system.
-
 - `/multi-agent-patterns <scenario>`
   Recommend patterns for a specific coordination scenario.
 
 ## When to use
 
 Reference these guidelines when:
+
 - designing new agent architectures
 - adding agents to an existing system
 - solving coordination problems between agents
@@ -39,289 +51,91 @@ Reference these guidelines when:
 ## When NOT to use
 
 Do NOT apply this skill when:
+
 - building a single-agent system with no coordination needs
 - the task is about Claude Code subagent spawning (use `subagent-development` skill)
 - the task is about MCP server development (use `mcp-builder` skill)
 
 ---
 
-## Pattern Catalog
+## Pattern Selection Guide
 
-### 1. Orchestrator-Workers (AG2/AutoGen style)
-Central orchestrator manages conversation between specialized agents.
+**Start here.** Pick the pattern by scenario, then load the implementation from [`references/orchestration-patterns.md`](references/orchestration-patterns.md).
 
-```python
-@dataclass
-class ConversationConfig:
-    max_rounds: int = 10
-    termination_condition: str = "TERMINATE"
-    speaker_selection: str = "auto"  # auto, round_robin, manual
+| Scenario | Recommended Pattern |
+|---|---|
+| Independent subtasks | Orchestrator-Workers or Supervisor |
+| Sequential processing | Pipeline (Plan-and-Execute with linear DAG) |
+| Quality-critical output | Critic-Executor |
+| Request classification | Router |
+| Complex multi-step goals | Plan-and-Execute |
+| Controversial decisions | Debate |
+| Exploration / search | Swarm |
+| Real-time interaction | Real-time Agent |
+| Organization hierarchy | Hierarchical Delegation |
+| Collaborative reasoning | Peer-to-Peer |
 
-class GroupChat:
-    """AG2-style group chat orchestration."""
-    def __init__(
-        self,
-        agents: list[str],
-        config: ConversationConfig,
-    ) -> None:
-        self.agents = agents
-        self.config = config
-        self.history: list[dict] = []
+---
 
-    async def run(self, initial_message: str) -> list[dict]:
-        self.history.append({"role": "user", "content": initial_message})
-        for round_num in range(self.config.max_rounds):
-            speaker = await self._select_speaker(round_num)
-            response = await self._get_response(speaker)
-            self.history.append({"role": speaker, "content": response})
-            if self.config.termination_condition in response:
-                break
-        return self.history
-```
+## Pattern Catalog (one-line summary)
 
-**When to use**: Tasks decomposable into independent subtasks, need centralized monitoring.
-**the operator's examples**: `/sc:spawn` (task orchestration), CoreMind AgentCoordinator (SEC-001).
+Full implementations in [`references/orchestration-patterns.md`](references/orchestration-patterns.md).
 
-### 2. Tool-Use Agent (ReAct Pattern)
-Agent reasons about tool use in a loop: Thought → Action → Observation.
-
-```python
-class ReActAgent:
-    """Reasoning + Acting agent loop."""
-    def __init__(self, tools: dict[str, callable]) -> None:
-        self.tools = tools
-        self.scratchpad: list[str] = []
-
-    async def solve(self, task: str, max_steps: int = 10) -> str:
-        for step in range(max_steps):
-            thought = await self._think(task, self.scratchpad)
-            self.scratchpad.append(f"Thought: {thought}")
-            if "FINISH" in thought:
-                return self._extract_answer(thought)
-            tool_call = await self._select_tool(thought)
-            result = await self._execute_tool(tool_call)
-            self.scratchpad.append(f"Action: {tool_call.tool_name}({tool_call.arguments})")
-            self.scratchpad.append(f"Observation: {result}")
-        return "Max steps reached"
-```
-
-### 3. Critic-Executor (Reflection Pattern)
-One agent acts, another critiques, iterate until quality threshold.
-
-```python
-class CriticExecutor:
-    async def run(self, task: str, max_iterations: int = 3, quality_threshold: float = 0.8) -> dict:
-        result = await self._executor_generate(task)
-        for iteration in range(max_iterations):
-            critique = await self._critic_evaluate(task, result)
-            if critique["score"] >= quality_threshold:
-                return {"result": result, "score": critique["score"], "iterations": iteration + 1}
-            result = await self._executor_revise(task, result, critique["feedback"])
-        return {"result": result, "score": critique["score"], "iterations": max_iterations}
-```
-
-### 4. Router Pattern (Agent-Squad style)
-Intelligent routing to specialized agents based on request classification.
-
-```python
-@dataclass
-class AgentProfile:
-    name: str
-    description: str
-    capabilities: list[str]
-    priority: int = 0
-
-class AgentRouter:
-    def __init__(self, agents: list[AgentProfile]) -> None:
-        self.agents = agents
-
-    async def route(self, request: str) -> AgentProfile:
-        """Select the best agent using LLM classification."""
-        ...
-
-    async def handle(self, request: str) -> str:
-        agent = await self.route(request)
-        return await self._dispatch(agent, request)
-```
-
-### 5. Plan-and-Execute
-Agent creates a plan, then executes steps with dependency ordering.
-
-```python
-@dataclass
-class PlanStep:
-    description: str
-    agent: str
-    dependencies: list[int]
-    status: str = "pending"  # pending, running, completed, failed
-
-class PlanAndExecute:
-    async def run(self, goal: str) -> dict:
-        plan = await self._create_plan(goal)
-        for step in self._topological_sort(plan):
-            if all(plan[dep].status == "completed" for dep in step.dependencies):
-                step.status = "running"
-                result = await self._execute_step(step)
-                step.status = "completed" if result.success else "failed"
-                if step.status == "failed":
-                    plan = await self._replan(goal, plan, step)
-        return {"goal": goal, "plan": plan, "status": "completed"}
-```
-
-### 6. Debate Pattern
-Multiple agents argue positions, judge evaluates arguments.
-
-```python
-class DebateSystem:
-    async def debate(self, question: str, positions: list[str], rounds: int = 3) -> dict:
-        arguments: dict[str, list[str]] = {pos: [] for pos in positions}
-        for round_num in range(rounds):
-            for position in positions:
-                arg = await self._argue(question, position, arguments, round_num)
-                arguments[position].append(arg)
-        return await self._judge(question, arguments)
-```
-
-### 7. Supervisor (Hub-and-Spoke)
-One coordinator manages all worker agents with fan-out/aggregate.
-
-```python
-@dataclass
-class SupervisorResult:
-    agent_id: str
-    status: str  # "success", "failed", "timeout"
-    result: Any
-    duration_ms: float
-
-class Supervisor:
-    def __init__(self, agents: list[str]) -> None:
-        self.agents = agents
-        self.results: dict[str, SupervisorResult] = {}
-
-    async def fan_out(self, tasks: list[dict]) -> list[SupervisorResult]:
-        """Distribute tasks across available agents."""
-        ...
-
-    async def aggregate(self, results: list[SupervisorResult]) -> Any:
-        """Combine results from multiple agents."""
-        ...
-```
-
-### 8. Peer-to-Peer (Mesh)
-Agents communicate directly without central coordinator.
-
-**When to use**: Collaborative problem-solving, negotiation, consensus.
-**Caution**: Harder to debug, potential for deadlocks.
-
-### 9. Hierarchical Delegation
-Multi-level delegation tree with authority cascading.
-
-**When to use**: Organization-like structures, authority-gated operations.
-**the operator's examples**: CoreMind executive suite, GAOS PolicyGate tiers.
-
-### 10. Swarm Intelligence
-Large group of simple agents with emergent collective behavior.
-
-**When to use**: Search problems, optimization, exploration.
-**Principles**: Local rules, no central control, information sharing via environment.
+1. **Orchestrator-Workers (AG2/AutoGen)** — central orchestrator manages conversation between specialists.
+2. **Tool-Use Agent (ReAct)** — Thought → Action → Observation loop.
+3. **Critic-Executor (Reflection)** — execute → critique → revise until quality threshold.
+4. **Router (Agent-Squad)** — classify request, dispatch to specialist.
+5. **Plan-and-Execute** — generate plan with deps, execute via topological sort, replan on failure.
+6. **Debate** — N positions argue, judge evaluates.
+7. **Supervisor (Hub-and-Spoke)** — fan-out tasks, aggregate results.
+8. **Peer-to-Peer (Mesh)** — direct agent-to-agent communication.
+9. **Hierarchical Delegation** — multi-level authority cascade.
+10. **Swarm Intelligence** — simple agents, emergent behavior, environment-mediated.
 
 ---
 
 ## Communication Protocols
 
-### Message Passing
-```python
-from enum import Enum
+| Mechanism | When | Key invariant |
+|---|---|---|
+| **Message Passing** | Loosely coupled agents, async workflows | Every message carries `trace_id` propagated end-to-end |
+| **Shared State** | Tightly coordinated agents in same process | Lock around every read/write — no exceptions |
+| **Event Bus** | Fan-out notifications, decoupled pub/sub | Include `trace_id` in event payload for chain tracing |
 
-class MessageType(Enum):
-    REQUEST = "request"
-    RESPONSE = "response"
-    EVENT = "event"
-    ERROR = "error"
-
-@dataclass
-class AgentMessage:
-    sender: str
-    receiver: str
-    msg_type: MessageType
-    payload: dict
-    timestamp: datetime
-    trace_id: str  # Correlate across agent chain
-    reply_to: str | None = None
-```
-
-### Shared State
-```python
-class SharedState:
-    """Thread-safe shared state for agent coordination."""
-    def __init__(self) -> None:
-        self._state: dict[str, Any] = {}
-        self._lock = asyncio.Lock()
-        self._subscribers: dict[str, list[callable]] = {}
-
-    async def get(self, key: str) -> Any:
-        async with self._lock:
-            return self._state.get(key)
-
-    async def set(self, key: str, value: Any) -> None:
-        async with self._lock:
-            self._state[key] = value
-        await self._notify(key, value)
-```
-
-### Event Bus
-```python
-class EventBus:
-    def __init__(self) -> None:
-        self._handlers: dict[str, list[callable]] = {}
-
-    def subscribe(self, event_type: str, handler: callable) -> None:
-        self._handlers.setdefault(event_type, []).append(handler)
-
-    async def publish(self, event_type: str, data: dict) -> None:
-        for handler in self._handlers.get(event_type, []):
-            await handler(data)
-```
+Full Python implementations in [`references/coordination-examples.md`](references/coordination-examples.md#communication-protocols).
 
 ---
 
 ## Task Delegation Strategies
 
 | Strategy | Description | Best For |
-|----------|-------------|----------|
+|---|---|---|
 | Round-robin | Distribute evenly across agents | Homogeneous agents |
-| Capability-based | Match task requirements to agent skills | Heterogeneous agents |
+| Capability-based | Match task requirements to agent skills | Heterogeneous agents (default) |
 | Auction | Agents bid on tasks | Dynamic load balancing |
 | Priority queue | High-priority tasks first | Critical path workflows |
 | Affinity | Route related tasks to same agent | Context-dependent work |
 
-### Capability-Based Delegation
-```python
-@dataclass
-class AgentCapability:
-    agent_id: str
-    skills: set[str]
-    max_concurrent: int
-    current_load: int
-
-def select_agent(
-    task_requirements: set[str],
-    agents: list[AgentCapability],
-) -> AgentCapability | None:
-    candidates = [
-        a for a in agents
-        if task_requirements.issubset(a.skills) and a.current_load < a.max_concurrent
-    ]
-    if not candidates:
-        return None
-    return min(candidates, key=lambda a: a.current_load)
-```
+**Default**: capability-based with load filtering. Never silently route to an over-loaded or under-skilled agent — return `None` and escalate instead. Code: [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md#capability-based-delegation).
 
 ---
 
-## Agent Lifecycle Management
+## Handoff Discipline
 
-### States
+When one agent hands work to another, **every** handoff must:
+
+1. Propagate the originating `trace_id`.
+2. Include a one-paragraph context summary (no requiring the receiver to re-read full history).
+3. Declare authority explicitly: `consulted` / `delegated` / `escalated`.
+4. Surface rejection — no silent fail-back loops.
+5. Have a timeout; expired handoffs go to a dead-letter queue, not a stall.
+
+Full discipline detail: [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md#handoff-discipline).
+
+---
+
+## Agent Lifecycle
+
 ```
 CREATED → INITIALIZING → READY → RUNNING → COMPLETED
                                     ↓           ↓
@@ -330,155 +144,111 @@ CREATED → INITIALIZING → READY → RUNNING → COMPLETED
                                  RETRYING
 ```
 
-### Health Monitoring
-```python
-@dataclass
-class AgentHealth:
-    agent_id: str
-    status: str
-    last_heartbeat: datetime
-    tasks_completed: int
-    tasks_failed: int
-    avg_response_ms: float
-    memory_usage_mb: float
-    error_rate: float  # last 100 tasks
-```
+**Health rule**: heartbeat interval ≤ ⅓ of timeout window; 3 consecutive misses → ERROR → recovery. Full `AgentHealth` dataclass and operational detail in [`references/coordination-examples.md`](references/coordination-examples.md#agent-lifecycle--health-monitoring).
 
 ---
 
-## Conversation Control
+## Conversation Control — Guardrails
 
-### Behavioral Guardrails
-```python
-@dataclass
-class ConversationPolicy:
-    max_turns: int = 50
-    allowed_topics: set[str] = field(default_factory=set)
-    blocked_patterns: list[str] = field(default_factory=list)
-    escalation_triggers: list[str] = field(default_factory=list)
-    tone: str = "professional"
+Every multi-agent conversation runs under a `ConversationPolicy` with `max_turns`, `allowed_topics`, `blocked_patterns`, `escalation_triggers`, `tone`. Blocked patterns short-circuit messages before downstream agents see them. Escalation triggers route up the hierarchy rather than continuing the current loop.
 
-    def check_message(self, message: str) -> tuple[bool, str]:
-        for pattern in self.blocked_patterns:
-            if pattern.lower() in message.lower():
-                return False, f"Blocked pattern: {pattern}"
-        return True, "ok"
-```
+Implementation: [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md#conversation-control--behavioral-guardrails).
 
 ---
 
 ## Conflict Resolution
 
 | Strategy | When | How |
-|----------|------|-----|
+|---|---|---|
 | Voting | Equal-authority agents | Majority wins |
 | Priority | Hierarchical authority | Higher-rank agent wins |
-| Consensus | Collaborative decisions | All must agree or escalate |
+| Consensus | Collaborative critical decisions | All must agree or escalate |
 | Arbitration | Deadlocked agents | Third-party agent decides |
 | Evidence-weighted | Data-driven decisions | Agent with best evidence wins |
+
+Pick by stakes / authority distribution / time pressure / auditability. Full guidance in [`references/delegation-and-handoffs.md`](references/delegation-and-handoffs.md#conflict-resolution--strategy-detail).
 
 ---
 
 ## Error Handling Patterns
 
 | Pattern | When | Implementation |
-|---------|------|---------------|
+|---|---|---|
 | Retry with backoff | Transient failures | Exponential backoff, max 3 retries |
-| Circuit breaker | Repeated failures | Open after 5 failures, half-open after 30s |
+| Circuit breaker | Repeated failures | Open after N failures, half-open after 30s |
 | Fallback agent | Primary unavailable | Route to backup with same capabilities |
-| Graceful degradation | Partial system failure | Return partial results with quality flag |
-| Dead letter queue | Unprocessable tasks | Log and store for manual review |
+| Graceful degradation | Partial system failure | Return `PartialResult` with explicit `quality` flag |
+| Dead letter queue | Unprocessable tasks | Log + store for manual review |
+
+**Critical rules**: retries only for *transient* failures (never auth, validation, schema); fallback agent must have same capabilities (else quality silently degrades — always log fallback rate); graceful degradation must surface `quality: "partial"` — never paper over failure; DLQ catches what would otherwise be silently dropped.
+
+Full implementation sketches: [`references/validation-and-troubleshooting.md`](references/validation-and-troubleshooting.md#error-handling-patterns--implementation).
 
 ---
 
 ## Memory Sharing
 
-### Shared Memory Store
-```python
-class AgentMemoryStore:
-    """Shared memory with namespace isolation."""
-    def __init__(self) -> None:
-        self._global: dict = {}
-        self._private: dict[str, dict] = {}
+**In-process** (single run): `AgentMemoryStore` with global vs private namespaces. Always log `written_by` on global writes. Never read another agent's private namespace.
 
-    async def write_global(self, key: str, value: Any, agent_id: str) -> None:
-        self._global[key] = {"value": value, "written_by": agent_id}
+**Cross-session** (operator's environment): use the Memory MCP server.
 
-    async def read_private(self, agent_id: str, key: str) -> Any:
-        return self._private.get(agent_id, {}).get(key)
+```
+mcp__memory__create_entities    → Store shared knowledge
+mcp__memory__create_relations   → Link agent findings
+mcp__memory__search_nodes       → Query across agent outputs
+mcp__memory__add_observations   → Append agent discoveries
 ```
 
-### Integration with Memory MCP
-```
-mcp__memory__create_entities → Store shared knowledge
-mcp__memory__create_relations → Link agent findings
-mcp__memory__search_nodes    → Query across agent outputs
-mcp__memory__add_observations → Append agent discoveries
-```
-
----
-
-## Real-Time Agent Patterns (LiveKit concepts)
-
-```python
-@dataclass
-class RealtimeAgentConfig:
-    sample_rate: int = 16000
-    vad_threshold: float = 0.5
-    response_latency_ms: int = 500
-    turn_detection: str = "server_vad"
-
-class RealtimeAgent:
-    async def on_audio_frame(self, frame: bytes) -> bytes | None: ...
-    async def on_text_input(self, text: str) -> str: ...
-```
+In-process store code: [`references/coordination-examples.md`](references/coordination-examples.md#memory-sharing).
 
 ---
 
 ## Anti-Patterns
 
 | Anti-Pattern | Problem | Solution |
-|--------------|---------|----------|
-| God Agent | Single agent doing everything | Decompose into specialists |
-| Chatty Agents | Excessive inter-agent communication | Batch messages, reduce coupling |
-| Circular Dependencies | Agent A waits for B, B waits for A | DAG-based task ordering |
-| No Timeout | Agent hangs indefinitely | Timeouts at every level |
-| Shared Mutable State | Race conditions | Use locks or message passing |
-| No Observability | Can't debug agent interactions | Trace IDs, structured logging |
+|---|---|---|
+| **God Agent** | One agent doing everything | Decompose into specialists + Router |
+| **Chatty Agents** | Excessive inter-agent traffic | Batch messages; introduce aggregator; pass summaries |
+| **Circular Dependencies** | A waits for B, B waits for A → deadlock | DAG-based task ordering; reject cycles at planning |
+| **No Timeout** | Agent hangs indefinitely | Timeouts at every level (agent, tool, network, round) |
+| **Shared Mutable State** | Race conditions | Use locks (`SharedState`) or message passing |
+| **No Observability** | Can't debug agent interactions | Propagate `trace_id`; structured logging per agent |
+
+Detection criteria + remediation detail for each: [`references/validation-and-troubleshooting.md`](references/validation-and-troubleshooting.md#anti-pattern-rationale).
 
 ---
 
-## Pattern Selection Guide
+## Output Expectations
 
-| Scenario | Recommended Pattern |
-|----------|-------------------|
-| Independent subtasks | Orchestrator-Workers or Supervisor |
-| Sequential processing | Pipeline |
-| Quality-critical output | Critic-Executor |
-| Request classification | Router |
-| Complex multi-step goals | Plan-and-Execute |
-| Controversial decisions | Debate |
-| Exploration/search | Swarm |
-| Real-time interaction | Real-time Agent |
-| Organization hierarchy | Hierarchical Delegation |
-| Collaborative reasoning | Peer-to-Peer |
+When invoked, this skill produces:
+
+- A recommended pattern (or composition) from the Pattern Selection Guide.
+- Concrete coordination choices: communication mechanism, delegation strategy, conflict-resolution strategy, error-handling pattern.
+- Lifecycle and health-monitoring spec (timeouts, heartbeat intervals, recovery actions).
+- `trace_id` propagation plan across the agent chain.
+- Anti-pattern audit: which anti-patterns the proposed design risks and how it mitigates them.
+- For authority-gated actions in the operator's environment: explicit PolicyGate tier classification.
 
 ---
 
-## Integration with the operator's Environment
+## Integration with the Operator's Environment
 
 | Component | Role |
-|-----------|------|
+|---|---|
 | CoreMind AgentCoordinator | SEC-001 guard: all agent execution flows through coordinator |
-| CoreMind GAOS PolicyGate | 4-tier authorization: ALLOW/REVIEW/ESCALATE/BLOCK |
+| CoreMind GAOS PolicyGate | 4-tier authorization: ALLOW / REVIEW / ESCALATE / BLOCK |
 | CoreMind DelegationContract | Immutable contracts: agents cannot modify their own authority |
 | `/sc:spawn` command | Task orchestration with status protocol |
 | `subagent-development` skill | Subagent-driven development patterns |
 | `memory` MCP server | Persistent state across agent sessions |
 
+End-to-end scenarios showing how these compose: [`references/examples.md`](references/examples.md).
+
+---
+
 ## Cross-references
 
-- **subagent-development** skill: Claude Code subagent lifecycle
-- **AI_AGENT_LANDSCAPE.md**: Framework comparison (AG2, Parlant, LiveKit, etc.)
-- **CoreMind GAOS**: Governed agent execution patterns
-- **SECURITY_PLAYBOOK.md** Rules 15-20: Agent security controls
+- **subagent-development** skill — Claude Code subagent lifecycle.
+- **AI_AGENT_LANDSCAPE.md** — framework comparison (AG2, Parlant, LiveKit, etc.).
+- **CoreMind GAOS** — governed agent execution patterns.
+- **SECURITY_PLAYBOOK.md** Rules 15–20 — agent security controls.
