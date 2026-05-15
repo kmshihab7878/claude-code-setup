@@ -8,352 +8,132 @@ description: >
 
 # Finance ML
 
-Machine learning patterns for financial analysis and trading.
+Use this skill for machine learning work on financial time series, trading signals, risk analysis, portfolio allocation, backtests, and Aster DEX signal support.
 
-## how to use
+Keep the main workflow cautious: financial ML is easy to overfit, leak future data into features, and mistake backtest results for deployable trading evidence.
+
+## How To Use
 
 - `/finance-ml`
   Apply financial ML patterns to the current analysis.
 
 - `/finance-ml <task>`
-  Guide for specific task: prediction, optimization, backtest, indicators, risk.
+  Guide a specific task: prediction, optimization, backtest, indicators, risk, or Aster DEX signal review.
 
-## when to apply
+## When To Apply
 
-Reference these guidelines when:
-- building price prediction models
-- calculating technical indicators
-- designing trading strategies
-- optimizing portfolio allocation
-- computing risk metrics
-- backtesting strategies
-- processing financial statements or bank data
-- integrating ML signals with Aster DEX trading
+Use this skill when:
 
-## financial data sources
+- building price prediction or classification models;
+- calculating technical indicators or engineered features;
+- designing trading strategies or portfolio allocation logic;
+- computing risk metrics and drawdown behavior;
+- running backtests, walk-forward validation, or out-of-sample checks;
+- processing financial statements, bank data, market data, or crypto exchange data;
+- connecting ML signals to Aster DEX trading workflows.
 
-### FinanceDatabase (300k+ instruments)
-```python
-import financedatabase as fd
+Do not use this skill to give personalized financial advice or to execute trades without the explicit approval required by the active safety rules.
 
-# Search instruments by category
-equities = fd.Equities()
-etfs = fd.ETFs()
-funds = fd.Funds()
-currencies = fd.Currencies()
-cryptos = fd.Cryptos()
+## Required Inputs
 
-# Filter by sector, industry, country
-tech_stocks = equities.search(sector="Technology", country="United States")
+Ask for or infer the smallest safe input set:
 
-# Get ticker list for analysis
-tickers = tech_stocks.index.tolist()
+- Objective: forecast, classification signal, allocation, risk report, anomaly detection, or trading decision support.
+- Asset universe, symbols, venue, instrument type, timeframe, and bar interval.
+- Data source, data fields, date range, timezone, corporate actions, and missing-data policy.
+- Target definition: return horizon, direction label, volatility target, drawdown threshold, or allocation goal.
+- Constraints: transaction costs, slippage, leverage, shorting, liquidity, max position size, max drawdown, regulatory or policy limits.
+- Validation plan: train/test split, walk-forward windows, baseline, benchmark, and metrics.
+- Execution scope: analysis only, paper trading, or live-trading proposal requiring approval.
+
+Never invent market data, account balances, positions, validation output, or execution results.
+
+## Core Workflow
+
+1. Define the financial objective and the decision the model is meant to support.
+2. Confirm data scope, frequency, horizon, and point-in-time availability.
+3. Select a model family based on target type, data volume, feature shape, and interpretability needs.
+4. Build features without look-ahead leakage; align labels after features and split by time.
+5. Choose baselines before complex models.
+6. Backtest with realistic costs, slippage, liquidity, and position sizing.
+7. Validate out of sample with walk-forward or time-series splits.
+8. Report risk metrics, failure modes, assumptions, and whether the result is analysis-only or trade-supporting.
+9. For Aster DEX workflows, present signal, confidence, position sizing, and risk checks, then require user confirmation before any order action.
+
+## Model Selection Logic
+
+- Use statistical baselines such as ARIMA/GARCH for interpretable price or volatility forecasts with simpler structure.
+- Use tree models such as Random Forest or XGBoost for tabular, feature-based direction, return, or ranking tasks.
+- Use LSTM or other sequence models only when the sequence length, data volume, and validation plan justify the complexity.
+- Use Transformers only for high-volume sequence or multimodal tasks where long-range dependencies matter and compute cost is acceptable.
+- Use portfolio optimization when the target is allocation under expected return, covariance, risk, and constraint assumptions.
+- Prefer the simplest model that beats a naive baseline after transaction costs and out-of-sample testing.
+
+## Leakage, Risk, And Compliance Constraints
+
+- Split by time, not random rows, for time-series prediction.
+- Build features using only information available at the decision timestamp.
+- Account for survivorship bias, corporate actions, stale prices, missing bars, and timestamp alignment.
+- Include transaction costs, spread, slippage, liquidity, and market-impact assumptions in trading backtests.
+- Treat high Sharpe, low drawdown, or high hit rate without out-of-sample evidence as suspect.
+- Never commit API keys, account identifiers, private market feeds, credentials, position records, or local files.
+- Do not present model output as personalized financial advice.
+- Do not place, modify, or cancel orders without explicit approval and the active trading safety gates.
+
+## Validation Gates
+
+Use checks appropriate to the task:
+
+- Baseline comparison: naive return, buy-and-hold, equal-weight, or simple technical-rule baseline.
+- Time-aware split: train, validation, test, and walk-forward windows.
+- Leakage audit: feature timestamp, target horizon, rolling windows, and scaler fit boundaries.
+- Backtest realism: costs, slippage, liquidity, fills, position limits, and rejected orders.
+- Risk metrics: volatility, Sharpe, Sortino, max drawdown, VaR, Calmar, turnover, and exposure.
+- Stress checks: regime split, drawdown period, fee sensitivity, and parameter sensitivity.
+- Reproducibility: data source, date range, seed, library versions, and exact commands when available.
+
+## Output Expectations
+
+Return:
+
+- Objective, asset universe, time horizon, and data source.
+- Model or method choice and why it fits the target.
+- Feature and label summary with leakage controls.
+- Backtest and validation approach.
+- Risk metrics and interpretation.
+- Trade or allocation constraints, if applicable.
+- Evidence from commands, calculations, plots, or inspected outputs.
+- Clear limitations, failure modes, and next checks.
+
+## Minimal Examples
+
+Model-routing example:
+
+```text
+Task: predict next-day direction from daily OHLCV and indicators.
+Default choice: XGBoost or Random Forest baseline before LSTM.
+Validation: walk-forward split with transaction costs and buy-and-hold benchmark.
 ```
 
-### Market Data Libraries
-| Library | Data Type | Free Tier |
-|---------|-----------|-----------|
-| `yfinance` | Price, fundamentals, options | Yes |
-| `financedatabase` | 300k+ instrument metadata | Yes |
-| `alpha_vantage` | Price, forex, crypto | API key |
-| `ccxt` | Crypto exchange data (100+ exchanges) | Yes |
-| `pandas-datareader` | FRED, World Bank, OECD | Yes |
+Aster DEX signal support:
 
-```python
-import yfinance as yf
-
-# Fetch OHLCV data
-btc = yf.download("BTC-USD", start="2024-01-01", interval="1d")
-# Columns: Open, High, Low, Close, Adj Close, Volume
+```text
+Signal package: BUY / SELL / HOLD, confidence, position-size proposal, risk metrics.
+Required gate: user confirmation before any order action.
 ```
 
-## technical indicators
+## Reference Map
 
-### Core Indicators
-```python
-import pandas as pd
-import numpy as np
+- [Finance ML workflow](references/ml-workflow.md)
+- [Features, labeling, and data](references/features-labeling-and-data.md)
+- [Models and selection](references/models-and-selection.md)
+- [Backtesting, risk, and validation](references/backtesting-risk-and-validation.md)
+- [Examples and troubleshooting](references/examples-and-troubleshooting.md)
 
-def sma(series: pd.Series, period: int) -> pd.Series:
-    """Simple Moving Average."""
-    return series.rolling(window=period).mean()
+## Cross-References
 
-def ema(series: pd.Series, period: int) -> pd.Series:
-    """Exponential Moving Average."""
-    return series.ewm(span=period, adjust=False).mean()
-
-def rsi(series: pd.Series, period: int = 14) -> pd.Series:
-    """Relative Strength Index."""
-    delta = series.diff()
-    gain = delta.where(delta > 0, 0.0).rolling(window=period).mean()
-    loss = (-delta.where(delta < 0, 0.0)).rolling(window=period).mean()
-    rs = gain / loss
-    return 100 - (100 / (1 + rs))
-
-def macd(
-    series: pd.Series,
-    fast: int = 12,
-    slow: int = 26,
-    signal: int = 9,
-) -> tuple[pd.Series, pd.Series, pd.Series]:
-    """MACD indicator: (macd_line, signal_line, histogram)."""
-    fast_ema = ema(series, fast)
-    slow_ema = ema(series, slow)
-    macd_line = fast_ema - slow_ema
-    signal_line = ema(macd_line, signal)
-    histogram = macd_line - signal_line
-    return macd_line, signal_line, histogram
-
-def bollinger_bands(
-    series: pd.Series,
-    period: int = 20,
-    std_dev: float = 2.0,
-) -> tuple[pd.Series, pd.Series, pd.Series]:
-    """Bollinger Bands: (upper, middle, lower)."""
-    middle = sma(series, period)
-    std = series.rolling(window=period).std()
-    upper = middle + (std_dev * std)
-    lower = middle - (std_dev * std)
-    return upper, middle, lower
-
-def atr(
-    high: pd.Series,
-    low: pd.Series,
-    close: pd.Series,
-    period: int = 14,
-) -> pd.Series:
-    """Average True Range."""
-    tr1 = high - low
-    tr2 = (high - close.shift(1)).abs()
-    tr3 = (low - close.shift(1)).abs()
-    tr = pd.concat([tr1, tr2, tr3], axis=1).max(axis=1)
-    return tr.rolling(window=period).mean()
-```
-
-## ML models for finance
-
-### Model Selection Guide
-| Model | Best For | Pros | Cons |
-|-------|----------|------|------|
-| LSTM | Sequence prediction | Captures temporal patterns | Slow training, overfitting risk |
-| XGBoost | Feature-based prediction | Fast, handles missing data | No native sequence modeling |
-| Random Forest | Classification signals | Interpretable, robust | Less precise than boosting |
-| Transformer | Long-range dependencies | State-of-art performance | Data hungry, expensive |
-| ARIMA/GARCH | Volatility forecasting | Statistical rigor | Linear assumptions |
-
-### Feature Engineering
-```python
-def create_features(df: pd.DataFrame) -> pd.DataFrame:
-    """Feature engineering for financial time series."""
-    features = pd.DataFrame(index=df.index)
-
-    # Price-based features
-    features['returns_1d'] = df['Close'].pct_change(1)
-    features['returns_5d'] = df['Close'].pct_change(5)
-    features['returns_20d'] = df['Close'].pct_change(20)
-    features['log_returns'] = np.log(df['Close'] / df['Close'].shift(1))
-
-    # Volatility features
-    features['volatility_20d'] = features['returns_1d'].rolling(20).std()
-    features['volatility_60d'] = features['returns_1d'].rolling(60).std()
-
-    # Technical indicators
-    features['rsi_14'] = rsi(df['Close'], 14)
-    features['sma_20'] = sma(df['Close'], 20)
-    features['sma_50'] = sma(df['Close'], 50)
-    features['sma_ratio'] = features['sma_20'] / features['sma_50']
-
-    # Volume features
-    features['volume_sma_20'] = sma(df['Volume'], 20)
-    features['volume_ratio'] = df['Volume'] / features['volume_sma_20']
-
-    # Price position
-    features['distance_from_high'] = df['Close'] / df['High'].rolling(20).max() - 1
-    features['distance_from_low'] = df['Close'] / df['Low'].rolling(20).min() - 1
-
-    return features.dropna()
-```
-
-### LSTM Price Prediction Pattern
-```python
-import torch
-import torch.nn as nn
-
-class LSTMPredictor(nn.Module):
-    def __init__(
-        self,
-        input_size: int,
-        hidden_size: int = 64,
-        num_layers: int = 2,
-        dropout: float = 0.2,
-    ) -> None:
-        super().__init__()
-        self.lstm = nn.LSTM(
-            input_size, hidden_size, num_layers,
-            batch_first=True, dropout=dropout,
-        )
-        self.fc = nn.Linear(hidden_size, 1)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        lstm_out, _ = self.lstm(x)
-        return self.fc(lstm_out[:, -1, :])
-```
-
-## risk metrics
-
-```python
-def sharpe_ratio(
-    returns: pd.Series,
-    risk_free_rate: float = 0.04,
-    periods_per_year: int = 252,
-) -> float:
-    """Annualized Sharpe Ratio."""
-    excess = returns - risk_free_rate / periods_per_year
-    return np.sqrt(periods_per_year) * excess.mean() / excess.std()
-
-def sortino_ratio(
-    returns: pd.Series,
-    risk_free_rate: float = 0.04,
-    periods_per_year: int = 252,
-) -> float:
-    """Sortino Ratio (downside deviation only)."""
-    excess = returns - risk_free_rate / periods_per_year
-    downside = excess[excess < 0].std()
-    return np.sqrt(periods_per_year) * excess.mean() / downside if downside > 0 else 0.0
-
-def max_drawdown(equity_curve: pd.Series) -> float:
-    """Maximum drawdown as a negative percentage."""
-    peak = equity_curve.cummax()
-    drawdown = (equity_curve - peak) / peak
-    return drawdown.min()
-
-def value_at_risk(
-    returns: pd.Series,
-    confidence: float = 0.95,
-    method: str = "historical",
-) -> float:
-    """Value at Risk."""
-    if method == "historical":
-        return np.percentile(returns, (1 - confidence) * 100)
-    elif method == "parametric":
-        from scipy import stats
-        z_score = stats.norm.ppf(1 - confidence)
-        return returns.mean() + z_score * returns.std()
-    raise ValueError(f"Unknown method: {method}")
-
-def calmar_ratio(
-    returns: pd.Series,
-    periods_per_year: int = 252,
-) -> float:
-    """Calmar Ratio (annual return / max drawdown)."""
-    annual_return = returns.mean() * periods_per_year
-    mdd = abs(max_drawdown((1 + returns).cumprod()))
-    return annual_return / mdd if mdd > 0 else 0.0
-```
-
-## portfolio optimization
-
-### Mean-Variance (Markowitz)
-```python
-from scipy.optimize import minimize
-
-def optimize_portfolio(
-    returns: pd.DataFrame,
-    risk_free_rate: float = 0.04,
-) -> dict:
-    """Mean-variance portfolio optimization."""
-    n_assets = returns.shape[1]
-    mean_returns = returns.mean() * 252
-    cov_matrix = returns.cov() * 252
-
-    def neg_sharpe(weights: np.ndarray) -> float:
-        port_return = np.dot(weights, mean_returns)
-        port_vol = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights)))
-        return -(port_return - risk_free_rate) / port_vol
-
-    constraints = [{'type': 'eq', 'fun': lambda w: np.sum(w) - 1}]
-    bounds = [(0, 1) for _ in range(n_assets)]
-    initial = np.array([1/n_assets] * n_assets)
-
-    result = minimize(neg_sharpe, initial, method='SLSQP',
-                      bounds=bounds, constraints=constraints)
-
-    optimal_weights = result.x
-    return {
-        'weights': dict(zip(returns.columns, optimal_weights)),
-        'expected_return': float(np.dot(optimal_weights, mean_returns)),
-        'volatility': float(np.sqrt(np.dot(optimal_weights.T,
-                                            np.dot(cov_matrix, optimal_weights)))),
-        'sharpe': float(-result.fun),
-    }
-```
-
-## backtesting methodology
-
-### Common Pitfalls
-| Pitfall | Description | Prevention |
-|---------|-------------|------------|
-| Look-ahead bias | Using future data in decisions | Strict train/test split, walk-forward |
-| Survivorship bias | Only testing on survivors | Use point-in-time data |
-| Overfitting | Model memorizes noise | Cross-validation, out-of-sample test |
-| Transaction costs | Ignoring fees and slippage | Include realistic cost model |
-| Data snooping | Testing too many strategies | Bonferroni correction, holdout set |
-
-### Walk-Forward Validation
-```python
-def walk_forward_backtest(
-    data: pd.DataFrame,
-    train_window: int = 252,
-    test_window: int = 21,
-    strategy_fn: callable = None,
-) -> pd.Series:
-    """Walk-forward out-of-sample backtest."""
-    results = []
-    for start in range(0, len(data) - train_window - test_window, test_window):
-        train = data.iloc[start:start + train_window]
-        test = data.iloc[start + train_window:start + train_window + test_window]
-
-        model = strategy_fn(train)
-        predictions = model.predict(test)
-        results.append(predictions)
-
-    return pd.concat(results)
-```
-
-## aster DEX integration
-
-### ML-Informed Trading Workflow
-```
-1. Fetch market data: get_klines(symbol, interval="1h", limit=500)
-2. Calculate features: technical indicators + ML predictions
-3. Generate signal: BUY / SELL / HOLD with confidence score
-4. Risk check:
-   - Position size via Kelly criterion or fixed fractional
-   - Check current positions: get_positions()
-   - Check available balance: get_balance()
-5. Present to user: signal, confidence, position size, risk metrics
-6. User confirmation (MANDATORY - Rule 21 of Security Playbook)
-7. Execute: create_order(symbol, side, type, quantity, price)
-8. Monitor: track position with get_positions()
-```
-
-### Position Sizing
-```python
-def kelly_criterion(
-    win_rate: float,
-    avg_win: float,
-    avg_loss: float,
-    fraction: float = 0.25,  # Use fractional Kelly for safety
-) -> float:
-    """Kelly criterion for position sizing."""
-    kelly = (win_rate * avg_win - (1 - win_rate) * avg_loss) / avg_win
-    return max(0, kelly * fraction)  # Never go negative
-```
-
-## cross-references
-
-- **aster-trading** skill: MCP tools for Aster DEX (44 tools)
-- **data-analyst** agent: Statistical analysis and visualization
-- **SECURITY_PLAYBOOK.md** Rules 21-25: DeFi trading security
-- **xlsx** skill: Spreadsheet output for reports
-- **FINANCE_ML_STACK.md**: Comprehensive reference doc
+- **aster-trading** skill: MCP tools for Aster DEX.
+- **data-analyst** agent: statistical analysis and visualization.
+- **docs/SECURITY_PLAYBOOK.md**: DeFi trading security rules.
+- **xlsx** skill: spreadsheet output for reports.
+- **docs/FINANCE_ML_STACK.md**: broader finance ML reference.
