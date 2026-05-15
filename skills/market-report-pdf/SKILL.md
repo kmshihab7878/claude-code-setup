@@ -5,349 +5,130 @@ description: PDF marketing report generator producing branded PDFs with score ga
 
 # PDF Marketing Report Generator
 
-## Skill Purpose
-Generate a professional, visually polished PDF marketing report using the Python script `scripts/generate_pdf_report.py`. This skill collects all available audit and analysis data, structures it into the expected JSON format, invokes the script, and produces a branded PDF with score gauges, bar charts, comparison tables, findings, and a prioritized action plan.
+Generate a polished PDF marketing report with score gauges, charts, comparison tables, findings, and a prioritized action plan using `scripts/generate_pdf_report.py`.
 
-## When to Use
-- User wants a PDF version of the marketing report (not just Markdown)
-- User is preparing a deliverable for a client presentation
-- User asks for a "polished report", "client-ready report", or "PDF report"
-- User wants a visual report with charts and scores
-- Triggered by `/market report-pdf` or `/market report-pdf <domain>`
+## Invocation Triggers
 
-## When to Use PDF vs Markdown
+Use this skill when the user:
 
-| Format | Best For | Pros | Cons |
-|---|---|---|---|
-| **PDF** | Client presentations, email attachments, sales collateral | Professional appearance, consistent formatting, visual charts, printable | Harder to edit, requires Python script |
-| **Markdown** | Internal use, quick reference, iterative editing, version control | Easy to edit, readable in any editor, git-friendly | Less visually polished, no charts |
+- Runs `/market report-pdf` or `/market report-pdf <domain>`.
+- Wants a PDF version of a marketing report.
+- Needs a client presentation, email attachment, prospect report, or sales collateral.
+- Asks for a polished report, client-ready report, visual report, charts, score gauges, or branded PDF.
 
-**Rule of thumb:** If the report is going to a client or prospect, use PDF. If it is for internal use or further editing, use Markdown.
+Use Markdown report generation instead when the user wants iterative editing, internal notes, version control, or a text-first deliverable.
 
-## How to Execute
+## Required Input Contract
 
-### Step 1: Collect All Available Data
-Gather data from all previous skill runs. Check for these files in the project directory:
+Collect or infer:
 
-**Primary data sources:**
-- `MARKETING-AUDIT.md` -- Overall audit results
-- `LANDING-CRO.md` -- Landing page conversion analysis
-- `SEO-AUDIT.md` -- SEO findings
-- `BRAND-VOICE.md` -- Brand voice analysis
-- `COMPETITOR-ANALYSIS.md` -- Competitor comparison data
-- `FUNNEL-ANALYSIS.md` -- Funnel analysis
-- `SOCIAL-AUDIT.md` -- Social media audit
-- `EMAIL-AUDIT.md` -- Email marketing audit
-- `AD-AUDIT.md` -- Advertising audit
+- Target URL, brand name, report date, and output filename.
+- Existing audit outputs and marketing findings.
+- Scores for the six PDF categories.
+- Executive summary.
+- 5-10 prioritized findings with severity.
+- Quick wins, medium-term actions, and strategic actions.
+- Competitor data when available.
+- Whether estimates are allowed or only verified data should be used.
 
-**If no previous data exists:**
-1. Recommend the user run `/market audit <url>` first for the best results
-2. If the user insists on generating a report without prior audits, analyze the provided URL directly and build the data structure from scratch
-3. Use the analyze_page.py script to gather automated data: `python scripts/analyze_page.py <url>`
+If no prior data exists, recommend `/market audit <url>` first. If the user still wants a PDF, analyze the provided URL or user-provided data and clearly label assumptions.
 
-### Step 2: Build the JSON Data Structure
-The `scripts/generate_pdf_report.py` script expects a JSON file as input with this exact structure:
+## Source Data Discovery
 
-```json
-{
-  "url": "https://example.com",
-  "date": "March 1, 2026",
-  "brand_name": "Example Co",
-  "overall_score": 62,
-  "executive_summary": "A 2-4 sentence summary of the overall marketing health, key opportunities, and estimated revenue impact of implementing recommendations.",
-  "categories": {
-    "Content & Messaging": {
-      "score": 68,
-      "weight": "25%"
-    },
-    "Conversion Optimization": {
-      "score": 52,
-      "weight": "20%"
-    },
-    "SEO & Discoverability": {
-      "score": 74,
-      "weight": "20%"
-    },
-    "Competitive Positioning": {
-      "score": 48,
-      "weight": "15%"
-    },
-    "Brand & Trust": {
-      "score": 70,
-      "weight": "10%"
-    },
-    "Growth & Strategy": {
-      "score": 55,
-      "weight": "10%"
-    }
-  },
-  "findings": [
-    {
-      "severity": "Critical",
-      "finding": "Description of the most important finding"
-    },
-    {
-      "severity": "High",
-      "finding": "Description of a high-priority finding"
-    },
-    {
-      "severity": "Medium",
-      "finding": "Description of a medium-priority finding"
-    },
-    {
-      "severity": "Low",
-      "finding": "Description of a lower-priority finding"
-    }
-  ],
-  "quick_wins": [
-    "First quick win action item",
-    "Second quick win action item",
-    "Third quick win action item"
-  ],
-  "medium_term": [
-    "First medium-term action item",
-    "Second medium-term action item",
-    "Third medium-term action item"
-  ],
-  "strategic": [
-    "First strategic action item",
-    "Second strategic action item",
-    "Third strategic action item"
-  ],
-  "competitors": [
-    {
-      "name": "Competitor A",
-      "positioning": "Their market position",
-      "pricing": "Their pricing model",
-      "social_proof": "Their trust signals",
-      "content": "Their content approach"
-    },
-    {
-      "name": "Competitor B",
-      "positioning": "Their market position",
-      "pricing": "Their pricing model",
-      "social_proof": "Their trust signals",
-      "content": "Their content approach"
-    }
-  ]
-}
+Check for:
+
+- `MARKETING-AUDIT.md`
+- `LANDING-CRO.md`
+- `SEO-AUDIT.md`
+- `BRAND-VOICE.md`
+- `COMPETITOR-ANALYSIS.md`
+- `FUNNEL-ANALYSIS.md`
+- `SOCIAL-AUDIT.md`
+- `EMAIL-AUDIT.md`
+- `AD-AUDIT.md`
+
+## Core PDF Workflow
+
+1. Collect available source data.
+2. Build the expected JSON data structure.
+3. Validate required fields, score ranges, findings, action tiers, and optional competitor fields.
+4. Write JSON to a temporary file.
+5. Verify `reportlab` is available or install only with user approval when needed.
+6. Run `python3 scripts/generate_pdf_report.py <json-file> <output-pdf>`.
+7. Verify the PDF exists and report filename, location, size, and page expectations.
+8. Clean up temporary JSON unless the user wants to keep it.
+
+See [pdf-workflow.md](references/pdf-workflow.md) for detailed commands and script behavior.
+
+## Required JSON Contract
+
+The generator expects:
+
+- `url`: full target URL.
+- `date`: report date.
+- `brand_name`: company or brand name.
+- `overall_score`: integer from 0 to 100.
+- `executive_summary`: 2-4 concise sentences.
+- `categories`: exactly six score objects.
+- `findings`: severity/finding objects.
+- `quick_wins`, `medium_term`, `strategic`: action item arrays.
+- `competitors`: optional array of up to three competitors.
+
+See [json-schema-and-fields.md](references/json-schema-and-fields.md) for full schema and field-level assembly guidance.
+
+## Safety and Quality Constraints
+
+- Do not invent scores, competitors, metrics, revenue, tool output, or findings.
+- Label assumptions and confidence when source data is incomplete.
+- Do not include secrets, credentials, API keys, tokens, session records, private context, local absolute paths, or personal identifiers.
+- Use placeholders for missing client data.
+- Every score must be justifiable with source evidence or labeled assumptions.
+- Round scores to whole numbers; decimals imply false precision.
+- Keep executive summary tight and client-facing.
+- PDF reports are sales/client-facing deliverables; polish and accuracy matter.
+
+## Validation Rules
+
+Before completion:
+
+- Validate JSON parses.
+- Confirm required fields are present.
+- Confirm all scores are numeric integers from 0 to 100.
+- Confirm each finding has severity and evidence-backed text.
+- Confirm action tiers are specific and actionable.
+- Confirm the PDF file exists after generation.
+- Report file path, file size, and any skipped optional sections.
+- Do not claim PDF generation succeeded without checking the output file.
+
+See [troubleshooting-and-validation.md](references/troubleshooting-and-validation.md) for detailed checks and failure modes.
+
+## Output Expectations
+
+Create:
+
+- `MARKETING-REPORT-<domain>.pdf` in the project root, unless the user requests another location.
+
+Report:
+
+- Source files used.
+- Output PDF filename and size.
+- Score summary.
+- Optional sections included or skipped.
+- Validation performed.
+- Any assumptions, missing data, or follow-up recommendations.
+
+## Minimal Examples
+
+```text
+/market report-pdf example.com
+Generate a client-ready PDF from MARKETING-AUDIT.md and COMPETITOR-ANALYSIS.md.
+Create a prospect PDF report using the audit files and label any estimated scores.
 ```
 
-### Step 3: Field-by-Field Data Assembly Guide
+## Reference Map
 
-#### `url` (string, required)
-The target website URL. Use the full URL including protocol.
-
-#### `date` (string, required)
-The report generation date. Format: "Month DD, YYYY" (e.g., "March 1, 2026").
-
-#### `brand_name` (string, required)
-The company or brand name. Used in competitor comparison table headers.
-
-#### `overall_score` (integer, 0-100, required)
-The weighted average of all category scores. Calculate as:
-```
-overall_score = (content * 0.25) + (conversion * 0.20) + (seo * 0.20) + (competitive * 0.15) + (brand * 0.10) + (growth * 0.10)
-```
-
-#### `executive_summary` (string, required)
-A 2-4 sentence summary covering:
-- Current marketing health assessment
-- Top 1-2 most impactful findings
-- Estimated revenue impact of implementing recommendations
-- Recommended first step
-
-Keep it concise and impactful. This appears on the cover page right below the score gauge.
-
-#### `categories` (object, required)
-Exactly 6 categories with their scores. The categories map to these evaluation areas:
-
-| Category | What It Measures | Scoring Guidance |
-|---|---|---|
-| Content & Messaging | Copy quality, value proposition, headline clarity, CTA text, brand voice consistency | 80+: Clear, benefit-driven, specific. 60-79: Adequate but generic. <60: Vague, feature-focused, unclear |
-| Conversion Optimization | Social proof, form design, CTA placement, objection handling, urgency | 80+: Multiple proof types, optimized forms, clear CTAs. 60-79: Some elements present. <60: Missing critical elements |
-| SEO & Discoverability | Title tags, meta descriptions, headers, schema, internal linking, page speed | 80+: Fully optimized. 60-79: Mostly present with gaps. <60: Major issues or missing elements |
-| Competitive Positioning | Differentiation, pricing clarity, comparison content, market awareness | 80+: Clear positioning, comparison pages exist. 60-79: Some differentiation. <60: No clear positioning |
-| Brand & Trust | Design quality, trust badges, security indicators, professional appearance | 80+: Modern design, trust signals throughout. 60-79: Adequate design. <60: Outdated or unprofessional |
-| Growth & Strategy | Lead capture, email marketing, content strategy, acquisition channels | 80+: Multi-channel strategy in place. 60-79: Some channels active. <60: No clear growth strategy |
-
-#### `findings` (array, required)
-An array of finding objects, each with `severity` and `finding` fields.
-
-**Severity levels:**
-- `Critical` -- Directly losing revenue or customers. Fix immediately.
-- `High` -- Significant impact on growth. Fix within 1-2 weeks.
-- `Medium` -- Meaningful improvement opportunity. Fix within 1 month.
-- `Low` -- Nice-to-have improvement. Fix when time allows.
-
-**Writing effective findings:**
-- Be specific: "Homepage headline says 'Welcome to Our Platform'" not "Headline needs improvement"
-- Quantify impact: "Missing meta descriptions on 8 of 12 landing pages"
-- Reference benchmarks: "Page load time is 4.2s (benchmark: under 2s)"
-- Include evidence: "No testimonials found on homepage, pricing page, or signup page"
-
-Aim for 5-10 findings. Order from most to least severe.
-
-#### `quick_wins` (array, required)
-3-5 action items that can be implemented within one week with minimal effort. Each should be a specific, actionable instruction.
-
-**Good quick win:** "Rewrite the homepage headline from 'Welcome to Our Platform' to 'Cut Your Reporting Time by 75% -- Automated Analytics for Growth Teams'"
-
-**Bad quick win:** "Improve the headline" (too vague)
-
-#### `medium_term` (array, required)
-3-5 action items requiring 1-3 months to implement. These are more involved but have high impact.
-
-#### `strategic` (array, required)
-3-5 action items requiring 3-6 months. These are foundational changes that require planning and sustained effort.
-
-#### `competitors` (array, optional)
-Up to 3 competitor objects for the comparison table. If no competitor data is available, omit this field -- the script will skip the competitor section.
-
-### Step 4: Write the JSON File
-Save the assembled data as a temporary JSON file:
-
-```bash
-# Write the JSON data to a temporary file
-cat > /tmp/report_data.json << 'JSONEOF'
-{
-  ... assembled JSON data ...
-}
-JSONEOF
-```
-
-### Step 5: Invoke the PDF Generator Script
-
-**Prerequisites check:**
-First, verify that `reportlab` is installed:
-```bash
-python3 -c "import reportlab" 2>/dev/null || pip3 install reportlab
-```
-
-**Generate the report:**
-```bash
-python3 scripts/generate_pdf_report.py /tmp/report_data.json "MARKETING-REPORT-<domain>.pdf"
-```
-
-Replace `<domain>` with the target website's domain name (without protocol or www), using hyphens instead of dots. For example:
-- `example.com` becomes `MARKETING-REPORT-example-com.pdf`
-- `myapp.io` becomes `MARKETING-REPORT-myapp-io.pdf`
-
-**Demo mode (no arguments):**
-Running the script without arguments generates a sample report with placeholder data:
-```bash
-python3 scripts/generate_pdf_report.py
-# Creates: MARKETING-REPORT-sample.pdf
-```
-
-### Step 6: Verify the Output
-After generation, verify the PDF was created:
-```bash
-ls -la "MARKETING-REPORT-<domain>.pdf"
-```
-
-Report the file path and size to the user.
-
-### Step 7: Clean Up
-Remove the temporary JSON file:
-```bash
-rm /tmp/report_data.json
-```
-
-## PDF Report Contents
-
-The generated PDF includes the following pages:
-
-### Page 1: Cover Page
-- Report title: "Marketing Audit Report"
-- Target URL
-- Generation date
-- Overall score gauge (circular visualization with color coding)
-- Grade letter (A+ through F)
-- Executive summary paragraph
-
-### Page 2: Score Breakdown
-- Horizontal bar chart showing all 6 category scores with color coding
-- Score table with category names, scores, weights, and status labels
-- Color coding: Green (80+), Blue (60-79), Yellow (40-59), Red (<40)
-
-### Page 3: Key Findings
-- Findings table with severity labels and descriptions
-- Color-coded severity indicators (Critical = red, High = orange, Medium = yellow, Low = blue)
-- Findings ordered from most to least severe
-
-### Page 4: Prioritized Action Plan
-- Quick Wins section (This Week)
-- Medium-Term section (1-3 Months)
-- Strategic section (3-6 Months)
-- Numbered action items in each tier
-
-### Page 5: Competitive Landscape (if competitor data provided)
-- Comparison table with client vs up to 3 competitors
-- Rows: Positioning, Pricing, Social Proof, Content
-
-### Final Page: Methodology
-- Scoring methodology explanation
-- Category weights and measurement criteria
-- Footer: "Generated by AI Marketing Suite for Claude Code"
-
-## Color Scheme
-
-The PDF uses a professional color palette:
-
-| Element | Color | Hex Code |
-|---|---|---|
-| Primary (headers, titles) | Dark Navy | #1B2A4A |
-| Accent (links, highlights) | Blue | #2D5BFF |
-| Highlight (attention) | Orange | #FF6B35 |
-| Success (high scores) | Green | #00C853 |
-| Warning (medium scores) | Amber | #FFB300 |
-| Danger (low scores, critical) | Red | #FF1744 |
-| Light background | Light Gray | #F5F7FA |
-| Body text | Dark Gray | #2C3E50 |
-| Secondary text | Medium Gray | #7F8C9B |
-| Borders | Light Border | #E0E6ED |
-
-## Score-to-Color Mapping
-- 80-100: Green (#00C853) -- Strong performance
-- 60-79: Blue (#2D5BFF) -- Solid with room to improve
-- 40-59: Amber (#FFB300) -- Needs attention
-- 0-39: Red (#FF1744) -- Critical issues
-
-## Troubleshooting
-
-| Issue | Solution |
-|---|---|
-| `ModuleNotFoundError: No module named 'reportlab'` | Run `pip3 install reportlab` |
-| Script produces empty PDF | Check that JSON data has all required fields |
-| Score gauge not rendering | Ensure `overall_score` is a number 0-100 |
-| Competitor table missing | Ensure `competitors` array has objects with `name`, `positioning`, `pricing`, `social_proof`, `content` fields |
-| PDF is only 1 page | Check for JSON parsing errors -- run `python3 -c "import json; json.load(open('/tmp/report_data.json'))"` |
-| Fonts look wrong | The script uses Helvetica (built into reportlab). No custom fonts needed. |
-
-## Integration with Other Skills
-
-This skill works best when combined with other audit skills. The recommended workflow:
-
-1. Run `/market audit <url>` -- Generates comprehensive audit data
-2. Run `/market competitors <url>` -- Adds competitor comparison data
-3. Run `/market seo <url>` -- Adds detailed SEO findings
-4. Run `/market landing <url>` -- Adds CRO analysis
-5. Run `/market report-pdf <url>` -- Compiles everything into a PDF
-
-The PDF report skill will automatically look for output files from these skills and incorporate their data into the report JSON.
-
-## Output
-- **File:** `MARKETING-REPORT-<domain>.pdf`
-- **Location:** Project root directory
-- **Size:** Typically 200KB-500KB depending on content volume
-- **Pages:** 5-7 pages depending on whether competitor data and additional sections are included
-
-## Key Principles
-- The PDF report is the most client-facing deliverable in the toolkit. Quality matters.
-- Always verify the JSON data is complete and accurate before generating. Garbage in, garbage out.
-- Use the PDF for initial client impressions and sales conversations. Follow up with the more detailed Markdown report if the client engages.
-- Every score should be justifiable. If a client asks "why did I get a 52 in Conversion Optimization?", the findings should provide clear evidence.
-- Round scores to whole numbers. Decimals imply false precision.
-- Keep the executive summary tight -- 2-4 sentences maximum. Clients skim cover pages.
-- If generating for a prospect (not yet a client), the report serves as a sales tool. Make the opportunities compelling and the action plan achievable.
+- Detailed workflow, data collection, script invocation, cleanup: [pdf-workflow.md](references/pdf-workflow.md)
+- Full JSON schema and field assembly guide: [json-schema-and-fields.md](references/json-schema-and-fields.md)
+- PDF page contents, colors, score-to-color mapping, output expectations: [pdf-output-reference.md](references/pdf-output-reference.md)
+- Troubleshooting and validation checks: [troubleshooting-and-validation.md](references/troubleshooting-and-validation.md)
+- Integration workflow and public-safe examples: [examples-and-integration.md](references/examples-and-integration.md)
