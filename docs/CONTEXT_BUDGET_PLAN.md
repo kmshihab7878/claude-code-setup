@@ -67,6 +67,41 @@ inflection point when no SKILL.md was the top context risk.
   inventory script counts any `.md` under `agents/` as an agent definition.
 - Preserve upstream vendored content (e.g., `skills/n8n/czlonkowski/*`).
 
+## Final campaign status
+
+Status: **practically complete (~95% by impact).**
+
+The campaign achieved its primary goal: high-frequency operating files
+were compacted, bulky examples and implementation detail were moved into
+lazy-loaded references, and runtime behavior was preserved across every
+extraction.
+
+End-state evidence:
+
+- No SKILL.md exceeds ~2,800 estimated tokens (top remaining: `react-bits` at ~2,765).
+- `pm-agent.md` dropped from ~3,459 → ~2,302 tokens (no longer in P1–P3 risk list).
+- `CLAUDE.md` compacted from ~2,285 → ~2,103 tokens; still within the 5,000-token budget threshold.
+- Top context risks are now `ALWAYS_LOAD_RISK` (the kernel, by design),
+  `ROUTING_INDEX_RISK` (lazy on dispatch), and `LAZY_REFERENCE_HEAVY`
+  (lazy on invocation).
+- All validation gates pass: `validate.sh`, `check-public-safety.sh`,
+  `audit-public-readiness.sh --quick`, gitleaks, trivy.
+
+Remaining large files are acceptable because they are primarily:
+
+- **Routing indexes** (`agents/REGISTRY.md`, domain `DOMAIN.md` files) — loaded only when routing fires.
+- **Lazy command bodies** (`commands/sc/*`, `commands/bmad/*`) — loaded only on command invocation.
+- **Lazy reference files** (per-skill `references/`, large `*.md` resources) — loaded only when the skill is selected.
+- **Vendored upstream material** (`skills/n8n/czlonkowski/*`) — intentionally left untouched to preserve upstream sync.
+
+Future work is optional polish unless a file becomes always-loaded,
+exceeds budget, or starts appearing repeatedly in high-priority
+context-risk reports. Re-open the campaign only if:
+
+1. A new SKILL.md exceeds 2,800 tokens.
+2. `CLAUDE.md` exceeds 4,000 tokens.
+3. A validation gate starts failing on count-drift or public-safety.
+
 ## Validator constraints that shape CLAUDE.md
 
 `scripts/validate.sh` requires the following strings to exist verbatim in

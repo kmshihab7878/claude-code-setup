@@ -103,6 +103,20 @@ The repository is designed so a fresh clone is publishable without further redac
 
 All in-repo examples use placeholders only: `<your-org>/<your-repo>`, `<workspace>`, `<project-root>`, `<your-api-key>`, `<contributor>`. Full publication discipline: [`docs/PUBLICATION_CHECKLIST.md`](docs/PUBLICATION_CHECKLIST.md). Defence-in-depth detail: [`docs/SECURITY.md`](docs/SECURITY.md).
 
+## Context budget
+
+The repo is optimized around a compact always-loaded kernel plus lazy-loaded depth:
+
+- [`CLAUDE.md`](CLAUDE.md) is the always-loaded operating kernel.
+- [`AGENTS.md`](AGENTS.md) and [`WARP.md`](WARP.md) are public-safe pointer files.
+- Commands, skills, agents, domains, recipes, and references are lazy-loaded only after routing.
+- Bulky examples, templates, deep workflows, and implementation detail live in local `references/` docs next to each skill or agent.
+- Runtime behavior is preserved; what's lazy stays out of context until needed.
+
+Reference extraction is now the standard pattern for large skills and agents: the operating contract (frontmatter, when-to-use, decision logic, safety rules, validation gates, output expectations) stays inline; everything else moves into `references/`. Measure with `bash scripts/context-budget-report.sh`. Policy: [`docs/CONTEXT_BUDGET.md`](docs/CONTEXT_BUDGET.md). Campaign log: [`docs/CONTEXT_BUDGET_PLAN.md`](docs/CONTEXT_BUDGET_PLAN.md).
+
+**Current status: the reference-extraction campaign is practically complete.** Large SKILL.md and high-value agent files were compacted into operating contracts; detailed examples, troubleshooting, and playbooks moved into lazy-loaded references. Remaining large files are mostly routing indexes, command bodies, vendored upstream references, or intentionally lazy material — further work is optional polish.
+
 ## Validation
 
 ```bash
@@ -194,6 +208,7 @@ If you fork this repo for personal use, the first commit on your fork should NOT
 | Adoption guide | [`docs/ADOPTION_GUIDE.md`](docs/ADOPTION_GUIDE.md) |
 | Compatibility matrix | [`docs/COMPATIBILITY.md`](docs/COMPATIBILITY.md) |
 | Context budget guidance | [`docs/CONTEXT_BUDGET.md`](docs/CONTEXT_BUDGET.md) |
+| Context budget — extraction campaign log | [`docs/CONTEXT_BUDGET_PLAN.md`](docs/CONTEXT_BUDGET_PLAN.md) |
 | Common failure modes | [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md) |
 | Pre-publication safety checklist | [`docs/PUBLICATION_CHECKLIST.md`](docs/PUBLICATION_CHECKLIST.md) |
 | Hooks reference (all 16) | [`docs/HOOKS.md`](docs/HOOKS.md) |
