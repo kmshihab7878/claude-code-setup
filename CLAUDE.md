@@ -136,7 +136,7 @@ Bodies lazy-load from `commands/`.
 - Max 3 parallel subagents; wait before launching a fourth.
 - Non-trivial code: apply the Karpathy constraints — think before coding, simplicity first, surgical changes, goal-driven execution. See [`references/karpathy-principles.md`](./references/karpathy-principles.md) and [`skills/karpathy-review/SKILL.md`](./skills/karpathy-review/SKILL.md).
 
-Counts: **209 skills** · **89 commands** · **243 agents** · 13 recipes ·
+Counts: **209 skills** · **92 commands** · **243 agents** · 13 recipes ·
 6 path rules · 8 live MCPs. Regenerate with `make inventory`; validate
 with `make validate`. Source: [`docs/INVENTORY.md`](./docs/INVENTORY.md).
 

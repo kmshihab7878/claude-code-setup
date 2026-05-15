@@ -52,6 +52,8 @@ git clone https://github.com/<your-org>/<your-repo>.git
 cd <your-repo>
 ```
 
+If you are forking this repo, replace `<your-org>/<your-repo>` with your fork's path. The repository's public-safety scanner intentionally refuses to commit personal GitHub handles into tracked files — adoption guides remain placeholder-only.
+
 Install as your global `~/.claude/` (back up any existing config first):
 
 ```bash
